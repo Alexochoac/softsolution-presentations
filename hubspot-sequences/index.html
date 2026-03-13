@@ -233,8 +233,64 @@
             .results-grid{grid-template-columns:1fr}
         }
     </style>
+
+<!-- Password Gate Styles -->
+<style>
+  #pw-gate { position:fixed; inset:0; z-index:9999; background:#000; display:flex; flex-direction:column; align-items:center; justify-content:center; font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif; transition:opacity .6s ease; }
+  #pw-gate.hide { opacity:0; pointer-events:none; }
+  #pw-badge { display:inline-flex; align-items:center; gap:10px; background:rgba(245,166,35,.12); border:1px solid rgba(245,166,35,.35); border-radius:100px; padding:7px 18px; font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#F5A623; margin-bottom:28px; }
+  #pw-gate h2 { font-size:clamp(22px,3vw,36px); font-weight:700; letter-spacing:-.02em; background:linear-gradient(180deg,#fff 0%,#bbb 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:8px; text-align:center; }
+  #pw-gate p { font-size:14px; color:#555; margin-bottom:36px; text-align:center; }
+  #pw-wrap { display:flex; gap:10px; }
+  #pw-input { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); border-radius:12px; padding:14px 20px; color:#fff; font-size:15px; letter-spacing:.1em; outline:none; width:200px; font-family:inherit; transition:border-color .25s; }
+  #pw-input:focus { border-color:rgba(245,166,35,.5); }
+  #pw-input.error { border-color:rgba(248,113,113,.6); animation:pw-shake .4s ease; }
+  #pw-btn { background:rgba(245,166,35,.15); border:1px solid rgba(245,166,35,.4); color:#F5A623; font-size:14px; font-weight:700; letter-spacing:.06em; padding:14px 24px; border-radius:12px; cursor:pointer; font-family:inherit; transition:all .25s; }
+  #pw-btn:hover { background:rgba(245,166,35,.28); }
+  #pw-error { font-size:13px; color:#f87171; margin-top:14px; height:18px; opacity:0; transition:opacity .3s; }
+  #pw-error.show { opacity:1; }
+  @keyframes pw-shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-6px)} 80%{transform:translateX(6px)} }
+</style>
 </head>
 <body>
+
+<!-- Password Gate -->
+<div id="pw-gate">
+  <div id="pw-badge">SoftSolution · Private Access</div>
+  <h2>Enter Password to Continue</h2>
+  <p>This presentation is password protected.</p>
+  <div id="pw-wrap">
+    <input type="password" id="pw-input" placeholder="Password" autocomplete="off">
+    <button id="pw-btn" onclick="checkPw()">Enter →</button>
+  </div>
+  <div id="pw-error">Incorrect password. Please try again.</div>
+</div>
+<script>
+  (function() {
+    if (sessionStorage.getItem('ss-auth') === 'SOSO2026') {
+      document.getElementById('pw-gate').style.display = 'none';
+    }
+  })();
+  function checkPw() {
+    var input = document.getElementById('pw-input');
+    if (input.value === 'SOSO2026') {
+      sessionStorage.setItem('ss-auth', 'SOSO2026');
+      var gate = document.getElementById('pw-gate');
+      gate.classList.add('hide');
+      setTimeout(function() { gate.style.display = 'none'; }, 650);
+    } else {
+      input.classList.remove('error');
+      void input.offsetWidth;
+      input.classList.add('error');
+      document.getElementById('pw-error').classList.add('show');
+      input.value = '';
+      setTimeout(function() { input.classList.remove('error'); }, 500);
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && document.getElementById('pw-gate').style.display !== 'none') checkPw();
+  });
+</script>
 
 <div class="glow-orb a"></div>
 <div class="glow-orb b"></div>
