@@ -261,9 +261,13 @@
     .kpi-value { font-size: 24px; }
     /* Charts */
     .charts-row { grid-template-columns: 1fr; gap: 14px; }
-    .chart-wrap { height: 180px; }
-    .chart-tabs { gap: 5px; }
-    .chart-tab { font-size: 10px; padding: 4px 10px; }
+    .chart-wrap { height: 240px; }   /* taller — 180px cut off axis labels */
+    .chart-tabs { gap: 5px; flex-wrap: wrap; }
+    .chart-tab { font-size: 11px; padding: 5px 11px; }
+    /* Progress bars — reduce large number so section fits in card */
+    .progress-pct { font-size: 14px; }
+    .progress-name { font-size: 13px; }
+    .progress-section { gap: 12px; }
     /* Insights */
     .insights-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
     .insight-card { padding: 12px 10px; }
