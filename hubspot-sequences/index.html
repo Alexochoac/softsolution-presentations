@@ -225,16 +225,34 @@
         .step-row.open .result-body { display:block; }
 
         @media(max-width:768px){
-            .slide{padding:32px 20px}
-            .slide.hero{padding:0 20px 56px}
-            .jm-layout{grid-template-columns:1fr}
-            .cards-row{grid-template-columns:1fr}
-            .screenshots-grid{grid-template-columns:1fr}
-            .results-grid{grid-template-columns:1fr}
-            .step-row.open .step-body{flex-direction:column}
-            .step-img-wrap{width:100%}
-            .metrics-row{gap:28px}
-            .metric-val{font-size:clamp(32px,8vw,48px)}
+            /* Fix iOS Safari 100vh bug */
+            body { height: 100dvh; }
+            .stage { height: 100dvh; }
+            /* Slides scroll when content exceeds screen height */
+            .slide {
+                height: 100dvh;
+                padding: 24px 18px 88px;
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
+            .slide.hero { height: 100dvh; padding: 0 18px 64px; }
+            /* Glow orbs are 400-500px wide — remove on mobile */
+            .glow-orb { display: none; }
+            /* Grids */
+            .jm-layout { grid-template-columns: 1fr; gap: 24px; }
+            .cards-row { grid-template-columns: 1fr; }
+            .screenshots-grid { grid-template-columns: 1fr; }
+            .results-grid { grid-template-columns: 1fr; }
+            /* Step accordion */
+            .step-row.open .step-body { flex-direction: column; }
+            .step-img-wrap { width: 100%; }
+            /* Metrics */
+            .metrics-row { gap: 20px; }
+            .metric-val { font-size: clamp(32px, 8vw, 48px); }
+            /* Typography */
+            h1 { font-size: clamp(28px, 7vw, 52px) !important; }
+            h2 { font-size: clamp(15px, 4vw, 22px) !important; }
+            .card-desc { font-size: 14px; }
         }
     </style>
 

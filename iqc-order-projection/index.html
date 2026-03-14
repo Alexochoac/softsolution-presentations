@@ -235,34 +235,49 @@
 
   /* ── Mobile Responsive ── */
   @media (max-width: 768px) {
+    /* Fix iOS Safari viewport height bug */
+    body { height: 100dvh; }
+    .slides-container { height: 100dvh; overflow: hidden; }
+    /* Hero slides */
     .slide.hero {
-      padding: 0 24px 56px 24px;
+      height: 100dvh;
+      padding: 0 20px 56px 20px;
     }
+    .hero-content h1 { font-size: clamp(28px, 8vw, 52px); }
+    /* Dashboard slide — scrollable, so content can overflow */
     .slide.dashboard {
-      padding: 24px 16px 80px;
+      height: 100dvh;
+      padding: 20px 14px 80px;
     }
     .dash-header {
       flex-direction: column;
-      gap: 14px;
-      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 20px;
     }
-    .kpi-row {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    .kpi-value { font-size: 28px; }
-    .charts-row {
-      grid-template-columns: 1fr;
-    }
-    .chart-wrap { height: 200px; }
-    .insights-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    .modal-card {
-      padding: 32px 24px;
-    }
-    .modal-headline { font-size: 20px; }
+    .dash-header h1 { font-size: clamp(18px, 5vw, 28px); }
+    /* KPI — 2 cols is more readable than 1 on small screens */
+    .kpi-row { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .kpi-card { padding: 14px 12px; }
+    .kpi-value { font-size: 24px; }
+    /* Charts */
+    .charts-row { grid-template-columns: 1fr; gap: 14px; }
+    .chart-wrap { height: 180px; }
+    .chart-tabs { gap: 5px; }
+    .chart-tab { font-size: 10px; padding: 4px 10px; }
+    /* Insights */
+    .insights-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .insight-card { padding: 12px 10px; }
+    .insight-headline { font-size: 11px; }
+    .insight-body { font-size: 10px; }
+    .expand-hint { display: none; }
+    /* Modal */
+    .modal-card { padding: 28px 20px; }
+    .modal-headline { font-size: 18px; }
+    /* Nav */
     .nav-arrow.prev { left: 8px; }
     .nav-arrow.next { right: 8px; }
+    /* Glow orbs are 400-600px wide — hide on mobile */
+    .glow-orb { display: none; }
   }
 </style>
 
