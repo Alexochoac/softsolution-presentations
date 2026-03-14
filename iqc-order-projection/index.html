@@ -251,6 +251,8 @@
   #pw-error.show { opacity:1; }
   @keyframes pw-shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-6px)} 80%{transform:translateX(6px)} }
 </style>
+<!-- Umami Analytics -->
+<script defer src="https://umami.wbtm.io/script.js" data-website-id="2056a7e6-dbd6-4246-a205-4f89ffe8a37f" data-domains="alexochoac.github.io"></script>
 </head>
 <body>
 
@@ -357,10 +359,10 @@
   <div class="charts-row">
     <div class="chart-card">
       <div class="chart-tabs">
-        <div class="chart-tab active" data-view="all">All Products</div>
-        <div class="chart-tab" data-view="linescanner">LineScanner</div>
-        <div class="chart-tab" data-view="osprey">Osprey</div>
-        <div class="chart-tab" data-view="bowscanner">BowScanner</div>
+        <div class="chart-tab active" data-view="all" data-umami-event="chart-tab-clicked" data-umami-event-tab="all-products">All Products</div>
+        <div class="chart-tab" data-view="linescanner" data-umami-event="chart-tab-clicked" data-umami-event-tab="linescanner">LineScanner</div>
+        <div class="chart-tab" data-view="osprey" data-umami-event="chart-tab-clicked" data-umami-event-tab="osprey">Osprey</div>
+        <div class="chart-tab" data-view="bowscanner" data-umami-event="chart-tab-clicked" data-umami-event-tab="bowscanner">BowScanner</div>
       </div>
       <div class="chart-wrap"><canvas id="mainChart"></canvas></div>
       <div class="chart-hint" id="chartHint">Click a product tab to see monthly trend &amp; projection</div>
@@ -392,7 +394,7 @@
   <div class="section-label">5 Key Insights</div>
   <div class="divider"></div>
   <div class="insights-grid">
-    <div class="insight-card" data-insight="0">
+    <div class="insight-card" data-insight="0" data-umami-event="insight-viewed" data-umami-event-insight="below-annual-pace">
       <div class="insight-num">01</div><div class="insight-icon">📉</div>
       <div class="insight-headline">Team is tracking below annual pace</div>
       <div class="insight-body">With <strong>19% of the year elapsed</strong>, ~22 units expected. Only 13 closed — a <strong>41% shortfall vs pace</strong>.</div>
