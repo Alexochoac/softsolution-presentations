@@ -228,31 +228,40 @@
             /* Fix iOS Safari 100vh bug */
             body { height: 100dvh; }
             .stage { height: 100dvh; }
-            /* Slides scroll when content exceeds screen height */
+            /* !important needed to override inline padding styles on specific slides */
             .slide {
-                height: 100dvh;
-                padding: 24px 18px 88px;
-                overflow-y: auto;
-                overflow-x: hidden;
+                height: 100dvh !important;
+                padding: 24px 18px 88px !important;
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
             }
-            .slide.hero { height: 100dvh; padding: 0 18px 64px; }
+            .slide.hero { height: 100dvh !important; padding: 0 18px 64px !important; }
             /* Glow orbs are 400-500px wide — remove on mobile */
             .glow-orb { display: none; }
             /* Grids */
-            .jm-layout { grid-template-columns: 1fr; gap: 24px; }
-            .cards-row { grid-template-columns: 1fr; }
-            .screenshots-grid { grid-template-columns: 1fr; }
-            .results-grid { grid-template-columns: 1fr; }
-            /* Step accordion */
+            .jm-layout { grid-template-columns: 1fr !important; gap: 24px; }
+            .cards-row { grid-template-columns: 1fr !important; }
+            .screenshots-grid { grid-template-columns: 1fr !important; }
+            .results-grid { grid-template-columns: 1fr !important; }
+            /* Step accordion — stack image below text on mobile */
             .step-row.open .step-body { flex-direction: column; }
-            .step-img-wrap { width: 100%; }
+            .step-img-wrap { width: 100% !important; }
+            /* Justin Michael book layout */
+            .jm-book { padding: 20px 16px; }
+            /* Info boxes with fixed max-width */
+            .info-box { padding: 16px 18px; }
             /* Metrics */
-            .metrics-row { gap: 20px; }
+            .metrics-row { gap: 20px; flex-wrap: wrap; }
             .metric-val { font-size: clamp(32px, 8vw, 48px); }
-            /* Typography */
-            h1 { font-size: clamp(28px, 7vw, 52px) !important; }
-            h2 { font-size: clamp(15px, 4vw, 22px) !important; }
-            .card-desc { font-size: 14px; }
+            /* Typography — !important to override inline font-size styles */
+            h1 { font-size: clamp(24px, 6vw, 44px) !important; }
+            h2 { font-size: clamp(14px, 4vw, 20px) !important; margin-bottom: 20px !important; }
+            .card-title { font-size: 15px; }
+            .card-desc { font-size: 14px !important; }
+            .step-name { font-size: 14px; }
+            .section-label { font-size: 14px; }
+            /* Nav dots */
+            .slide-counter { display: none; }
         }
     </style>
 
