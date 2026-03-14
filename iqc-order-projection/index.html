@@ -232,6 +232,38 @@
   .modal-headline { font-size:26px; font-weight:800; color:#f8fafc; line-height:1.25; margin-bottom:16px; letter-spacing:-.02em; }
   .modal-body { font-size:16px; color:#666; line-height:1.8; }
   .modal-body strong { color:#999; }
+
+  /* ── Mobile Responsive ── */
+  @media (max-width: 768px) {
+    .slide.hero {
+      padding: 0 24px 56px 24px;
+    }
+    .slide.dashboard {
+      padding: 24px 16px 80px;
+    }
+    .dash-header {
+      flex-direction: column;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .kpi-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .kpi-value { font-size: 28px; }
+    .charts-row {
+      grid-template-columns: 1fr;
+    }
+    .chart-wrap { height: 200px; }
+    .insights-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .modal-card {
+      padding: 32px 24px;
+    }
+    .modal-headline { font-size: 20px; }
+    .nav-arrow.prev { left: 8px; }
+    .nav-arrow.next { right: 8px; }
+  }
 </style>
 
 <!-- Password Gate Styles -->
@@ -516,6 +548,22 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
   if (e.key === 'ArrowLeft')                   { e.preventDefault(); goTo(current - 1); }
 });
+
+// Touch swipe support
+let touchStartX = 0, touchStartY = 0;
+document.addEventListener('touchstart', e => {
+  touchStartX = e.changedTouches[0].clientX;
+  touchStartY = e.changedTouches[0].clientY;
+}, { passive: true });
+document.addEventListener('touchend', e => {
+  if (modalBackdrop.classList.contains('open')) return;
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  const dy = e.changedTouches[0].clientY - touchStartY;
+  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+    if (dx < 0) goTo(current + 1);
+    if (dx > 0) goTo(current - 1);
+  }
+}, { passive: true });
 
 // ── Chart Data ────────────────────────────────────────────────────────
 const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
