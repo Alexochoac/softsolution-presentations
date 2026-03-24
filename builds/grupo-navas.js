@@ -10,5 +10,5 @@ module.exports = {
   umamiId:       null,        // set a UUID string to activate analytics
   lang:          'es',        // 'en' or 'es' — requires strings-es.json to exist
   slides:        'all',       // 'all' or array of numbers e.g. [1,2,3,14]
-  outputDir:     'C:/Users/Alex/Alex-Projects/active/presentation-builder-softsolution/dist/GrupoNavas-Spain',
+  outputDir:     'C:/Users/Alex/Alex-Projects/active/presentation-builder-softsolution/docs/GrupoNavas-Spain',
 };
