@@ -200,6 +200,17 @@ function applyTranslations(slides, translations) {
   });
 }
 
+// ── ASSET PATH REWRITING ──────────────────────────────────────────────────────
+// Rewrites slide image paths to use the shared folder, keeping the logo local.
+function rewriteAssetPaths(html, logoFile) {
+  const placeholder = '\x00LOGO\x00';
+  html = html.split(`assets/${logoFile}`).join(placeholder);
+  html = html.replace(/(['"])assets\//g, '$1../shared/assets/');
+  html = html.replace(/(['"])general\//g, '$1../shared/general/');
+  html = html.split(placeholder).join(`assets/${logoFile}`);
+  return html;
+}
+
 function extractFirst(html, cls) {
   const m = html.match(new RegExp(`class="${cls}"[^>]*>([\\s\\S]*?)<\\/`));
   return m ? m[1].replace(/<[^>]+>/g,'').trim() : null;
@@ -398,6 +409,9 @@ async function main() {
     }
   }
 
+  // 5b. Rewrite asset paths to use shared folder
+  finalSlides = finalSlides.map(html => rewriteAssetPaths(html, cfg.logoFile));
+
   // 6. Assemble + write
   const html = assembleHtml(css, initJs, utilJs, finalSlides, cfg);
   const outPath = path.join(OUT_DIR, 'index.html');
@@ -405,28 +419,30 @@ async function main() {
   console.log(`\n✅  Written: ${outPath}`);
   console.log(`    Size:    ${(html.length / 1024).toFixed(1)} KB`);
 
-  // 7. Asset report
-  const { assets, general } = collectAssets(finalSlides);
-  const IMAGE_SRC = path.join(SLIDE_DIR, 'Slide Images');
+  // 7. Copy shared assets (once for all customers)
+  const DOCS_ROOT         = path.join(OUT_DIR, '..');
+  const SHARED_ASSETS_DIR = path.join(DOCS_ROOT, 'shared', 'assets');
+  const SHARED_GENERAL_DIR = path.join(DOCS_ROOT, 'shared', 'general');
+  const IMAGE_SRC         = path.join(SLIDE_DIR, 'Slide Images');
 
-  console.log(`\n📦  Assets needed (${assets.size} files in assets/):`);
-  for (const a of [...assets].sort()) {
-    const inOut = fs.existsSync(path.join(ASSETS_DIR, a));
-    const inSrc = fs.existsSync(path.join(IMAGE_SRC, a));
-    const tag   = inOut ? '✓' : inSrc ? '⚠ needs copy' : '✗ MISSING';
-    console.log(`    ${tag.padEnd(14)} ${a}`);
+  fs.mkdirSync(SHARED_ASSETS_DIR, { recursive: true });
+  let copied = 0, skipped = 0;
+  for (const img of fs.readdirSync(IMAGE_SRC)) {
+    const dest = path.join(SHARED_ASSETS_DIR, img);
+    if (!fs.existsSync(dest)) { fs.copyFileSync(path.join(IMAGE_SRC, img), dest); copied++; }
+    else skipped++;
   }
+  console.log(`\n📦  Shared assets: ${copied} copied, ${skipped} already present → shared/assets/`);
 
-  if (general.size) {
-    console.log(`\n📦  General images needed (${general.size} files in general/):`);
-    const GEN_OUT = path.join(OUT_DIR, 'general');
-    fs.mkdirSync(GEN_OUT, { recursive: true });
-    for (const a of [...general].sort()) {
-      const inOut = fs.existsSync(path.join(GEN_OUT, a));
-      const inSrc = fs.existsSync(path.join(GENERAL_SRC, a));
-      const tag   = inOut ? '✓' : inSrc ? '⚠ needs copy' : '✗ MISSING';
-      console.log(`    ${tag.padEnd(14)} ${a}`);
+  if (fs.existsSync(GENERAL_SRC)) {
+    fs.mkdirSync(SHARED_GENERAL_DIR, { recursive: true });
+    let gCopied = 0, gSkipped = 0;
+    for (const img of fs.readdirSync(GENERAL_SRC)) {
+      const dest = path.join(SHARED_GENERAL_DIR, img);
+      if (!fs.existsSync(dest)) { fs.copyFileSync(path.join(GENERAL_SRC, img), dest); gCopied++; }
+      else gSkipped++;
     }
+    console.log(`📦  General assets: ${gCopied} copied, ${gSkipped} already present → shared/general/`);
   }
 
   console.log('\nDone.\n');
