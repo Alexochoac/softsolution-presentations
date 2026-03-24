@@ -19,9 +19,9 @@ presentations for different customers, with custom colors, logos, and content.
 - [x] Migrate existing softsolution folder from presentation-builder
 - [ ] Consolidate into one repo (Option B) — merge `softsolution-presentations` into this repo under `dist/`:
   - [x] Create `dist/` folder here and move finished presentations into it
-  - [x] Update `outputDir` in all build configs (e.g. `builds/grupo-navas.js`) to point to `dist/GrupoNavas-Spain/` etc.
-  - [ ] Update GitHub Pages settings on this repo to serve from `dist/`
-  - [ ] Archive or delete the old `softsolution-presentations` repo
+  - [x] Update `outputDir` in all build configs (e.g. `builds/grupo-navas.js`) to point to `docs/GrupoNavas-Spain/` etc.
+  - [x] Update GitHub Pages settings on this repo to serve from `/docs`
+  - [ ] Archive or delete the old `softsolution-presentations` repo (now replaced by this one)
 - [ ] Refactor build system to use a shared assets folder — currently each customer presentation duplicates the same LineScanner images (~84MB each). Move shared images to `dist/shared/assets/` and update `build.js` to reference `../shared/assets/` instead of copying them per customer.
 
 ## Key Decisions
