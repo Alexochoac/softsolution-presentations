@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IQC SOFTSOLUTION · LITESENTRY — Order Projection 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+    background: #000;
+    color: #fff;
+    height: 100vh;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Slide System ── */
+  .slides-container { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
+
+  .slide {
+    position: absolute; inset: 0;
+    opacity: 0; pointer-events: none;
+    transition: opacity .7s cubic-bezier(0.25,0.46,0.45,0.94), transform .7s cubic-bezier(0.25,0.46,0.45,0.94);
+    transform: scale(0.98);
+  }
+  .slide.active { opacity: 1; pointer-events: auto; transform: scale(1); }
+  .slide.exit-left  { opacity: 0; transform: scale(0.97) translateX(-20px); }
+  .slide.exit-right { opacity: 0; transform: scale(0.97) translateX(20px); }
+
+  /* ── Glow Orbs ── */
+  .glow-orb {
+    position: fixed; border-radius: 50%;
+    filter: blur(120px); pointer-events: none; z-index: 0;
+    animation: float 12s ease-in-out infinite;
+  }
+  .glow-orb.a { width:600px; height:600px; background:radial-gradient(circle,rgba(245,166,35,.10) 0%,transparent 70%); right:-200px; bottom:-200px; }
+  .glow-orb.b { width:400px; height:400px; background:radial-gradient(circle,rgba(232,137,12,.07) 0%,transparent 70%); left:-150px; top:-150px; animation-delay:-6s; }
+
+  @keyframes float    { 0%,100%{transform:translateY(0)}   50%{transform:translateY(-20px)} }
+  @keyframes pulse    { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.8)} }
+  @keyframes fadeInUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes blink    { 0%,100%{opacity:.35} 50%{opacity:1} }
+  @keyframes modalIn  { from{opacity:0;transform:scale(.95) translateY(10px)} to{opacity:1;transform:scale(1) translateY(0)} }
+
+  /* ── Hero Slides (Opening & Closing) ── */
+  .slide.hero {
+    background: #000; /* solid black base — no bleed-through */
+    display: flex; flex-direction: column;
+    justify-content: flex-end; align-items: flex-start;
+    padding: 0 80px 80px 80px;
+  }
+  .slide.hero.centered { justify-content: center; align-items: center; }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    opacity: .65; z-index: 0;
+  }
+  .hero-overlay {
+    position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(to top, rgba(0,0,0,.97) 0%, rgba(0,0,0,.5) 55%, rgba(0,0,0,.15) 100%);
+  }
+  .hero-content { position: relative; z-index: 2; }
+  .hero-content.centered-text { text-align: center; display: flex; flex-direction: column; align-items: center; }
+
+  .brand-badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(245,166,35,.12); border: 1px solid rgba(245,166,35,.35);
+    border-radius: 100px; padding: 7px 18px;
+    font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #F5A623;
+    margin-bottom: 18px;
+  }
+  .brand-badge::before { content:''; width:6px; height:6px; border-radius:50%; background:#F5A623; animation:pulse 2s ease-in-out infinite; }
+
+  .hero-content h1 {
+    font-size: clamp(44px, 6vw, 80px);
+    font-weight: 700; letter-spacing: -.02em; line-height: 1.06; margin-bottom: 16px;
+    background: linear-gradient(180deg,#fff 0%,#bbb 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .hero-content h2 {
+    font-size: clamp(16px,1.8vw,22px); font-weight: 400; color: #999;
+    line-height: 1.5; letter-spacing: -.01em;
+  }
+  .amber {
+    background: linear-gradient(90deg,#F5A623 0%,#FFD27F 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    display: inline-block;
+  }
+  .click-hint {
+    margin-top: 40px; font-size: 13px; color: #444; letter-spacing: .1em;
+    text-transform: uppercase; font-weight: 600;
+    animation: blink 2s ease-in-out infinite;
+  }
+
+  /* ── Dashboard Slide ── */
+  .slide.dashboard {
+    background: #000;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 48px 64px 80px;
+    display: block;
+  }
+  /* Custom scrollbar */
+  .slide.dashboard::-webkit-scrollbar { width: 4px; }
+  .slide.dashboard::-webkit-scrollbar-track { background: transparent; }
+  .slide.dashboard::-webkit-scrollbar-thumb { background: rgba(245,166,35,.3); border-radius: 4px; }
+
+  /* ── Navigation Arrows ── */
+  .nav-arrow {
+    position: fixed; top: 50%; transform: translateY(-50%);
+    width: 44px; height: 44px; border-radius: 50%;
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+    color: #666; font-size: 18px; cursor: pointer; z-index: 100;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .25s ease; user-select: none;
+  }
+  .nav-arrow:hover { background: rgba(245,166,35,.15); border-color: rgba(245,166,35,.4); color: #F5A623; }
+  .nav-arrow:active { transform: translateY(-50%) scale(.93); }
+  .nav-arrow.prev { left: 20px; }
+  .nav-arrow.next { right: 20px; }
+  .nav-arrow.hidden { opacity: 0; pointer-events: none; }
+
+  /* ── Nav Dots ── */
+  .nav-dots {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 8px; z-index: 100;
+    background: rgba(0,0,0,.4); backdrop-filter: blur(10px);
+    padding: 8px 16px; border-radius: 20px;
+    border: 1px solid rgba(255,255,255,.06);
+  }
+  .nav-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: rgba(255,255,255,.2); cursor: pointer;
+    transition: all .3s ease;
+  }
+  .nav-dot.active { background: #F5A623; width: 20px; border-radius: 3px; }
+
+  /* ── Dashboard: Header ── */
+  .dash-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 36px; padding-bottom: 24px;
+    border-bottom: 1px solid rgba(255,255,255,.07);
+  }
+  .dash-header h1 {
+    font-size: clamp(22px,2.5vw,34px); font-weight: 700; letter-spacing: -.02em; line-height: 1.1;
+    background: linear-gradient(180deg,#fff 0%,#bbb 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .dash-header p { font-size: 13px; color: #555; margin-top: 5px; }
+  .last-updated {
+    background: rgba(245,166,35,.1); border: 1px solid rgba(245,166,35,.3);
+    color: #F5A623; font-size: 13px; font-weight: 600;
+    padding: 7px 15px; border-radius: 100px; white-space: nowrap;
+  }
+
+  /* ── Section Labels ── */
+  .section-label { font-size:11px; font-weight:700; letter-spacing:.13em; text-transform:uppercase; color:#F5A623; margin-bottom:12px; }
+  .divider { width:36px; height:3px; background:linear-gradient(90deg,#F5A623,#E8890C); border-radius:2px; margin-bottom:20px; }
+
+  /* ── KPI Cards ── */
+  .kpi-row { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:24px; }
+  .kpi-card { background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07); border-radius:16px; padding:20px 18px; transition:all .3s ease; }
+  .kpi-card:hover { background:rgba(245,166,35,.05); border-color:rgba(245,166,35,.2); transform:translateY(-2px); }
+  .kpi-label { font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#444; margin-bottom:10px; }
+  .kpi-value { font-size:36px; font-weight:900; line-height:1; margin-bottom:5px; letter-spacing:-.02em; }
+  .kpi-sub { font-size:11px; color:#444; }
+  .kpi-card.amber .kpi-value { background:linear-gradient(90deg,#F5A623,#FFD27F); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+  .kpi-card.white .kpi-value { color:#fff; }
+  .kpi-card.green .kpi-value { color:#4ade80; }
+  .kpi-card.red   .kpi-value { color:#f87171; }
+
+  /* ── Charts Row ── */
+  .charts-row { display:grid; grid-template-columns:1.5fr 1fr; gap:18px; margin-bottom:24px; }
+  .chart-card { background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07); border-radius:16px; padding:24px; transition:border-color .3s; }
+  .chart-card:hover { border-color:rgba(245,166,35,.15); }
+
+  .chart-tabs { display:flex; gap:7px; margin-bottom:18px; flex-wrap:wrap; }
+  .chart-tab { font-size:11px; font-weight:700; letter-spacing:.04em; padding:5px 12px; border-radius:100px; cursor:pointer; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); color:#555; transition:all .25s ease; user-select:none; }
+  .chart-tab:hover { background:rgba(245,166,35,.08); border-color:rgba(245,166,35,.25); color:#F5A623; }
+  .chart-tab.active { background:rgba(245,166,35,.15); border-color:rgba(245,166,35,.4); color:#F5A623; }
+
+  .chart-wrap { position:relative; height:240px; }
+  .chart-hint { font-size:10px; color:#2a2a2a; margin-top:8px; text-align:center; letter-spacing:.03em; }
+
+  /* ── Progress Bars ── */
+  .progress-section { display:flex; flex-direction:column; gap:18px; padding-top:2px; }
+  .progress-header { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:7px; }
+  .progress-name { font-size:14px; font-weight:700; color:#e2e8f0; }
+  .progress-stats { font-size:12px; color:#444; }
+  .progress-track { background:rgba(255,255,255,.06); border-radius:99px; height:7px; overflow:hidden; }
+  .progress-fill { height:100%; border-radius:99px; transition:width 1.4s cubic-bezier(0.16,1,0.3,1); }
+  .progress-meta { display:flex; align-items:center; gap:8px; margin-top:6px; }
+  .progress-pct { font-size:18px; font-weight:900; }
+  .pace-pill { font-size:10px; font-weight:700; padding:3px 9px; border-radius:99px; letter-spacing:.04em; }
+  .pace-behind   { background:rgba(248,113,113,.12); color:#f87171; }
+  .pace-critical { background:rgba(248,113,113,.18); color:#f87171; border:1px solid rgba(248,113,113,.3); }
+
+  /* ── Insights ── */
+  .insights-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; }
+  .insight-card {
+    background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07);
+    border-radius:14px; padding:18px 16px;
+    opacity:0; transform:translateY(16px);
+    transition:opacity .6s ease, transform .6s ease, background .25s, border-color .25s, box-shadow .25s;
+    cursor:pointer;
+  }
+  .insight-card.visible { opacity:1; transform:translateY(0); }
+  .insight-card:hover { background:rgba(245,166,35,.06); border-color:rgba(245,166,35,.25); transform:translateY(-3px); box-shadow:0 8px 32px rgba(245,166,35,.08); }
+  .insight-card:nth-child(1){transition-delay:.1s} .insight-card:nth-child(2){transition-delay:.2s}
+  .insight-card:nth-child(3){transition-delay:.3s} .insight-card:nth-child(4){transition-delay:.4s}
+  .insight-card:nth-child(5){transition-delay:.5s}
+  .insight-num { font-size:10px; font-weight:800; letter-spacing:.1em; color:rgba(245,166,35,.4); margin-bottom:8px; }
+  .insight-icon { font-size:20px; margin-bottom:8px; }
+  .insight-headline { font-size:12px; font-weight:700; color:#f1f5f9; line-height:1.4; margin-bottom:7px; }
+  .insight-body { font-size:11px; color:#555; line-height:1.7; }
+  .insight-body strong { color:#888; }
+  .expand-hint { font-size:10px; color:#2a2a2a; margin-top:8px; letter-spacing:.04em; }
+
+  /* ── Modal ── */
+  .modal-backdrop { position:fixed; inset:0; background:rgba(0,0,0,.85); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); z-index:300; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .3s ease; }
+  .modal-backdrop.open { opacity:1; pointer-events:auto; }
+  .modal-card { background:#0d0d0d; border:1px solid rgba(245,166,35,.25); border-radius:24px; padding:48px 44px; max-width:560px; width:90%; position:relative; animation:modalIn .35s cubic-bezier(0.16,1,0.3,1) both; box-shadow:0 32px 80px rgba(0,0,0,.6); }
+  .modal-close { position:absolute; top:20px; right:20px; width:32px; height:32px; border-radius:50%; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); color:#888; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+  .modal-close:hover { background:rgba(245,166,35,.15); color:#F5A623; border-color:rgba(245,166,35,.3); }
+  .modal-num { font-size:12px; font-weight:800; letter-spacing:.12em; color:rgba(245,166,35,.5); margin-bottom:14px; }
+  .modal-icon { font-size:36px; margin-bottom:16px; }
+  .modal-headline { font-size:26px; font-weight:800; color:#f8fafc; line-height:1.25; margin-bottom:16px; letter-spacing:-.02em; }
+  .modal-body { font-size:16px; color:#666; line-height:1.8; }
+  .modal-body strong { color:#999; }
+
+  /* ── Mobile Responsive ── */
+  @media (max-width: 768px) {
+    /* Fix iOS Safari viewport height bug */
+    body { height: 100dvh; }
+    .slides-container { height: 100dvh; overflow: hidden; }
+    /* Hero slides */
+    .slide.hero {
+      height: 100dvh;
+      padding: 0 20px 56px 20px;
+    }
+    .hero-content h1 { font-size: clamp(28px, 8vw, 52px); }
+    /* Dashboard slide — scrollable, so content can overflow */
+    .slide.dashboard {
+      height: 100dvh;
+      padding: 20px 14px 80px;
+    }
+    .dash-header {
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .dash-header h1 { font-size: clamp(18px, 5vw, 28px); }
+    /* KPI — 2 cols is more readable than 1 on small screens */
+    .kpi-row { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .kpi-card { padding: 14px 12px; }
+    .kpi-value { font-size: 24px; }
+    /* Charts */
+    .charts-row { grid-template-columns: 1fr; gap: 14px; }
+    .chart-wrap { height: 240px; }   /* taller — 180px cut off axis labels */
+    .chart-tabs { gap: 5px; flex-wrap: wrap; }
+    .chart-tab { font-size: 11px; padding: 5px 11px; }
+    /* Progress bars — reduce large number so section fits in card */
+    .progress-pct { font-size: 14px; }
+    .progress-name { font-size: 13px; }
+    .progress-section { gap: 12px; }
+    /* Insights */
+    .insights-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .insight-card { padding: 12px 10px; }
+    .insight-headline { font-size: 11px; }
+    .insight-body { font-size: 10px; }
+    .expand-hint { display: none; }
+    /* Modal */
+    .modal-card { padding: 28px 20px; }
+    .modal-headline { font-size: 18px; }
+    /* Nav */
+    .nav-arrow.prev { left: 8px; }
+    .nav-arrow.next { right: 8px; }
+    /* Glow orbs are 400-600px wide — hide on mobile */
+    .glow-orb { display: none; }
+  }
+</style>
+
+<!-- Password Gate Styles -->
+<style>
+  #pw-gate { position:fixed; inset:0; z-index:9999; background:#000; display:flex; flex-direction:column; align-items:center; justify-content:center; font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif; transition:opacity .6s ease; }
+  #pw-gate.hide { opacity:0; pointer-events:none; }
+  #pw-badge { display:inline-flex; align-items:center; gap:10px; background:rgba(245,166,35,.12); border:1px solid rgba(245,166,35,.35); border-radius:100px; padding:7px 18px; font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#F5A623; margin-bottom:28px; }
+  #pw-gate h2 { font-size:clamp(22px,3vw,36px); font-weight:700; letter-spacing:-.02em; background:linear-gradient(180deg,#fff 0%,#bbb 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:8px; text-align:center; }
+  #pw-gate p { font-size:14px; color:#555; margin-bottom:36px; text-align:center; }
+  #pw-wrap { display:flex; gap:10px; }
+  #pw-input { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); border-radius:12px; padding:14px 20px; color:#fff; font-size:15px; letter-spacing:.1em; outline:none; width:200px; font-family:inherit; transition:border-color .25s; }
+  #pw-input:focus { border-color:rgba(245,166,35,.5); }
+  #pw-input.error { border-color:rgba(248,113,113,.6); animation:pw-shake .4s ease; }
+  #pw-btn { background:rgba(245,166,35,.15); border:1px solid rgba(245,166,35,.4); color:#F5A623; font-size:14px; font-weight:700; letter-spacing:.06em; padding:14px 24px; border-radius:12px; cursor:pointer; font-family:inherit; transition:all .25s; }
+  #pw-btn:hover { background:rgba(245,166,35,.28); }
+  #pw-error { font-size:13px; color:#f87171; margin-top:14px; height:18px; opacity:0; transition:opacity .3s; }
+  #pw-error.show { opacity:1; }
+  @keyframes pw-shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-6px)} 80%{transform:translateX(6px)} }
+</style>
+<!-- Umami Analytics -->
+<script defer src="https://umami.wbtm.io/script.js" data-website-id="2056a7e6-dbd6-4246-a205-4f89ffe8a37f" data-domains="alexochoac.github.io" data-api="https://umami.wbtm.io/api/collect"></script>
+</head>
+<body>
+
+<!-- Password Gate -->
+<div id="pw-gate">
+  <div id="pw-badge">SoftSolution · Private Access</div>
+  <h2>Enter Password to Continue</h2>
+  <p>This presentation is password protected.</p>
+  <div id="pw-wrap">
+    <input type="password" id="pw-input" placeholder="Password" autocomplete="off">
+    <button id="pw-btn" onclick="checkPw()">Enter →</button>
+  </div>
+  <div id="pw-error">Incorrect password. Please try again.</div>
+</div>
+<script>
+  (function() {
+    if (sessionStorage.getItem('ss-auth') === 'SOSO2026') {
+      document.getElementById('pw-gate').style.display = 'none';
+    }
+  })();
+  function checkPw() {
+    var input = document.getElementById('pw-input');
+    if (input.value === 'SOSO2026') {
+      sessionStorage.setItem('ss-auth', 'SOSO2026');
+      var gate = document.getElementById('pw-gate');
+      gate.classList.add('hide');
+      setTimeout(function() { gate.style.display = 'none'; }, 650);
+    } else {
+      input.classList.remove('error');
+      void input.offsetWidth;
+      input.classList.add('error');
+      document.getElementById('pw-error').classList.add('show');
+      input.value = '';
+      setTimeout(function() { input.classList.remove('error'); }, 500);
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && document.getElementById('pw-gate').style.display !== 'none') checkPw();
+  });
+</script>
+
+<!-- Ambient glow (always visible) -->
+<div class="glow-orb a"></div>
+<div class="glow-orb b"></div>
+
+<!-- ════════════════════════════════════════
+     SLIDE 1 — OPENING
+════════════════════════════════════════ -->
+<div class="slides-container">
+
+<div class="slide hero active" id="slide-0">
+  <img class="hero-bg" src="assets/Panther SoftSolution.PNG" alt="SoftSolution">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="brand-badge">IQC SOFTSOLUTION · LITESENTRY</div>
+    <h1>Order <span class="amber">Projection</span><br>2026</h1>
+    <h2>Budget vs. Reached &nbsp;·&nbsp; All Products &nbsp;·&nbsp; Last updated 11.03.2026</h2>
+    <div class="click-hint">Press Space or → to view report</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SLIDE 2 — DASHBOARD
+════════════════════════════════════════ -->
+<div class="slide dashboard" id="slide-1">
+
+  <!-- Header -->
+  <div class="dash-header">
+    <div>
+      <div class="brand-badge" style="margin-bottom:12px;">IQC SOFTSOLUTION · LITESENTRY</div>
+      <h1>Order Projection 2026</h1>
+      <p>Budget vs. Reached &nbsp;·&nbsp; All Products &nbsp;·&nbsp; All Regions</p>
+    </div>
+    <div class="last-updated">Last updated: 11.03.2026</div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="section-label">Overview</div>
+  <div class="divider"></div>
+  <div class="kpi-row">
+    <div class="kpi-card white">
+      <div class="kpi-label">Total Budget 2026</div>
+      <div class="kpi-value">117</div>
+      <div class="kpi-sub">units across all products</div>
+    </div>
+    <div class="kpi-card green">
+      <div class="kpi-label">Units Reached</div>
+      <div class="kpi-value">13</div>
+      <div class="kpi-sub">as of March 11, 2026</div>
+    </div>
+    <div class="kpi-card amber">
+      <div class="kpi-label">Achievement Rate</div>
+      <div class="kpi-value">11.1%</div>
+      <div class="kpi-sub">19% of year elapsed</div>
+    </div>
+    <div class="kpi-card red">
+      <div class="kpi-label">Units Still Needed</div>
+      <div class="kpi-value">104</div>
+      <div class="kpi-sub">in ~10 months remaining</div>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="charts-row">
+    <div class="chart-card">
+      <div class="chart-tabs">
+        <div class="chart-tab active" data-view="all" data-umami-event="chart-tab-clicked" data-umami-event-tab="all-products">All Products</div>
+        <div class="chart-tab" data-view="linescanner" data-umami-event="chart-tab-clicked" data-umami-event-tab="linescanner">LineScanner</div>
+        <div class="chart-tab" data-view="osprey" data-umami-event="chart-tab-clicked" data-umami-event-tab="osprey">Osprey</div>
+        <div class="chart-tab" data-view="bowscanner" data-umami-event="chart-tab-clicked" data-umami-event-tab="bowscanner">BowScanner</div>
+      </div>
+      <div class="chart-wrap"><canvas id="mainChart"></canvas></div>
+      <div class="chart-hint" id="chartHint">Click a product tab to see monthly trend &amp; projection</div>
+    </div>
+
+    <div class="chart-card">
+      <div class="section-label">Achievement Rate — By Product</div>
+      <div class="progress-section">
+        <div>
+          <div class="progress-header"><span class="progress-name">LineScanner</span><span class="progress-stats">11 of 79</span></div>
+          <div class="progress-track"><div class="progress-fill" id="p1" style="width:0%;background:linear-gradient(90deg,#F5A623,#FFD27F);"></div></div>
+          <div class="progress-meta"><span class="progress-pct" style="color:#F5A623;">13.9%</span><span class="pace-pill pace-behind">Behind pace</span></div>
+        </div>
+        <div>
+          <div class="progress-header"><span class="progress-name">Osprey</span><span class="progress-stats">1 of 26</span></div>
+          <div class="progress-track"><div class="progress-fill" id="p2" style="width:0%;background:linear-gradient(90deg,#f87171,#ef4444);"></div></div>
+          <div class="progress-meta"><span class="progress-pct" style="color:#f87171;">3.8%</span><span class="pace-pill pace-critical">Critically behind</span></div>
+        </div>
+        <div>
+          <div class="progress-header"><span class="progress-name">BowScanner</span><span class="progress-stats">1 of 12</span></div>
+          <div class="progress-track"><div class="progress-fill" id="p3" style="width:0%;background:linear-gradient(90deg,#fbbf24,#f59e0b);"></div></div>
+          <div class="progress-meta"><span class="progress-pct" style="color:#fbbf24;">8.3%</span><span class="pace-pill pace-behind">Behind pace</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Insights -->
+  <div class="section-label">5 Key Insights</div>
+  <div class="divider"></div>
+  <div class="insights-grid">
+    <div class="insight-card" data-insight="0" data-umami-event="insight-viewed" data-umami-event-insight="below-annual-pace">
+      <div class="insight-num">01</div><div class="insight-icon">📉</div>
+      <div class="insight-headline">Team is tracking below annual pace</div>
+      <div class="insight-body">With <strong>19% of the year elapsed</strong>, ~22 units expected. Only 13 closed — a <strong>41% shortfall vs pace</strong>.</div>
+      <div class="expand-hint">Click to expand</div>
+    </div>
+    <div class="insight-card" data-insight="1">
+      <div class="insight-num">02</div><div class="insight-icon">🎯</div>
+      <div class="insight-headline">LineScanner carries 68% of the budget</div>
+      <div class="insight-body">79 of 117 units are LineScanner. <strong>It alone determines if the year is won or lost.</strong> Needs ~6.2 units/month from now.</div>
+      <div class="expand-hint">Click to expand</div>
+    </div>
+    <div class="insight-card" data-insight="2">
+      <div class="insight-num">03</div><div class="insight-icon">🚨</div>
+      <div class="insight-headline">Osprey is the most at-risk product</div>
+      <div class="insight-body">Only <strong>3.8% achieved</strong> against 26 budgeted. Projected year-end: <strong>5 vs 26</strong> — an 81% miss.</div>
+      <div class="expand-hint">Click to expand</div>
+    </div>
+    <div class="insight-card" data-insight="3">
+      <div class="insight-num">04</div><div class="insight-icon">🔮</div>
+      <div class="insight-headline">Projected year-end: ~68 units</div>
+      <div class="insight-body">If current rate holds, team closes <strong>~68 of 117 units</strong>. Q2 acceleration needed to change trajectory.</div>
+      <div class="expand-hint">Click to expand</div>
+    </div>
+    <div class="insight-card" data-insight="4">
+      <div class="insight-num">05</div><div class="insight-icon">✅</div>
+      <div class="insight-headline">BowScanner has most recovery potential</div>
+      <div class="insight-body">Only 12 units budgeted — <strong>1 extra unit/month</strong> puts it back on track. Easiest win.</div>
+      <div class="expand-hint">Click to expand</div>
+    </div>
+  </div>
+
+</div><!-- /slide dashboard -->
+
+<!-- ════════════════════════════════════════
+     SLIDE 3 — CLOSING
+════════════════════════════════════════ -->
+<div class="slide hero centered" id="slide-2">
+  <img class="hero-bg" src="assets/Panther SoftSolution.PNG" alt="SoftSolution">
+  <div class="hero-overlay"></div>
+  <div class="hero-content centered-text">
+    <div class="brand-badge" style="margin:0 auto 18px;">IQC · SOFTSOLUTION · LITESENTRY</div>
+    <h1>Thank <span class="amber">You</span></h1>
+    <h2>Order Projection Report 2026 &nbsp;·&nbsp; Prepared by Peter, Alex & Ai</h2>
+  </div>
+</div>
+
+</div><!-- /slides-container -->
+
+<!-- Navigation Arrows -->
+<button class="nav-arrow prev hidden" id="btnPrev">&#8592;</button>
+<button class="nav-arrow next" id="btnNext">&#8594;</button>
+
+<!-- Nav Dots -->
+<div class="nav-dots">
+  <div class="nav-dot active" data-slide="0"></div>
+  <div class="nav-dot" data-slide="1"></div>
+  <div class="nav-dot" data-slide="2"></div>
+</div>
+
+<!-- Modal -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal-card">
+    <button class="modal-close" id="modalClose">✕</button>
+    <div class="modal-num" id="modalNum"></div>
+    <div class="modal-icon" id="modalIcon"></div>
+    <div class="modal-headline" id="modalHeadline"></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+// ── Slide Navigation ──────────────────────────────────────────────────
+const slides     = document.querySelectorAll('.slide');
+const dots       = document.querySelectorAll('.nav-dot');
+const btnPrev    = document.getElementById('btnPrev');
+const btnNext    = document.getElementById('btnNext');
+let current      = 0;
+let isAnimating  = false;
+
+function goTo(n) {
+  if (isAnimating || n === current || n < 0 || n >= slides.length) return;
+  isAnimating = true;
+
+  slides[current].classList.remove('active');
+  dots[current].classList.remove('active');
+
+  current = n;
+
+  slides[current].classList.add('active');
+  dots[current].classList.add('active');
+
+  // Update arrows
+  btnPrev.classList.toggle('hidden', current === 0);
+  btnNext.classList.toggle('hidden', current === slides.length - 1);
+
+  setTimeout(() => { isAnimating = false; }, 750);
+
+  // Trigger progress bars when entering dashboard
+  if (current === 1) {
+    setTimeout(() => {
+      document.getElementById('p1').style.width = '13.9%';
+      document.getElementById('p2').style.width = '3.8%';
+      document.getElementById('p3').style.width = '8.3%';
+    }, 200);
+    // Trigger insight card animations
+    document.querySelectorAll('.insight-card').forEach(c => {
+      c.classList.remove('visible');
+      setTimeout(() => c.classList.add('visible'), 400);
+    });
+  }
+}
+
+btnPrev.addEventListener('click', () => goTo(current - 1));
+btnNext.addEventListener('click', () => goTo(current + 1));
+dots.forEach(dot => dot.addEventListener('click', () => goTo(parseInt(dot.dataset.slide))));
+
+document.addEventListener('keydown', e => {
+  if (modalBackdrop.classList.contains('open')) return; // don't navigate while modal open
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+  if (e.key === 'ArrowLeft')                   { e.preventDefault(); goTo(current - 1); }
+});
+
+// Touch swipe support
+let touchStartX = 0, touchStartY = 0;
+document.addEventListener('touchstart', e => {
+  touchStartX = e.changedTouches[0].clientX;
+  touchStartY = e.changedTouches[0].clientY;
+}, { passive: true });
+document.addEventListener('touchend', e => {
+  if (modalBackdrop.classList.contains('open')) return;
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  const dy = e.changedTouches[0].clientY - touchStartY;
+  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+    if (dx < 0) goTo(current + 1);
+    if (dx > 0) goTo(current - 1);
+  }
+}, { passive: true });
+
+// ── Chart Data ────────────────────────────────────────────────────────
+const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+const products = {
+  linescanner: {
+    label: 'LineScanner', color: '#F5A623',
+    budget:     [6,6,7,7,7,7,7,6,6,6,7,7],
+    reached:    [3,6,2,null,null,null,null,null,null,null,null,null],
+    projection: [null,null,null,5,5,5,5,5,5,5,5,5]
+  },
+  osprey: {
+    label: 'Osprey', color: '#f87171',
+    budget:     [2,2,2,2,2,2,2,2,3,3,2,2],
+    reached:    [0,1,0,null,null,null,null,null,null,null,null,null],
+    projection: [null,null,null,0,1,0,1,0,0,1,0,0]
+  },
+  bowscanner: {
+    label: 'BowScanner', color: '#fbbf24',
+    budget:     [1,1,1,1,1,1,1,1,1,1,1,1],
+    reached:    [1,0,0,null,null,null,null,null,null,null,null,null],
+    projection: [null,null,null,0,1,0,0,1,0,0,1,0]
+  }
+};
+
+const allBudget     = months.map((_,i) => Object.values(products).reduce((s,p) => s+p.budget[i], 0));
+const allReached    = months.map((_,i) => { const v = Object.values(products).map(p => p.reached[i]); return v.some(x => x!==null) ? v.reduce((s,x) => s+(x||0),0) : null; });
+const allProjection = months.map((_,i) => { const v = Object.values(products).map(p => p.projection[i]); return v.some(x => x!==null) ? v.reduce((s,x) => s+(x||0),0) : null; });
+
+let chartInstance = null;
+
+function buildBarChart() {
+  return {
+    type: 'bar',
+    data: {
+      labels: ['LineScanner','Osprey','BowScanner'],
+      datasets: [
+        { label:'Budget',  data:[79,26,12], backgroundColor:'rgba(245,166,35,.15)', borderColor:'rgba(245,166,35,.6)', borderWidth:2, borderRadius:5 },
+        { label:'Reached', data:[11,1,1],   backgroundColor:'rgba(74,222,128,.3)',  borderColor:'rgba(74,222,128,.8)', borderWidth:2, borderRadius:5 }
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins: {
+        legend: { labels:{ color:'#666', font:{size:11,weight:'600'}, padding:16, usePointStyle:true, pointStyleWidth:8 } },
+        tooltip: { backgroundColor:'rgba(10,10,10,.95)', titleColor:'#f1f5f9', bodyColor:'#888', borderColor:'rgba(245,166,35,.2)', borderWidth:1, padding:10 }
+      },
+      scales: {
+        x: { ticks:{color:'#666',font:{size:12,weight:'600'}}, grid:{color:'rgba(255,255,255,.04)'}, border:{color:'rgba(255,255,255,.06)'} },
+        y: { ticks:{color:'#444',font:{size:11}}, grid:{color:'rgba(255,255,255,.05)'}, border:{color:'rgba(255,255,255,.06)'} }
+      }
+    }
+  };
+}
+
+function buildLineChart(key) {
+  const isAll = key === 'all';
+  const p     = isAll ? null : products[key];
+  const accent = isAll ? '#F5A623' : p.color;
+  return {
+    type: 'line',
+    data: {
+      labels: months,
+      datasets: [
+        { label:'Monthly Budget', data: isAll ? allBudget : p.budget, borderColor:accent, borderWidth:2, borderDash:[6,4], pointBackgroundColor:accent, pointRadius:3, tension:.3, fill:false },
+        { label:'Reached',        data: isAll ? allReached : p.reached, borderColor:'#4ade80', borderWidth:2.5, pointBackgroundColor:'#4ade80', pointRadius:4, tension:.3, fill:false, spanGaps:false },
+        { label:'Projection (pace)', data: isAll ? allProjection : p.projection, borderColor:`${accent}88`, borderWidth:2, borderDash:[3,5], pointBackgroundColor:`${accent}88`, pointRadius:3, tension:.3, fill:false, spanGaps:false }
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins: {
+        legend: { labels:{ color:'#666', font:{size:11,weight:'600'}, padding:14, usePointStyle:true, pointStyleWidth:8 } },
+        tooltip: { backgroundColor:'rgba(10,10,10,.95)', titleColor:'#f1f5f9', bodyColor:'#888', borderColor:`${accent}44`, borderWidth:1, padding:10 }
+      },
+      scales: {
+        x: { ticks:{color:'#555',font:{size:11}}, grid:{color:'rgba(255,255,255,.04)'}, border:{color:'rgba(255,255,255,.06)'} },
+        y: { ticks:{color:'#444',font:{size:11}}, grid:{color:'rgba(255,255,255,.05)'}, border:{color:'rgba(255,255,255,.06)'}, beginAtZero:true }
+      }
+    }
+  };
+}
+
+function renderChart(view) {
+  const ctx = document.getElementById('mainChart').getContext('2d');
+  if (chartInstance) chartInstance.destroy();
+  chartInstance = new Chart(ctx, view === 'all' ? buildBarChart() : buildLineChart(view));
+  document.getElementById('chartHint').textContent = view === 'all'
+    ? 'Click a product tab to see monthly trend & projection'
+    : 'Dashed = budget target · Green = actual · Dotted = projection at current pace';
+}
+
+document.querySelectorAll('.chart-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.chart-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    renderChart(tab.dataset.view);
+  });
+});
+
+// ── Insight Modal ─────────────────────────────────────────────────────
+const insightData = [
+  { num:'01', icon:'📉', headline:'Team is tracking below annual pace', body:'With <strong>19% of the year elapsed</strong> (70 days out of 365), the team should have reached approximately <strong>22 units</strong> to be on pace. Only 13 have been closed so far — a <strong>41% shortfall versus expected pace</strong>. If this trend continues without intervention, the year-end projection falls significantly short of the 117-unit budget.' },
+  { num:'02', icon:'🎯', headline:'LineScanner carries 68% of the budget', body:'79 of 117 budgeted units are LineScanner. <strong>Its performance alone will determine whether the year is won or lost.</strong> To hit budget, the team needs to close approximately <strong>6.2 LineScanner units per month</strong> for the remaining 10 months — compared to the current pace of ~4.7/month.' },
+  { num:'03', icon:'🚨', headline:'Osprey is the most at-risk product', body:'Osprey has only achieved <strong>3.8%</strong> of its 26-unit budget — just 1 unit in 2.5 months. At the current daily pace, the projected year-end total is just <strong>5 units versus a budget of 26</strong> — an <strong>81% miss</strong>. This product requires an urgent pipeline review.' },
+  { num:'04', icon:'🔮', headline:'Projected year-end: ~68 units total', body:'Combining current pace across all three products — <strong>LineScanner (~57)</strong>, <strong>Osprey (~5)</strong>, and <strong>BowScanner (~5)</strong> — the year-end total at current trajectory is approximately <strong>67–68 units</strong> against a budget of 117. A <strong>42% gap</strong>.' },
+  { num:'05', icon:'✅', headline:'BowScanner has the most recovery potential', body:'With a budget of only 12 units, BowScanner requires just <strong>1 unit per month</strong> to hit budget. Just <strong>1 extra deal per month</strong> is the difference between on-track and off-track. The <strong>easiest quick win</strong> to restore momentum.' }
+];
+
+const modalBackdrop = document.getElementById('modalBackdrop');
+const modalClose    = document.getElementById('modalClose');
+
+function openModal(i) {
+  const d = insightData[i];
+  document.getElementById('modalNum').textContent   = `INSIGHT ${d.num}`;
+  document.getElementById('modalIcon').textContent  = d.icon;
+  document.getElementById('modalHeadline').textContent = d.headline;
+  document.getElementById('modalBody').innerHTML    = d.body;
+  modalBackdrop.classList.add('open');
+}
+function closeModal() { modalBackdrop.classList.remove('open'); }
+
+document.querySelectorAll('.insight-card').forEach(c => c.addEventListener('click', () => openModal(parseInt(c.dataset.insight))));
+modalClose.addEventListener('click', closeModal);
+modalBackdrop.addEventListener('click', e => { if (e.target === modalBackdrop) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ── Init ──────────────────────────────────────────────────────────────
+window.addEventListener('load', () => {
+  renderChart('all');
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+{
+  "slide-02": {
+    "sectionLabel": "Nuestra Empresa",
+    "title": "La inspección de calidad es nuestra especialidad"
+  },
+  "slide-03": {
+    "sectionLabel": "Por qué inspeccionar",
+    "title": "Por qué la automatización de la inspección tiene sentido"
+  },
+  "slide-04": {
+    "sectionLabel": "El Producto",
+    "title": "Capacidades del LineScanner"
+  },
+  "slide-05": {
+    "sectionLabel": "La Tecnología",
+    "title": "Cómo el LineScanner detecta lo que otros no ven"
+  },
+  "slide-06": {
+    "sectionLabel": "Calidad Superficial",
+    "title": "Detección de defectos con Inteligencia Artificial",
+    "subtitle": "Red neuronal entrenada para clasificar automáticamente cada tipo de defecto."
+  },
+  "slide-07": {
+    "sectionLabel": "Control Dimensional",
+    "title": "Medición precisa de dimensiones y cortes",
+    "colLabels": [
+      "¿Qué se mide?",
+      "Configuración y tolerancias"
+    ],
+    "colItems": [
+      "Dimensiones totales del vidrio",
+      "Posición y tamaño",
+      "Cortes y entallas",
+      "Ángulos y paralelismo",
+      "Rotación y posición en línea",
+      "Compatible con tolerancias individuales por medida ↗",
+      "Importación de modelo DXF",
+      "Verificación en 2 pasos: global y detalle",
+      "Compatible con transportadoras de banda ↗",
+      "Luz paralela para máxima precisión"
+    ]
+  },
+  "slide-08": {
+    "sectionLabel": "Serigrafía",
+    "title": "Control de calidad automático para vidrio serigráfico",
+    "subtitle": "El control de logotipos y serigrafía es ahora estándar — totalmente automatizado, el 100% del tiempo.",
+    "colLabels": "Qué controla el LineScanner",
+    "colItems": [
+      "Posición correcta",
+      "Partes faltantes",
+      "Grosor de impresión",
+      "Errores de detalle",
+      "Errores de serigrafía",
+      "Posición y rotación del logotipo"
+    ]
+  },
+  "slide-09": {
+    "sectionLabel": "Serigrafía y Logotipo",
+    "title": "Control de posición y calidad de impresión"
+  },
+  "slide-10": {
+    "sectionLabel": "Trazabilidad y Gestión",
+    "title": "Decisiones basadas en datos reales",
+    "colItems": [
+      "Recibe datos del LineScanner y Osprey",
+      "Búsqueda de vidrios y escaneos específicos",
+      "Combinación con datos individuales del ERP",
+      "Impresión de certificados por vidrio o escaneo",
+      "Informes automáticos por horario",
+      "Estadísticas individuales para minimizar flujos críticos",
+      "Vista en Tiempo Real — monitoreo de producción",
+      "Alertas por cantidad, ratio bueno/malo y periodos",
+      "Múltiples destinatarios por regla de alerta",
+      "Configuración central — gestiona todas las unidades LineScanner"
+    ]
+  },
+  "slide-11": {
+    "sectionLabel": "Ajuste de Sensibilidad",
+    "title": "Ajuste de sensibilidad totalmente automático"
+  },
+  "slide-12": {
+    "sectionLabel": "Instalación",
+    "title": "Modular — huella mínima en planta",
+    "subtitle": "único · en todo el mundo"
+  },
+  "slide-13": {
+    "sectionLabel": "Integraciones",
+    "title": "Compatible con su maquinaria actual",
+    "subtitle": "El LineScanner ya está integrado con los principales fabricantes de maquinaria para vidrio — si ya trabaja con alguna de estas líneas, la integración es directa."
+  },
+  "slide-14": {
+    "sectionLabel": "Próximos Pasos",
+    "title": "¿Listo para una demostración en vivo?"
+  }
+}

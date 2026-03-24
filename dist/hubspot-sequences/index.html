@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HubSpot Sequences — SoftSolution Training</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow: hidden;
+            height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .stage {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: radial-gradient(ellipse at center, #0d0d0d 0%, #000 100%);
+        }
+
+        .slides-container { width: 100%; height: 100%; position: relative; overflow: hidden; }
+
+        .slide {
+            width: 100%; height: 100%;
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transform: scale(0.97);
+            transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            padding: 60px 80px;
+        }
+        .slide { pointer-events: none; }
+        .slide.visible { opacity: 1; transform: scale(1); pointer-events: auto; }
+
+        /* Ambient glow */
+        .glow-orb {
+            position: fixed; border-radius: 50%;
+            filter: blur(100px); pointer-events: none; z-index: 0;
+            animation: float 12s ease-in-out infinite;
+        }
+        .glow-orb.a { width:500px; height:500px; background:radial-gradient(circle, rgba(245,166,35,0.10) 0%, transparent 70%); right:-200px; bottom:-200px; }
+        .glow-orb.b { width:400px; height:400px; background:radial-gradient(circle, rgba(232,137,12,0.07) 0%, transparent 70%); left:-150px; top:-150px; animation-delay:-6s; }
+
+        /* ── HERO SLIDE ── */
+        .slide.hero { padding: 0 80px 72px 80px; justify-content: flex-end; align-items: flex-start; }
+        .hero-bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; opacity:.7; z-index:0; }
+        .hero-overlay {
+            position:absolute; inset:0;
+            background: linear-gradient(to top, rgba(0,0,0,.95) 0%, rgba(0,0,0,.45) 55%, rgba(0,0,0,.1) 100%);
+            z-index:1;
+        }
+        .hero-content { position:relative; z-index:2; }
+        .brand-badge {
+            display:inline-flex; align-items:center; gap:10px;
+            background:rgba(245,166,35,.12); border:1px solid rgba(245,166,35,.35);
+            border-radius:100px; padding:7px 18px;
+            font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#F5A623;
+            margin-bottom:18px;
+        }
+        .brand-badge::before { content:''; width:6px; height:6px; border-radius:50%; background:#F5A623; animation:pulse 2s ease-in-out infinite; }
+
+        /* ── TYPOGRAPHY ── */
+        h1 {
+            font-size: clamp(44px, 6vw, 76px);
+            font-weight: 700; letter-spacing: -.02em; line-height: 1.06;
+            margin-bottom: 20px; text-align: center;
+            background: linear-gradient(180deg, #fff 0%, #bbb 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .slide.hero h1 { text-align:left; font-size:clamp(40px,5.5vw,68px); }
+
+        h2 {
+            font-size: clamp(18px, 2.2vw, 26px);
+            font-weight: 400; color: #aaa; text-align: center;
+            line-height: 1.5; margin-bottom: 40px; letter-spacing: -.01em;
+        }
+        .slide.hero h2 { text-align:left; color:#999; margin-bottom:0; font-size:clamp(16px,1.8vw,22px); }
+
+        .amber { background:linear-gradient(90deg,#F5A623 0%,#FFD27F 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; display:inline-block; }
+        .section-label { font-size:18px; font-weight:700; letter-spacing:.13em; text-transform:uppercase; color:#F5A623; margin-bottom:14px; text-align:center; }
+        .divider { width:44px; height:3px; background:linear-gradient(90deg,#F5A623,#E8890C); border-radius:2px; margin:0 auto 28px; }
+
+        /* ── FEATURE CARDS ── */
+        .cards-row {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 20px; width:100%; max-width:1000px; margin:24px auto;
+        }
+        .card {
+            background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07);
+            border-radius:18px; padding:32px 28px;
+            transition: all .3s ease;
+        }
+        .card:hover { background:rgba(245,166,35,.05); border-color:rgba(245,166,35,.2); transform:translateY(-3px); }
+        .card-icon { width:44px; height:44px; background:linear-gradient(135deg,#F5A623,#E8890C); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:16px; }
+        .card-title { font-size:18px; font-weight:600; color:#fff; margin-bottom:8px; }
+        .card-desc { font-size:18px; color:#aaa; line-height:1.6; }
+
+        /* ── JUSTIN MICHAEL SLIDE ── */
+        .jm-layout {
+            display: grid; grid-template-columns: 1fr 1.5fr;
+            gap: 48px; width:100%; max-width:1050px; align-items:center;
+        }
+        .jm-left { text-align:left; }
+        .jm-left h1 { text-align:left; font-size:clamp(36px,4.5vw,58px); }
+        .jm-left h2 { text-align:left; }
+        .jm-book {
+            background:rgba(245,166,35,.08); border:1px solid rgba(245,166,35,.2);
+            border-radius:20px; padding:32px;
+        }
+        .jm-book-title { font-size:18px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#F5A623; margin-bottom:10px; }
+        .jm-book-name { font-size:22px; font-weight:700; color:#fff; margin-bottom:16px; line-height:1.2; }
+        .jm-principles { display:flex; flex-direction:column; gap:12px; margin-top:16px; }
+        .jm-principle {
+            display:flex; align-items:flex-start; gap:12px;
+            background:rgba(255,255,255,.03); border-radius:12px; padding:14px 16px;
+        }
+        .jm-num { min-width:24px; height:24px; background:#F5A623; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; color:#000; }
+        .jm-text { font-size:18px; color:#bbb; line-height:1.5; }
+        .jm-text strong { color:#ddd; }
+
+        /* ── SEQUENCE STEPS (accordion) ── */
+        .steps-wrap { width:100%; max-width:860px; display:flex; flex-direction:column; gap:8px; margin:16px auto; }
+        .step-row {
+            background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07);
+            border-radius:14px; overflow:hidden; cursor:pointer;
+            transition: border-color .25s ease;
+        }
+        .step-row:hover, .step-row.open { border-color:rgba(245,166,35,.3); }
+        .step-header {
+            display:flex; align-items:center; gap:16px; padding:14px 20px;
+            user-select:none;
+        }
+        .step-day-tag {
+            min-width:60px; font-size:10px; font-weight:800; letter-spacing:.1em;
+            text-transform:uppercase; color:#F5A623;
+        }
+        .step-name { font-size:18px; font-weight:600; color:#fff; flex:1; }
+        .step-channel-tag {
+            font-size:18px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+            padding:3px 10px; border-radius:100px;
+        }
+        .tag-email { background:rgba(245,166,35,.1); color:#F5A623; border:1px solid rgba(245,166,35,.2); }
+        .tag-linkedin { background:rgba(95,168,211,.1); color:#5fa8d3; border:1px solid rgba(95,168,211,.2); }
+        .tag-call { background:rgba(52,199,89,.1); color:#34c759; border:1px solid rgba(52,199,89,.2); }
+        .tag-multi { background:rgba(180,180,180,.08); color:#aaa; border:1px solid rgba(180,180,180,.15); }
+        .step-chevron { font-size:18px; color:#777; transition:transform .25s ease; margin-left:8px; }
+        .step-row.open .step-chevron { transform:rotate(90deg); color:#F5A623; }
+
+        .step-body {
+            display:none; padding:0 20px 18px 20px;
+            border-top:1px solid rgba(255,255,255,.05);
+        }
+        .step-row.open .step-body { display:flex; gap:24px; align-items:flex-start; padding-top:16px; }
+        .step-body-text { flex:1; }
+        .step-body-subject { font-size:18px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#999; margin-bottom:6px; }
+        .step-body-copy { font-size:16px; color:#bbb; line-height:1.7; margin-bottom:12px; }
+        .step-jm-label { font-size:18px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#F5A623; margin-bottom:4px; }
+        .step-jm-note { font-size:16px; color:#999; line-height:1.6; font-style:italic; }
+        .step-img-wrap { flex-shrink:0; width:320px; }
+        .step-img-wrap img { width:100%; border-radius:8px; border:1px solid rgba(245,166,35,.15); cursor:zoom-in; }
+
+        /* ── EDIT SLIDE ── */
+        .screenshots-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; width:100%; max-width:1000px; margin:16px auto; }
+        .screenshot-wrap { border-radius:12px; overflow:hidden; border:1px solid rgba(245,166,35,.12); cursor:zoom-in; transition: border-color .25s; }
+        .screenshot-wrap:hover { border-color:rgba(245,166,35,.35); }
+        .screenshot-wrap img { width:100%; height:auto; display:block; }
+        .screenshot-caption { font-size:18px; color:#999; text-align:center; padding:8px 12px; background:rgba(0,0,0,.4); }
+
+        /* ── BEHALF SLIDE ── */
+        .metrics-row { display:flex; gap:56px; align-items:center; justify-content:center; flex-wrap:wrap; margin:28px 0; }
+        .metric { text-align:center; opacity:0; transform:translateY(20px); animation:fadeUp .6s ease forwards; }
+        .metric:nth-child(1){animation-delay:.1s} .metric:nth-child(2){animation-delay:.2s} .metric:nth-child(3){animation-delay:.3s}
+        .metric-val { font-size:clamp(38px,5vw,58px); font-weight:700; background:linear-gradient(180deg,#FFD27F 0%,#F5A623 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1; margin-bottom:8px; }
+        .metric-lbl { font-size:18px; color:#999; font-weight:500; }
+        .info-box { background:rgba(245,166,35,.05); border:1px solid rgba(245,166,35,.15); border-radius:16px; padding:24px 32px; max-width:680px; text-align:center; }
+        .info-box p { font-size:18px; color:#bbb; line-height:1.8; }
+        .info-box strong { color:#ccc; }
+
+        /* ── RESULTS SLIDE ── */
+        .results-grid { display:grid; grid-template-columns:1.5fr 1fr; gap:20px; width:100%; max-width:1050px; margin:16px auto; }
+
+        /* ── LIGHTBOX ── */
+        #lightbox {
+            display:none; position:fixed; inset:0; background:rgba(0,0,0,.9);
+            z-index:9999; align-items:center; justify-content:center;
+            backdrop-filter:blur(8px); cursor:zoom-out;
+        }
+        #lightbox.on { display:flex; }
+        #lightbox img { max-width:90vw; max-height:88vh; border-radius:10px; box-shadow:0 0 80px rgba(0,0,0,.8); }
+        #lightbox-close { position:fixed; top:24px; right:32px; font-size:28px; color:#888; cursor:pointer; z-index:10000; line-height:1; }
+        #lightbox-close:hover { color:#F5A623; }
+
+        /* ── NAV ── */
+        .nav-dots {
+            position:fixed; bottom:28px; left:50%; transform:translateX(-50%);
+            display:flex; gap:9px; z-index:1000;
+            padding:9px 18px; background:rgba(0,0,0,.6); backdrop-filter:blur(20px);
+            border-radius:100px; border:1px solid rgba(255,255,255,.05);
+        }
+        .dot { width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,.18); cursor:pointer; transition:all .3s; }
+        .dot.active { background:#F5A623; width:22px; border-radius:4px; }
+        .slide-counter { position:fixed; bottom:33px; right:44px; font-size:11px; color:#333; z-index:1000; font-weight:500; letter-spacing:.05em; }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeUp { to { opacity:1; transform:translateY(0); } }
+        @keyframes float { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(30px,-30px) scale(1.05)} }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+        .anim-in { opacity:0; transform:translateY(16px); animation:fadeUp .5s ease forwards; }
+        .anim-in:nth-child(1){animation-delay:.08s} .anim-in:nth-child(2){animation-delay:.16s} .anim-in:nth-child(3){animation-delay:.24s} .anim-in:nth-child(4){animation-delay:.32s} .anim-in:nth-child(5){animation-delay:.40s} .anim-in:nth-child(6){animation-delay:.48s}
+
+        /* ── RESULT PANELS ── */
+        .result-body { display:none; padding:16px 20px 20px; border-top:1px solid rgba(255,255,255,.05); }
+        .step-row.open .result-body { display:block; }
+
+        @media(max-width:768px){
+            /* Fix iOS Safari 100vh bug */
+            body { height: 100dvh; }
+            .stage { height: 100dvh; }
+            /* !important needed to override inline padding styles on specific slides */
+            .slide {
+                height: 100dvh !important;
+                padding: 24px 18px 88px !important;
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
+            }
+            .slide.hero { height: 100dvh !important; padding: 0 18px 64px !important; }
+            /* Glow orbs are 400-500px wide — remove on mobile */
+            .glow-orb { display: none; }
+            /* Grids */
+            .jm-layout { grid-template-columns: 1fr !important; gap: 24px; }
+            .cards-row { grid-template-columns: 1fr !important; }
+            .screenshots-grid { grid-template-columns: 1fr !important; }
+            .results-grid { grid-template-columns: 1fr !important; }
+            /* Step accordion — stack image below text on mobile */
+            .step-row.open .step-body { flex-direction: column; }
+            .step-img-wrap { width: 100% !important; }
+            /* Justin Michael book layout */
+            .jm-book { padding: 20px 16px; }
+            /* Info boxes with fixed max-width */
+            .info-box { padding: 16px 18px; }
+            /* Metrics */
+            .metrics-row { gap: 20px; flex-wrap: wrap; }
+            .metric-val { font-size: clamp(32px, 8vw, 48px); }
+            /* Typography — !important to override inline font-size styles */
+            h1 { font-size: clamp(24px, 6vw, 44px) !important; }
+            h2 { font-size: clamp(14px, 4vw, 20px) !important; margin-bottom: 20px !important; }
+            .card-title { font-size: 15px; }
+            .card-desc { font-size: 14px !important; }
+            .step-name { font-size: 14px; }
+            .section-label { font-size: 14px; }
+            /* Nav dots */
+            .slide-counter { display: none; }
+        }
+    </style>
+
+<!-- Password Gate Styles -->
+<style>
+  #pw-gate { position:fixed; inset:0; z-index:9999; background:#000; display:flex; flex-direction:column; align-items:center; justify-content:center; font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif; transition:opacity .6s ease; }
+  #pw-gate.hide { opacity:0; pointer-events:none; }
+  #pw-badge { display:inline-flex; align-items:center; gap:10px; background:rgba(245,166,35,.12); border:1px solid rgba(245,166,35,.35); border-radius:100px; padding:7px 18px; font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#F5A623; margin-bottom:28px; }
+  #pw-gate h2 { font-size:clamp(22px,3vw,36px); font-weight:700; letter-spacing:-.02em; background:linear-gradient(180deg,#fff 0%,#bbb 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:8px; text-align:center; }
+  #pw-gate p { font-size:14px; color:#555; margin-bottom:36px; text-align:center; }
+  #pw-wrap { display:flex; gap:10px; }
+  #pw-input { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); border-radius:12px; padding:14px 20px; color:#fff; font-size:15px; letter-spacing:.1em; outline:none; width:200px; font-family:inherit; transition:border-color .25s; }
+  #pw-input:focus { border-color:rgba(245,166,35,.5); }
+  #pw-input.error { border-color:rgba(248,113,113,.6); animation:pw-shake .4s ease; }
+  #pw-btn { background:rgba(245,166,35,.15); border:1px solid rgba(245,166,35,.4); color:#F5A623; font-size:14px; font-weight:700; letter-spacing:.06em; padding:14px 24px; border-radius:12px; cursor:pointer; font-family:inherit; transition:all .25s; }
+  #pw-btn:hover { background:rgba(245,166,35,.28); }
+  #pw-error { font-size:13px; color:#f87171; margin-top:14px; height:18px; opacity:0; transition:opacity .3s; }
+  #pw-error.show { opacity:1; }
+  @keyframes pw-shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-6px)} 80%{transform:translateX(6px)} }
+</style>
+<!-- Umami Analytics -->
+<script defer src="https://umami.wbtm.io/script.js" data-website-id="2056a7e6-dbd6-4246-a205-4f89ffe8a37f" data-domains="alexochoac.github.io" data-api="https://umami.wbtm.io/api/collect"></script>
+</head>
+<body>
+
+<!-- Password Gate -->
+<div id="pw-gate">
+  <div id="pw-badge">SoftSolution · Private Access</div>
+  <h2>Enter Password to Continue</h2>
+  <p>This presentation is password protected.</p>
+  <div id="pw-wrap">
+    <input type="password" id="pw-input" placeholder="Password" autocomplete="off">
+    <button id="pw-btn" onclick="checkPw()">Enter →</button>
+  </div>
+  <div id="pw-error">Incorrect password. Please try again.</div>
+</div>
+<script>
+  (function() {
+    if (sessionStorage.getItem('ss-auth') === 'SOSO2026') {
+      document.getElementById('pw-gate').style.display = 'none';
+    }
+  })();
+  function checkPw() {
+    var input = document.getElementById('pw-input');
+    if (input.value === 'SOSO2026') {
+      sessionStorage.setItem('ss-auth', 'SOSO2026');
+      var gate = document.getElementById('pw-gate');
+      gate.classList.add('hide');
+      setTimeout(function() { gate.style.display = 'none'; }, 650);
+    } else {
+      input.classList.remove('error');
+      void input.offsetWidth;
+      input.classList.add('error');
+      document.getElementById('pw-error').classList.add('show');
+      input.value = '';
+      setTimeout(function() { input.classList.remove('error'); }, 500);
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && document.getElementById('pw-gate').style.display !== 'none') checkPw();
+  });
+</script>
+
+<div class="glow-orb a"></div>
+<div class="glow-orb b"></div>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" onclick="closeLightbox()">
+    <span id="lightbox-close" onclick="closeLightbox()">&#x2715;</span>
+    <img id="lightbox-img" src="" alt="">
+</div>
+
+<div class="stage">
+<div class="slides-container">
+
+    <!-- SLIDE 1: HERO -->
+    <div class="slide hero visible">
+        <img class="hero-bg" src="assets/Panther SoftSolution.PNG" alt="SoftSolution">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="brand-badge">SoftSolution · LiteSentry</div>
+            <h1>HubSpot <span class="amber">Sequences</span><br>Training</h1>
+            <h2>How we automate outreach — built on the Justin Michael Method</h2>
+        </div>
+    </div>
+
+    <!-- SLIDE 2: WHAT IS A SEQUENCE -->
+    <div class="slide">
+        <div class="section-label">What is a Sequence</div>
+        <h1>Your follow-up,<br>on <span class="amber">autopilot</span></h1>
+        <div class="divider"></div>
+        <div class="cards-row">
+            <div class="card anim-in">
+                <div class="card-icon">⚡</div>
+                <div class="card-title">Automated</div>
+                <div class="card-desc">Write the emails once, set the timing, walk away. HubSpot sends them on schedule until the prospect replies or the sequence ends.</div>
+            </div>
+            <div class="card anim-in">
+                <div class="card-icon">👤</div>
+                <div class="card-title">Personal</div>
+                <div class="card-desc">Every email leaves from your real Outlook inbox, no "sent via HubSpot" footer. To the prospect it looks like you wrote it that morning.</div>
+            </div>
+            <div class="card anim-in">
+                <div class="card-icon">🎯</div>
+                <div class="card-title">Zero leaks</div>
+                <div class="card-desc">Every prospect gets the same consistent follow-up. No one falls through the cracks because you forgot to follow up.</div>
+            </div>
+        </div>
+        <p style="font-size:18px;color:#999;text-align:center;max-width:700px;line-height:1.7;margin-top:8px;">
+            Sequences also include <strong style="color:#666">manual task reminders</strong> — so on LinkedIn or WhatsApp days, HubSpot tells you exactly when and what to send.
+        </p>
+    </div>
+
+    <!-- SLIDE 3: SENDING ON BEHALF -->
+    <div class="slide">
+        <div class="section-label">HubSpot — Connected Inboxes</div>
+        <h1>Sending on <span class="amber">Someone's Behalf</span></h1>
+        <div class="divider"></div>
+        <div class="metrics-row">
+            <div class="metric">
+                <div class="metric-val">Real</div>
+                <div class="metric-lbl">inbox — not HubSpot servers</div>
+            </div>
+            <div class="metric">
+                <div class="metric-val">Direct</div>
+                <div class="metric-lbl">replies go to rep's inbox</div>
+            </div>
+            <div class="metric">
+                <div class="metric-val">Auto</div>
+                <div class="metric-lbl">logged in HubSpot</div>
+            </div>
+        </div>
+        <div class="info-box" style="text-align:left;max-width:780px;">
+            <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:14px;">
+                <li style="display:flex;align-items:flex-start;gap:12px;">
+                    <span style="min-width:8px;height:8px;border-radius:50%;background:#F5A623;margin-top:8px;flex-shrink:0;"></span>
+                    <span style="font-size:16px;color:#bbb;line-height:1.7;">HubSpot is just the <strong style="color:#ddd;">scheduler</strong>. The actual email is sent through the rep's connected <strong style="color:#ddd;">Outlook</strong> account, so it looks and feels like a normal email, with no "sent via HubSpot" footer.</span>
+                </li>
+                <li style="display:flex;align-items:flex-start;gap:12px;">
+                    <span style="min-width:8px;height:8px;border-radius:50%;background:#F5A623;margin-top:8px;flex-shrink:0;"></span>
+                    <span style="font-size:16px;color:#bbb;line-height:1.7;">To send on behalf of someone: their inbox must be connected under <strong style="color:#ddd;">Settings → Email Integrations</strong>, and you need permission in HubSpot to act on their behalf.</span>
+                </li>
+                <li style="display:flex;align-items:flex-start;gap:12px;">
+                    <span style="min-width:8px;height:8px;border-radius:50%;background:#F5A623;margin-top:8px;flex-shrink:0;"></span>
+                    <span style="font-size:16px;color:#bbb;line-height:1.7;">Replies go straight to the rep's inbox and are automatically logged in HubSpot — the conversation lives where the prospect expects it.</span>
+                </li>
+                <li style="display:flex;align-items:flex-start;gap:12px;">
+                    <span style="min-width:8px;height:8px;border-radius:50%;background:#F5A623;margin-top:8px;flex-shrink:0;"></span>
+                    <span style="font-size:16px;color:#bbb;line-height:1.7;">Sequences <strong style="color:#ddd;">stop automatically</strong> if the prospect replies or books a meeting. Automatic out-of-office responses do not count as replies.</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- SLIDE 4: JUSTIN MICHAEL -->
+    <div class="slide">
+        <div class="jm-layout">
+            <div class="jm-left">
+                <div class="section-label">The Method Behind Our Sequences</div>
+                <h1 style="text-align:left;font-size:clamp(36px,4.5vw,56px);">Who is<br><span class="amber">Justin Michael?</span></h1>
+                <h2 style="text-align:left;font-size:clamp(14px,1.6vw,18px);margin-bottom:0;">
+                    Sales strategist, author, and the creator of a cold outreach framework used by enterprise sales teams worldwide.
+                </h2>
+                <p style="font-size:18px;color:#999;line-height:1.8;margin-top:20px;">
+                    Justin Michael spent decades studying why most cold outreach fails — and reverse-engineered a method that works by leading with psychology, not product features. His framework is built around one idea: <strong style="color:#777">name the pain before you pitch the solution.</strong>
+                </p>
+            </div>
+            <div class="jm-book">
+                <div class="jm-book-title">The Book</div>
+                <div class="jm-book-name"><a href="https://www.amazon.com/Sales-Superpowers-Outbound-Operating-Explosive/dp/1948382687" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(245,166,35,.4);">SalesSuperPowers</a><br><span style="font-size:18px;font-weight:400;color:#666">by Justin Michael</span></div>
+                <p style="font-size:16px;color:#999;line-height:1.7;margin-bottom:16px;">A practical playbook for modern B2B outreach — combining psychology, sequencing, and pattern interrupts to <strong style="color:#fff;">cut through inbox noise and start real conversations.</strong></p>
+                <div class="jm-principles">
+                    <div class="jm-principle anim-in">
+                        <div class="jm-num">1</div>
+                        <div class="jm-text"><strong>Lead with a Villain</strong> — name the hidden problem, not your product.</div>
+                    </div>
+                    <div class="jm-principle anim-in">
+                        <div class="jm-num">2</div>
+                        <div class="jm-text"><strong>Pattern Interrupts</strong> — break the expected format to stop the scroll.</div>
+                    </div>
+                    <div class="jm-principle anim-in">
+                        <div class="jm-num">3</div>
+                        <div class="jm-text"><strong>Segment Probes</strong> — ask questions that reveal which solution fits.</div>
+                    </div>
+                    <div class="jm-principle anim-in">
+                        <div class="jm-num">4</div>
+                        <div class="jm-text"><strong>The Breakup</strong> — release with a memorable hook so they remember you.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 4: THE VILLAIN -->
+    <div class="slide">
+        <div class="section-label">The Psychology</div>
+        <h1>Every sequence starts<br>with a <span class="amber">Villain</span></h1>
+        <div class="divider"></div>
+        <h2 style="max-width:680px;">Not a competitor. Not a machine.<br>The hidden problem the prospect is already living with.</h2>
+        <div class="cards-row" style="grid-template-columns:1fr 1fr;max-width:800px;">
+            <div class="card anim-in" style="text-align:left;">
+                <div class="card-icon">🦹</div>
+                <div class="card-title">Our Villain</div>
+                <div class="card-desc" style="font-size:18px;color:#888;">Human Variability — workers asked to do an impossible job: spotting sub-millimeter defects at high speed, 8 hours straight, every day.</div>
+            </div>
+            <div class="card anim-in" style="text-align:left;">
+                <div class="card-icon">🦅</div>
+                <div class="card-title">Our Hero</div>
+                <div class="card-desc" style="font-size:18px;color:#888;">LineScanner & Osprey — the Super-Eye that never blinks, never tires, and never misses. We don't replace workers. We give them an impossible task back.</div>
+            </div>
+        </div>
+        <div style="background:rgba(245,166,35,.06);border:1px solid rgba(245,166,35,.18);border-radius:14px;padding:18px 28px;max-width:750px;margin-top:4px;">
+            <p style="font-size:18px;color:#fff;line-height:1.8;font-style:italic;text-align:center;">
+                "We aren't telling customers their workers are bad. We are telling them their workers are being asked to do something impossible. We are the solution."
+            </p>
+        </div>
+    </div>
+
+    <!-- SLIDE 5: SEQUENCE STEPS (accordion) -->
+    <div class="slide" style="justify-content:flex-start;padding-top:48px;overflow-y:auto;">
+        <div class="section-label">The Labour Risk Sequence</div>
+        <h1 style="font-size:clamp(28px,3.5vw,44px);margin-bottom:8px;">The <span class="amber">Identity Probe</span> — Step by Step</h1>
+        <p style="font-size:16px;color:#999;margin-bottom:16px;text-align:center;">Click any step to see the email copy and the Justin Michael reasoning behind it</p>
+        <div class="steps-wrap">
+
+            <div class="step-row" onclick="toggleStep(this)">
+                <div class="step-header">
+                    <div class="step-day-tag">Day 1</div>
+                    <div class="step-name">The Wedge</div>
+                    <div class="step-channel-tag tag-email">Email</div>
+                    <div class="step-chevron">▶</div>
+                </div>
+                <div class="step-body">
+                    <div class="step-body-text">
+                        <div class="step-body-subject">Subject: Glass inspection quality</div>
+                        <div class="step-body-copy">Hi [Name], I see [Company] is growing, but I am curious how do you handle human errors on your production line? Many managers tell me it is hard to find workers with the "good eye" to catch scratches, inclusions, edge chips, or defects like distortion or white haze. Are you open to a 7-minute chat about how we automate this check?</div>
+                        <div class="step-jm-label">Justin Michael — The Villain Open</div>
+                        <div class="step-jm-note">We open with curiosity and mirror the prospect's reality back at them. No product, no pitch. We name the pain they already feel — the impossible task of finding a "good eye." When they recognise themselves in this, they respond.</div>
+                    </div>
+                    <div class="step-img-wrap">
+                        <img src="assets/HubSpot Screenshot Step 1 on the sequence Automatic Email.png" alt="Step 1" onclick="event.stopPropagation();openLightbox(this.src)" data-umami-event="image-zoom" data-umami-event-image="step-1-automatic-email">
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-row" onclick="toggleStep(this)">
+                <div class="step-header">
+                    <div class="step-day-tag">Day 2</div>
+                    <div class="step-name">The Soft Connection</div>
+                    <div class="step-channel-tag tag-linkedin">LinkedIn</div>
+                    <div class="step-chevron">▶</div>
+                </div>
+                <div class="step-body">
+                    <div class="step-body-text">
+                        <div class="step-body-subject">LinkedIn Connection Request</div>
+                        <div class="step-body-copy">Hi [Name], saw you work at [Company] in the glass sector. Adding you to my network.</div>
+                        <div class="step-jm-label">Justin Michael — The Multi-Channel Surround</div>
+                        <div class="step-jm-note">Same day, different channel. A second touchpoint without any pressure. No pitch, no ask — just a network connection. This plants a familiar face before the next email lands.</div>
+                    </div>
+                    <div class="step-img-wrap">
+                        <img src="assets/HubSpot Screenshot Step 2 and 3 Linkedin Connection & Bumb Power Interrupt Email.png" alt="Step 2-3" onclick="event.stopPropagation();openLightbox(this.src)" data-umami-event="image-zoom" data-umami-event-image="step-2-3-linkedin-bump-email">
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-row" onclick="toggleStep(this)">
+                <div class="step-header">
+                    <div class="step-day-tag">Day 4</div>
+                    <div class="step-name">The Pattern Interrupt</div>
+                    <div class="step-channel-tag tag-email">Email</div>
+                    <div class="step-chevron">▶</div>
+                </div>
+                <div class="step-body">
+                    <div class="step-body-text">
+                        <div class="step-body-subject">Subject: Glass inspection quality thoughts (reply thread)</div>
+                        <div class="step-body-copy">Any thoughts in this? 🔮</div>
+                        <div class="step-jm-label">Justin Michael — Pattern Interrupt</div>
+                        <div class="step-jm-note">One sentence. One emoji. That is it. Most salespeople write long follow-ups — so one line stops the scroll. The question is open-ended and non-threatening. It re-surfaces the original email without repeating it.</div>
+                    </div>
+                    <div class="step-img-wrap">
+                        <img src="assets/HubSpot Screenshot Step 2 and 3 Linkedin Connection & Bumb Power Interrupt Email.png" alt="Step 3" onclick="event.stopPropagation();openLightbox(this.src)" data-umami-event="image-zoom" data-umami-event-image="step-3-power-interrupt-email">
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-row" onclick="toggleStep(this)">
+                <div class="step-header">
+                    <div class="step-day-tag">Day 7</div>
+                    <div class="step-name">The Visual Hammer</div>
+                    <div class="step-channel-tag tag-email">Email</div>
+                    <div class="step-chevron">▶</div>
+                </div>
+                <div class="step-body">
+                    <div class="step-body-text">
+                        <div class="step-body-subject">Subject: Human eye vs. LineScanner (new thread)</div>
+                        <div class="step-body-copy">[Name], I thought you might find this interesting. This diagram shows how human eyes miss more defects as line speed goes up. Are you seeing this gap in your Automotive or Architectural lines?</div>
+                        <div class="step-jm-label">Justin Michael — The Visual Hammer</div>
+                        <div class="step-jm-note">We introduce a chart as a new thread — so it lands fresh in the inbox. The "Ghost Zone" diagram shows the growing gap between human accuracy and line speed. We let the data make the argument. We ask a binary question that segments the prospect at the same time.</div>
+                    </div>
+                    <div class="step-img-wrap">
+                        <img src="assets/HubSpot Screenshot Step 4 Visual diagram speaks more than a thousands words brians understand visuals faster than words.png" alt="Step 4" onclick="event.stopPropagation();openLightbox(this.src)" data-umami-event="image-zoom" data-umami-event-image="step-4-visual-diagram">
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-row" onclick="toggleStep(this)">
+                <div class="step-header">
+                    <div class="step-day-tag">Day 8</div>
+                    <div class="step-name">The Call — Sequence Pauses</div>
+                    <div class="step-channel-tag tag-call">Call</div>
+                    <div class="step-chevron">▶</div>
+                </div>
+                <div class="step-body">
+                    <div class="step-body-text">
+                        <div class="step-body-subject">Manual Task: Call contact by phone</div>
+                        <div class="step-body-copy">HubSpot pauses the sequence and creates a call task for you. The next email does not send until you mark this task complete.</div>
+                        <div class="step-jm-label">Justin Michael — Human Touch at the Peak</div>
+                        <div class="step-jm-note">After 3 email touches and a LinkedIn connect, the prospect has seen our name several times. This is the moment to call — warm, not cold. The sequence pauses so no email fires until you have made the attempt.</div>
+                    </div>
+                    <div class="step-img-wrap">
+                        <img src="assets/HubSpot Screenshot Step 5- 6 and 7- Call - Last Email - LinkedIn or Whatsapp last message.png" alt="Step 5-7" onclick="event.stopPropagation();openLightbox(this.src)" data-umami-event="image-zoom" data-umami-event-image="step-5-7-call-last-email-linkedin">
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-row" onclick="toggleStep(this)">
+                <div class="step-header">
+                    <div class="step-day-tag">Day 12</div>
+                    <div class="step-name">The Segment Probe</div>
+                    <div class="step-channel-tag tag-email">Email</div>
+                    <div class="step-chevron">▶</div>
+                </div>
+                <div class="step-body">
+                    <div class="step-body-text">
+                        <div class="step-body-subject">Subject: Rejections (new thread)</div>
+                        <div class="step-body-copy">"[Name], do you have more trouble with surface defects or screen print defects (Automotive) or internal defects like fingerprints? Most of our partners use our scanners to stop these invisible costs. If it makes sense, I can send you the technical spec for your specific line."</div>
+                        <div class="step-jm-label">Justin Michael — The Segment Probe</div>
+                        <div class="step-jm-note">A specific binary question that shows we know their world — and tells us which product to pitch next. It feels personal because it is. The prospect has to think to answer it.</div>
+                    </div>
+                    <div class="step-img-wrap">
+                        <img src="assets/HubSpot Screenshot Step 5- 6 and 7- Call - Last Email - LinkedIn or Whatsapp last message.png" alt="Step 6" onclick="event.stopPropagation();openLightbox(this.src)" data-umami-event="image-zoom" data-umami-event-image="step-6-last-email">
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-row" onclick="toggleStep(this)">
+                <div class="step-header">
+                    <div class="step-day-tag">Day 14</div>
+                    <div class="step-name">The Breakup</div>
+                    <div class="step-channel-tag tag-multi">LinkedIn · WhatsApp</div>
+                    <div class="step-chevron">▶</div>
+                </div>
+                <div class="step-body">
+                    <div class="step-body-text">
+                        <div class="step-body-subject">LinkedIn InMail or WhatsApp</div>
+                        <div class="step-body-copy">"[Name], I haven't heard back, so I assume automated quality is not a priority right now. I will stop my emails. If you ever need to stop the $50k crane bill from an architectural reject, you have my details."</div>
+                        <div class="step-jm-label">Justin Michael — The Permission Breakup</div>
+                        <div class="step-jm-note">The breakup releases them with dignity and leaves a memorable anchor (the $50k crane bill). No pressure. But they will remember us.</div>
+                    </div>
+                    <div class="step-img-wrap">
+                        <img src="assets/HubSpot Screenshot Step 5- 6 and 7- Call - Last Email - LinkedIn or Whatsapp last message.png" alt="Step 7" onclick="event.stopPropagation();openLightbox(this.src)" data-umami-event="image-zoom" data-umami-event-image="step-7-linkedin-whatsapp">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SLIDE 6: HOW TO EDIT -->
+    <div class="slide" style="justify-content:flex-start;padding-top:40px;overflow-y:auto;">
+        <div class="section-label">HubSpot — Editing an Ongoing Enrollment</div>
+        <h1 style="font-size:clamp(26px,3.2vw,42px);margin-bottom:6px;">How to <span class="amber">Edit</span> a Live Sequence</h1>
+        <p style="font-size:15px;color:#999;text-align:center;margin-bottom:16px;">Click any screenshot to zoom in</p>
+
+        <!-- 3 screenshots -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;width:100%;max-width:1060px;margin:0 auto;">
+            <div class="screenshot-wrap" onclick="openLightbox(this.querySelector('img').src)" data-umami-event="image-zoom" data-umami-event-image="sequence-edit-contact-card">
+                <img src="assets/HubSpot Screenshot Sequence Edition 1.png" alt="Find sequence on contact card">
+                <div class="screenshot-caption">① Open the contact → scroll to the <strong style="color:#ccc">Sequences</strong> card to see the active enrollment</div>
+            </div>
+            <div class="screenshot-wrap" onclick="openLightbox(this.querySelector('img').src)" data-umami-event="image-zoom" data-umami-event-image="sequence-edit-past-future-steps">
+                <img src="assets/HubSpot Screenshot Sequence Edition 2.png" alt="Edit steps — past vs future">
+                <div class="screenshot-caption">② Click <strong style="color:#ccc">Edit</strong> — past steps are locked, future steps can be <strong style="color:#ccc">delayed or edited</strong></div>
+            </div>
+            <div class="screenshot-wrap" onclick="openLightbox(this.querySelector('img').src)" data-umami-event="image-zoom" data-umami-event-image="sequence-edit-pause-unenroll">
+                <img src="assets/HubSpot Screenshot Sequence Edition 3 Pause or Unroll.png" alt="Pause or Unenroll">
+                <div class="screenshot-caption">③ Use <strong style="color:#ccc">Pause</strong> to temporarily stop, or <strong style="color:#ccc">Unenroll</strong> to remove the contact entirely</div>
+            </div>
+        </div>
+
+        <!-- When to use each action -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;width:100%;max-width:1060px;margin:14px auto 0;">
+            <div style="background:rgba(245,166,35,.05);border:1px solid rgba(245,166,35,.15);border-radius:12px;padding:16px 18px;">
+                <div style="font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#F5A623;margin-bottom:8px;">When to Modify</div>
+                <p style="font-size:14px;color:#bbb;line-height:1.7;">A prospect called or you have recent information to further customize. Edit the next email step to send before it fires.</p>
+            </div>
+            <div style="background:rgba(95,168,211,.05);border:1px solid rgba(95,168,211,.15);border-radius:12px;padding:16px 18px;">
+                <div style="font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#5fa8d3;margin-bottom:8px;">When to Pause</div>
+                <p style="font-size:14px;color:#bbb;line-height:1.7;">You receive an automatic reply from a prospect, he will be on holiday and asked you to follow up next month. You can pause or edit the date of the next action.</p>
+            </div>
+            <div style="background:rgba(52,199,89,.05);border:1px solid rgba(52,199,89,.15);border-radius:12px;padding:16px 18px;">
+                <div style="font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#34c759;margin-bottom:8px;">When to Unenroll</div>
+                <p style="font-size:14px;color:#bbb;line-height:1.7;">A customer got caught on the sequence by mistake. Remove them immediately, no more automated emails should fire.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 8: RESULTS -->
+    <div class="slide" style="justify-content:flex-start;padding-top:44px;overflow-y:auto;">
+        <div class="section-label">Sequence Test Results</div>
+        <h1 style="font-size:clamp(24px,3vw,42px);margin-bottom:4px;">What the <span class="amber">Numbers</span> Say</h1>
+        <p style="font-size:14px;color:#999;text-align:center;margin-bottom:20px;">Identity Probe · Sequence A: The Labour Risk · Click a section to expand</p>
+
+        <div class="steps-wrap" style="max-width:1160px;">
+
+            <!-- Panel 1: Report -->
+            <div class="step-row open" onclick="toggleStep(this)">
+                <div class="step-header">
+                    <div class="step-day-tag" style="color:#F5A623;min-width:80px;">Report</div>
+                    <div class="step-name">First Test Run — 5 Markets, 510 Contacts</div>
+                    <div class="step-channel-tag tag-multi">SP · IT · EN · FR · PT</div>
+                    <div class="step-chevron">▶</div>
+                </div>
+                <div class="result-body">
+                    <div class="screenshot-wrap" style="margin-bottom:16px;" onclick="event.stopPropagation();openLightbox(this.querySelector('img').src)">
+                        <img src="assets/HubSpot Screenshot of Results of Sequences run in Belgium Italy Luxembourg Netherlands Portugal and Spain.png" alt="Results by Country">
+                        <div class="screenshot-caption">Click to zoom · Enrolments, opens, clicks, replies, and meetings booked by market</div>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+                        <div style="background:rgba(245,166,35,.06);border:1px solid rgba(245,166,35,.18);border-radius:12px;padding:14px 16px;">
+                            <div style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#F5A623;margin-bottom:6px;">Overall</div>
+                            <p style="font-size:13px;color:#bbb;line-height:1.7;"><strong style="color:#ddd;">510 contacts</strong> reached across 5 languages in one quarter. Spain led with <strong style="color:#ddd;">180 enrollments</strong> and is the only market to book a meeting so far (0.56% meeting rate) We got booked by 3 other companies but they are not showed on the report. TR and PL sequences are not yet active.</p>
+                        </div>
+                        <div style="background:rgba(52,199,89,.05);border:1px solid rgba(52,199,89,.15);border-radius:12px;padding:14px 16px;">
+                            <div style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#34c759;margin-bottom:6px;">Best Reply Rate — English</div>
+                            <p style="font-size:13px;color:#bbb;line-height:1.7;">The EN sequence had the <strong style="color:#ddd;">highest reply rate at 6.82%</strong> with 88 enrollments. For cold outreach, anything above 5% is strong. The copy is working, this market should be scaled next.</p>
+                        </div>
+                        <div style="background:rgba(95,168,211,.05);border:1px solid rgba(95,168,211,.15);border-radius:12px;padding:14px 16px;">
+                            <div style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#5fa8d3;margin-bottom:6px;">Best Open Rate — Portugal</div>
+                            <p style="font-size:13px;color:#bbb;line-height:1.7;">Portugal had the <strong style="color:#ddd;">highest open rate at 30.95%</strong> ,the subject line is landing well. But the reply rate is only 2.38%, meaning the body copy needs work to convert that attention into responses.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel 2: Pipeline -->
+            <div class="step-row" onclick="toggleStep(this)">
+                <div class="step-header">
+                    <div class="step-day-tag" style="color:#ff6b6b;min-width:80px;">Pipeline</div>
+                    <div class="step-name">Next Enrollments — ~8,100 Contacts Ready</div>
+                    <div class="step-channel-tag" style="background:rgba(255,80,80,.1);color:#ff6b6b;border:1px solid rgba(255,80,80,.2);font-size:18px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:100px;">⚠ Workload</div>
+                    <div class="step-chevron">▶</div>
+                </div>
+                <div class="result-body">
+                    <div class="screenshot-wrap" style="margin-bottom:16px;" onclick="event.stopPropagation();openLightbox(this.querySelector('img').src)">
+                        <img src="assets/HubSpot Screenshot Contacts & Companies Prospects per Owner.png" alt="Contacts per Owner">
+                        <div class="screenshot-caption">Click to zoom · Contacts &amp; companies per owner — loaded and ready for next enrollment wave</div>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                        <div style="background:rgba(245,166,35,.06);border:1px solid rgba(245,166,35,.18);border-radius:12px;padding:14px 16px;">
+                            <div style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#F5A623;margin-bottom:6px;">Who Has the Most to Send</div>
+                            <p style="font-size:13px;color:#bbb;line-height:1.9;"><strong style="color:#ddd;">Nate Huffman</strong> — 2,838 contacts / 882 companies<br><strong style="color:#ddd;">David Cousins</strong> — 1,835 contacts / 533 companies<br><strong style="color:#ddd;">Markus Stefan</strong> — 1,361 contacts / 373 companies<br><strong style="color:#ddd;">Jonas Pfannenstill</strong> — 1,033 contacts / 339 companies<br><strong style="color:#ddd;">Daniel Obregon</strong> — 517 contacts / 191 companies<br><strong style="color:#ddd;">Alex Ochoa</strong> — 331 contacts / 121 companies<br><strong style="color:#ddd;">Qinshu Cai</strong> — 142 contacts / 83 companies<br><strong style="color:#ddd;">Peter Pfannenstill</strong> — 51 contacts / 18 companies<br><strong style="color:#ddd;">Gary DiDio</strong> — 7 contacts / 4 companies<br><span style="color:#777;font-size:12px;">Emails will be sent automatically on their behalf via their connected Outlook inbox.</span></p>
+                        </div>
+                        <div style="background:rgba(255,80,80,.06);border:1px solid rgba(255,80,80,.22);border-radius:12px;padding:14px 16px;">
+                            <div style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#ff6b6b;margin-bottom:6px;">⚠ Manual Tasks Per Contact</div>
+                            <p style="font-size:13px;color:#bbb;line-height:1.7;">Each contact enrolled creates <strong style="color:#ddd;">3 manual tasks</strong> that fall on the rep:<br><br>
+                            <strong style="color:#ddd;">Day 2</strong> — LinkedIn connection request<br>
+                            <strong style="color:#ddd;">Day 8</strong> — Phone call <em style="color:#ff6b6b;">(sequence pauses here and will not continue until marked done)</em><br>
+                            <strong style="color:#ddd;">Day 14</strong> — LinkedIn InMail or WhatsApp message<br><br>
+                            Plan your batch sizes carefully. Enrolling too many at once means a flood of call tasks landing on the same day.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SLIDE 9: THANK YOU -->
+    <div class="slide hero" style="justify-content:center;align-items:center;">
+        <img class="hero-bg" src="assets/Panther SoftSolution.PNG" alt="SoftSolution">
+        <div class="hero-overlay"></div>
+        <div class="hero-content" style="text-align:center;">
+            <div class="brand-badge" style="margin:0 auto 18px;">SoftSolution · LiteSentry</div>
+            <h1 style="text-align:center;">Thank <span class="amber">You</span></h1>
+            <h2 style="text-align:center;">Built by <strong style="color:#ccc;">Alex</strong> &amp; AI Assistant &nbsp;·&nbsp; HubSpot Sequences Training</h2>
+        </div>
+    </div>
+
+</div><!-- /slides-container -->
+
+<!-- Navigation -->
+<div class="nav-dots">
+    <div class="dot active" onclick="goTo(0)"></div>
+    <div class="dot" onclick="goTo(1)"></div>
+    <div class="dot" onclick="goTo(2)"></div>
+    <div class="dot" onclick="goTo(3)"></div>
+    <div class="dot" onclick="goTo(4)"></div>
+    <div class="dot" onclick="goTo(5)"></div>
+    <div class="dot" onclick="goTo(6)"></div>
+    <div class="dot" onclick="goTo(7)"></div>
+    <div class="dot" onclick="goTo(8)"></div>
+</div>
+<div class="slide-counter"><span id="cur">1</span> / 9</div>
+
+</div><!-- /stage -->
+
+<script>
+    let cur = 0;
+    const slides = document.querySelectorAll('.slide');
+    const dots   = document.querySelectorAll('.dot');
+
+    function goTo(n) {
+        slides[cur].classList.remove('visible');
+        dots[cur].classList.remove('active');
+        cur = n;
+        slides[cur].classList.add('visible');
+        dots[cur].classList.add('active');
+        document.getElementById('cur').textContent = cur + 1;
+        // re-trigger animations
+        slides[cur].querySelectorAll('.metric,.card,.anim-in,.jm-principle').forEach(el => {
+            el.style.animation = 'none';
+            requestAnimationFrame(() => { el.style.animation = ''; });
+        });
+    }
+
+    document.addEventListener('keydown', e => {
+        if ((e.key === 'ArrowRight' || e.key === ' ') && cur < slides.length - 1) { e.preventDefault(); goTo(cur + 1); }
+        if (e.key === 'ArrowLeft' && cur > 0) { e.preventDefault(); goTo(cur - 1); }
+    });
+
+    let tx = 0;
+    document.addEventListener('touchstart', e => { tx = e.changedTouches[0].screenX; });
+    document.addEventListener('touchend', e => {
+        const d = tx - e.changedTouches[0].screenX;
+        if (d > 50 && cur < slides.length - 1) goTo(cur + 1);
+        if (d < -50 && cur > 0) goTo(cur - 1);
+    });
+
+    function toggleStep(row) {
+        row.classList.toggle('open');
+    }
+
+    function openLightbox(src) {
+        document.getElementById('lightbox-img').src = src;
+        document.getElementById('lightbox').classList.add('on');
+    }
+
+    function closeLightbox() {
+        document.getElementById('lightbox').classList.remove('on');
+    }
+
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeLightbox();
+    });
+</script>
+</body>
+</html>

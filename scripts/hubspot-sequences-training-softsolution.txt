@@ -1,0 +1,110 @@
+# HubSpot Sequences — SoftSolution Sales Team Training
+
+## Brand & Visual Direction
+Dark background (#0a0a0a or deep black). Amber/orange (#F5A623) as the primary accent color. White for body text. Clean, modern typography. Reference the Panther SoftSolution GLASS IQ brand — bold, precise, high-tech. Use the logo image from assets/Panther SoftSolution.PNG on the title slide.
+
+---
+
+## Slide 1 — What is a HubSpot Sequence?
+
+Think of a HubSpot Sequence as a pre-planned conversation that runs on autopilot.
+
+You write the emails once. You set the timing. Then HubSpot sends them automatically — one by one — on the days you choose, until the prospect replies or the sequence ends.
+
+It is not a mass email blast. Each email goes out individually, from your inbox, personalized with the prospect's name and company. To the recipient, it looks like you wrote it just for them, that morning.
+
+Here is the simple version: you enroll a contact, walk away, and HubSpot follows up for you — on Day 1, Day 3, Day 6, Day 9, and Day 12 — without you having to remember a single thing.
+
+Sequences also include tasks. So on the days we use LinkedIn or WhatsApp, HubSpot will remind you to send that message manually. You stay in control of the personal touches while the emails run in the background.
+
+The result: no lead falls through the cracks. Every prospect gets a consistent, professional follow-up — every time.
+
+---
+
+## Slide 2 — The Psychology Behind Our Sequences
+
+Every sequence we build follows one core principle from the SalesSuperPowers book by Justin Michael: lead with a Villain.
+
+The Villain is not a competitor. The Villain is the hidden problem the prospect is already living with — but has not named yet. Our job is to name it for them.
+
+In our case, the Villain is Human Variability.
+
+We are not telling customers their workers are bad. We are telling them their workers are being asked to do something impossible — spot sub-millimeter defects at high speed, for eight hours straight, every day. That is not a people problem. That is a systems problem.
+
+And we are the solution.
+
+This is why our sequences do not open with product features or pricing. They open with a problem. A mirror held up to the prospect's reality. When they recognize themselves in the message, they respond — not because we sold them, but because we understood them.
+
+Every email in the sequence is designed to probe, challenge, or confirm that reality. We are not pushing. We are guiding them to their own conclusion.
+
+---
+
+## Slide 3 — Our Sequence: The Labour Risk (Step by Step)
+
+This is the sequence we use when we are not yet sure which segment a prospect falls into. It is called the Identity Probe — and its villain is Human Variability on the production line.
+
+**Day 1 — The Wedge (Email)**
+Subject: Glass inspection quality
+
+We open with curiosity, not a pitch. We acknowledge their growth, then ask one honest question: how do you handle human error on your line? We mention the "good eye" problem — the difficulty of finding workers who can reliably catch scratches and white haze. We close with a simple ask: two minutes of their time.
+
+**Day 1 — The Soft Connection (LinkedIn)**
+Same day, different channel. We send a short, low-pressure LinkedIn connection request. No pitch. Just: I saw you work in the glass sector. Let us connect. This plants a second touchpoint without adding pressure.
+
+**Day 3 — The Pattern Interrupt (Email)**
+Subject: Glass inspection quality thoughts
+
+One line. One emoji. "Any merit in this?" That is it. This works because it is unexpected. Most salespeople write long follow-ups. We write one sentence. It stops the scroll.
+
+**Day 6 — The Visual Hammer (Email)**
+Subject: Human eye vs. Sensor
+
+We introduce data. A diagram showing how human eyes miss more defects as line speed increases. We ask them directly: are you seeing this gap in your Automotive or Architectural lines? We are not selling yet. We are educating. We are letting the data do the work.
+
+**Day 9 — The Segment Probe (Email)**
+Subject: Rejections
+
+Now we get specific. We ask whether their bigger problem is internal fingerprints on IG units, or screen print defects on Automotive lines. This question does two things: it shows we know their world, and it tells us exactly which solution to offer next. We close by offering to send technical specs tailored to their line.
+
+**Day 12 — The Breakup (LinkedIn or WhatsApp)**
+Final message. We release them. We say we assume automated quality is not a priority right now, and we will stop the emails. Then we leave one last hook: if they ever need to stop the fifty thousand dollar crane bill from an architectural reject, they know where to find us.
+
+If we have their WhatsApp number, we send it there. If not, this goes as a LinkedIn InMail. Either way, it is the last touch — and it is designed to be remembered.
+
+---
+
+## Slide 4 — How to Edit a Sequence in HubSpot
+
+Editing a sequence in HubSpot is straightforward. Here is how to do it.
+
+First, go to Automation in the top navigation bar, then select Sequences. Find the sequence you want to edit and click on its name to open it.
+
+Inside the sequence, you will see each step laid out in order — the emails, the delays between them, and any manual tasks like LinkedIn messages. To edit an email, click directly on the step. The email editor will open and you can change the subject line, the body text, or the timing.
+
+To change when a step sends — for example moving Day 3 to Day 4 — click on the delay between steps and adjust the number of days.
+
+If you want to add a new step, click the plus button between any two existing steps and choose whether to add an email, a task, or a phone call reminder.
+
+When you are done, click Save. Your changes apply to all future enrollments. Anyone already mid-sequence will not be affected — they continue on the version that was active when they were enrolled.
+
+One important rule: never edit a sequence while contacts are actively enrolled in it, unless you are certain the change is minor. Major edits are best done on a duplicated version of the sequence.
+
+Screenshots of each step are included on this slide for reference.
+
+---
+
+## Slide 5 — How HubSpot Sends Emails on Someone Else's Behalf
+
+This is one of the most powerful — and most misunderstood — features of HubSpot Sequences.
+
+When a sequence sends an email, it sends it from a real, connected inbox. Not from HubSpot's servers. Not from a generic address. From an actual email account — Gmail or Outlook — that has been linked to a HubSpot user profile.
+
+This means the email lands in the prospect's inbox looking exactly like a normal email. No "sent via HubSpot" footer. No bulk mail formatting. Just a clean message, from a real address.
+
+Now here is where it gets interesting for teams. HubSpot allows managers or admins to send sequences on behalf of another team member. For example, if you are managing a rep's pipeline, you can enroll a contact into a sequence and have the emails go out from that rep's connected inbox — not yours.
+
+To make this work, two things need to be true. First, the rep's email inbox must be connected to their HubSpot account. They do this in their personal settings under Email Integrations. Second, the manager enrolling the contact must have permission in HubSpot to act on behalf of that user.
+
+Conceptually, think of it this way: HubSpot is just the scheduler. The actual sending happens through the rep's own email account. This is why the emails feel personal — because technically, they are. They come from a real inbox, with real deliverability, and real reply-to threading.
+
+This also means replies come back to the rep's inbox directly. HubSpot logs them automatically, but the conversation lives in email — exactly where the prospect expects it to be.

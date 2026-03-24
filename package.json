@@ -1,0 +1,12 @@
+{
+  "name": "softsolution-presentation-builder",
+  "version": "1.0.0",
+  "description": "Build tool for Softsolution LineScanner presentations",
+  "private": true,
+  "scripts": {
+    "build": "node build.js"
+  },
+  "dependencies": {
+    "node-vibrant": "^4.0.4"
+  }
+}

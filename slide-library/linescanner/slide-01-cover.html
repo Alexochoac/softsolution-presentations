@@ -1,0 +1,288 @@
+<div class="slide hero">
+  <!-- LiteSentry logo — top left (restored) -->
+  <img class="hero-logo" src="assets/logo-litesentry.png" alt="LiteSentry">
+
+  <!-- Credit line: top right -->
+  <span class="softsolution-credit">by GlassQuality.com</span>
+
+  <!-- Customer logo — right side, vertically centered -->
+  <div class="ls1-customer-logo">
+    <img src="assets/logo-[customer].jpg" alt="[Customer]">
+  </div>
+  <img class="hero-bg" src="assets/Panther Eye.jpeg" alt="" style="object-position:right center;">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="brand-badge">GlassQuality.com · [Product or Products]</div>
+    <h1>Quality Inspection<br>for <span class="blue">[Category or Categories] Glass</span></h1>
+    <h2>Proposal for [Customer] · [Name], [Title]</h2>
+    <div class="click-hint" style="color:rgba(255,255,255,.60);">→ Navigate with arrows or swipe</div>
+  </div>
+
+  <!-- ── Discrete gallery button ── -->
+  <button class="ls1-gallery-btn" id="ls1GalleryBtn" onclick="ls1ToggleGallery()" title="Show installation gallery">
+    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+    Gallery
+  </button>
+
+  <!-- ── Gallery overlay ── -->
+  <div class="ls1-gallery-overlay" id="ls1GalleryOverlay">
+    <button class="ls1-gallery-close" onclick="ls1ToggleGallery()">✕</button>
+
+    <div class="ls1-car-wrap" data-pe-carousel id="ls1CarWrap">
+      <div class="ls1-car-track" id="ls1CarTrack">
+        <div class="ls1-car-slide"><img src="assets/Render Tempering Line.png" alt="Tempering Line"><div class="ls1-car-caption" contenteditable="true" spellcheck="false">Tempering Line</div></div>
+        <div class="ls1-car-slide"><img src="assets/Render IG LIne.png" alt="IG Line"><div class="ls1-car-caption" contenteditable="true" spellcheck="false">IG Line</div></div>
+        <div class="ls1-car-slide"><img src="assets/Render Automotive Printing Line.png" alt="Automotive Printing Line"><div class="ls1-car-caption" contenteditable="true" spellcheck="false">Automotive Printing Line</div></div>
+        <div class="ls1-car-slide"><img src="assets/Render Coating line.png" alt="Coating Line"><div class="ls1-car-caption" contenteditable="true" spellcheck="false">Coating Line</div></div>
+        <div class="ls1-car-slide"><img src="assets/Render Grinding Line.png" alt="Grinding Line"><div class="ls1-car-caption" contenteditable="true" spellcheck="false">Grinding Line</div></div>
+        <div class="ls1-car-slide"><img src="assets/Render Lamination Line.png" alt="Lamination Line"><div class="ls1-car-caption" contenteditable="true" spellcheck="false">Lamination Line</div></div>
+      </div>
+      <button class="ls1-car-btn ls1-car-prev" id="ls1CarPrev">‹</button>
+      <button class="ls1-car-btn ls1-car-next" id="ls1CarNext">›</button>
+      <div class="ls1-car-dots" id="ls1CarDots"></div>
+    </div>
+  </div>
+
+  <!-- ── Scoped Styles ── -->
+  <style>
+    /* ── Customer logo — right side, vertically centered ── */
+    .ls1-customer-logo {
+      position: absolute;
+      right: 60px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,.10);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 16px;
+      padding: 16px;
+      width: clamp(80px, 9vw, 110px);
+      height: clamp(80px, 9vw, 110px);
+    }
+    .ls1-customer-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    @media (max-width: 768px) {
+      .ls1-customer-logo {
+        right: 16px;
+        top: auto;
+        bottom: 100px;
+        transform: none;
+        width: 64px;
+        height: 64px;
+        padding: 10px;
+      }
+    }
+
+    /* ── Gallery toggle button ── */
+    .ls1-gallery-btn {
+      position: absolute;
+      bottom: 64px; right: 32px;
+      z-index: 10;
+      display: flex; align-items: center; gap: 6px;
+      padding: 7px 14px;
+      background: rgba(0,0,0,.40);
+      border: 1px solid rgba(255,255,255,.20);
+      border-radius: 20px;
+      color: rgba(255,255,255,.70);
+      font-size: 11px; font-weight: 600; letter-spacing: .06em;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: background .25s, border-color .25s, color .25s;
+      font-family: inherit;
+    }
+    .ls1-gallery-btn:hover,
+    .ls1-gallery-btn.active {
+      background: rgba(var(--accent-rgb), .25);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    /* ── Gallery overlay (full-slide) ── */
+    .ls1-gallery-overlay {
+      position: absolute; inset: 0; z-index: 20;
+      background: rgba(0,0,0,.88);
+      backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity .35s ease;
+    }
+    .ls1-gallery-overlay.open {
+      opacity: 1; pointer-events: all;
+    }
+
+    /* ── Close button ── */
+    .ls1-gallery-close {
+      position: absolute; top: 56px; right: 20px;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.20);
+      color: rgba(255,255,255,.80);
+      font-size: 15px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s, color .2s;
+      font-family: inherit;
+    }
+    .ls1-gallery-close:hover { background: rgba(255,255,255,.20); color: #fff; }
+
+    /* ── Carousel wrapper ── */
+    .ls1-car-wrap {
+      position: relative;
+      width: min(860px, 88%);
+      height: min(520px, 78%);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: 0 24px 80px rgba(0,0,0,.7);
+    }
+
+    .ls1-car-track {
+      display: flex;
+      width: 100%; height: 100%;
+      transition: transform .55s cubic-bezier(.4,0,.2,1);
+    }
+
+    .ls1-car-slide {
+      flex: 0 0 100%; width: 100%; height: 100%;
+      position: relative;
+      background: #0a0a0a;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .ls1-car-slide img {
+      width: 100%; height: 100%;
+      object-fit: contain;
+      user-select: none; pointer-events: none;
+    }
+
+    /* Caption */
+    .ls1-car-caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 10px 18px;
+      background: linear-gradient(transparent, rgba(0,0,0,.75));
+      color: rgba(255,255,255,.85);
+      font-size: 12px; font-weight: 600; letter-spacing: .05em;
+      text-align: center;
+    }
+
+    /* Prev / Next buttons */
+    .ls1-car-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 38px; height: 38px; border-radius: 50%;
+      background: rgba(0,0,0,.55);
+      border: 1px solid rgba(255,255,255,.20);
+      color: rgba(255,255,255,.85);
+      font-size: 24px; line-height: 1;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background .2s, border-color .2s;
+      backdrop-filter: blur(4px); z-index: 4;
+      font-family: inherit; padding: 0;
+    }
+    .ls1-car-btn:hover { background: rgba(var(--accent-rgb),.45); border-color: var(--accent); color: #fff; }
+    .ls1-car-btn:disabled { opacity: .2; cursor: default; pointer-events: none; }
+    .ls1-car-prev { left: 10px; }
+    .ls1-car-next { right: 10px; }
+
+    /* Dots */
+    .ls1-car-dots {
+      position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 7px; z-index: 4;
+    }
+    .ls1-car-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: rgba(255,255,255,.30); border: none; padding: 0;
+      cursor: pointer; transition: background .25s, transform .25s;
+    }
+    .ls1-car-dot.active { background: var(--accent); transform: scale(1.35); }
+
+    @media (max-width: 768px) {
+      .ls1-gallery-btn { bottom: 80px; right: 16px; }
+      .ls1-car-wrap { width: 96%; height: 55%; }
+    }
+  </style>
+
+  <!-- ── Scoped Script ── -->
+  <script>
+  (function () {
+    var overlay = document.getElementById('ls1GalleryOverlay');
+    var btn     = document.getElementById('ls1GalleryBtn');
+    var track   = document.getElementById('ls1CarTrack');
+    var dotsEl  = document.getElementById('ls1CarDots');
+    var prev    = document.getElementById('ls1CarPrev');
+    var next    = document.getElementById('ls1CarNext');
+
+    var idx = 0, timer = null;
+
+    function buildDots() {
+      dotsEl.innerHTML = '';
+      var slides = track.querySelectorAll('.ls1-car-slide');
+      slides.forEach(function(_, i) {
+        var d = document.createElement('button');
+        d.className = 'ls1-car-dot' + (i === idx ? ' active' : '');
+        d.onclick = function() { go(i); };
+        dotsEl.appendChild(d);
+      });
+    }
+
+    function go(n) {
+      var slides = track.querySelectorAll('.ls1-car-slide');
+      idx = (n + slides.length) % slides.length;
+      track.style.transform = 'translateX(-' + (idx * 100) + '%)';
+      dotsEl.querySelectorAll('.ls1-car-dot').forEach(function(d, i) {
+        d.classList.toggle('active', i === idx);
+      });
+      resetTimer();
+    }
+
+    function resetTimer() {
+      clearInterval(timer);
+      timer = setInterval(function() { go(idx + 1); }, 2500);
+    }
+
+    function startCarousel() {
+      buildDots();
+      go(0);
+    }
+
+    function stopCarousel() {
+      clearInterval(timer);
+      timer = null;
+    }
+
+    if (prev) prev.onclick = function() { go(idx - 1); };
+    if (next) next.onclick = function() { go(idx + 1); };
+
+    window.ls1ToggleGallery = function() {
+      var isOpen = overlay.classList.toggle('open');
+      btn.classList.toggle('active', isOpen);
+      if (isOpen) { startCarousel(); }
+      else         { stopCarousel(); }
+    };
+
+    // PE editor: expose add-image API so editor.js can inject new slides
+    var wrap = document.getElementById('ls1CarWrap');
+    if (wrap) {
+      wrap._peAddImage = function(src, caption) {
+        var slide = document.createElement('div');
+        slide.className = 'ls1-car-slide';
+        slide.innerHTML =
+          '<img src="' + src + '" alt="' + (caption || '') + '">' +
+          '<div class="ls1-car-caption" contenteditable="true" spellcheck="false">' + (caption || '') + '</div>';
+        track.appendChild(slide);
+        buildDots();
+      };
+    }
+  })();
+  </script>
+
+  <script>
+  (function () { var s = document.currentScript;
+    setTimeout(function () { if (window.PE && s) PE.initSlide(s.closest('.slide')); }, 0); })();
+  </script>
+</div>

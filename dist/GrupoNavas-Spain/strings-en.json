@@ -1,0 +1,95 @@
+{
+  "slide-02": {
+    "sectionLabel": "Our Company",
+    "title": "Quality inspection is all we do"
+  },
+  "slide-03": {
+    "sectionLabel": "The Case for Inspection",
+    "title": "Why inspection automation makes sense"
+  },
+  "slide-04": {
+    "sectionLabel": "The Product",
+    "title": "LineScanner Capability Overview"
+  },
+  "slide-05": {
+    "sectionLabel": "The Technology",
+    "title": "How LineScanner sees what others miss"
+  },
+  "slide-06": {
+    "sectionLabel": "Surface Quality",
+    "title": "Defect detection with Artificial Intelligence",
+    "subtitle": "Neural network trained to automatically classify every defect type."
+  },
+  "slide-07": {
+    "sectionLabel": "Dimensional Control",
+    "title": "Precise measurement of dimensions and cutouts",
+    "colLabels": [
+      "What is measured?",
+      "Setup &amp; tolerances"
+    ],
+    "colItems": [
+      "Overall dimensions",
+      "Position and size",
+      "Cutouts and notches",
+      "Angles and parallelism",
+      "Rotation and position",
+      "Compatible with individual tolerances per measurement ↗",
+      "DXF",
+      "2-step",
+      "Compatible with belt conveyors ↗",
+      "Parallel light for maximum precision"
+    ]
+  },
+  "slide-08": {
+    "sectionLabel": "Screen Printing",
+    "title": "Automatic quality control for screen-printed glass",
+    "subtitle": "The quality inspection of logos and screen printing is now standard — fully automated, 100% of the time.",
+    "colLabels": "What LineScanner checks",
+    "colItems": [
+      "Correct position",
+      "Missing parts",
+      "Print thickness",
+      "Detail errors",
+      "Screen printing errors",
+      "Logo position &amp; rotation"
+    ]
+  },
+  "slide-09": {
+    "sectionLabel": "Screen Printing &amp; Logo",
+    "title": "Position and print quality control"
+  },
+  "slide-10": {
+    "sectionLabel": "Traceability &amp; Management",
+    "title": "Decisions based on real data",
+    "colItems": [
+      "Accept data",
+      "Lookup",
+      "Combine",
+      "Print certificates",
+      "Auto reporting",
+      "Individual statistics",
+      "Live View",
+      "Alerts",
+      "Multiple recipients",
+      "Central settings"
+    ]
+  },
+  "slide-11": {
+    "sectionLabel": "Sensitivity Adjustment",
+    "title": "Fully automatic sensitivity adjustment"
+  },
+  "slide-12": {
+    "sectionLabel": "Installation",
+    "title": "Modular based — minimum footprint",
+    "subtitle": "unique · worldwide"
+  },
+  "slide-13": {
+    "sectionLabel": "Integrations",
+    "title": "Compatible with your current machinery",
+    "subtitle": "LineScanner is already integrated with the leading glass machinery manufacturers — if you already run any of these lines, integration is direct."
+  },
+  "slide-14": {
+    "sectionLabel": "Next Steps",
+    "title": "Ready for a live demonstration?"
+  }
+}
