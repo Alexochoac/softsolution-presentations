@@ -1,9 +1,7 @@
 # TODO — Presentation Builder Softsolution
 
 ## In Progress
-- [ ] Improvements to slide-01 gallery carousel (next session)
-  - Consider CSS radio-button pattern for manual prev/next navigation
-  - Consider adding image count indicator
+- [ ] Replace Phrase 1/2/3 placeholder text slides in gallery with real content
 
 ## Backlog
 - [ ] Consolidate into one repo (Option B) — merge `softsolution-presentations` into this repo under `dist/`
@@ -21,3 +19,5 @@
 - [x] Build share button with UTM tracking
 - [x] Create fix-slide, create-slide, build-presentation commands
 - [x] slide-01 gallery button — CSS-only carousel popup (open/close + auto-advance)
+- [x] Rebuild gallery with JS-controlled fixed overlay + auto-advance (3 s) + text placeholder slides
+- [x] Rewrite fix-slide skill as diagnostic-first process
