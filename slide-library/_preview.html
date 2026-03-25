@@ -539,6 +539,8 @@
 
   function fixPaths(html) {
     return html
+      // Rewrite src="Slide Images/..." → src="linescanner/Slide Images/..." (slide-relative paths)
+      .replace(/src="Slide Images\//g, 'src="' + IMG_BASE)
       // Rewrite src="assets/..." → src="linescanner/Slide Images/..."
       .replace(/src="assets\//g, 'src="' + IMG_BASE)
       // Rewrite CSS background-image url('assets/...' and url("assets/...
@@ -563,6 +565,33 @@
 
   const container = document.getElementById('slidesContainer');
 
+  /* ── Slide-01 gallery (defined here because slide scripts don't execute
+         when injected via createContextualFragment in some browsers) ── */
+  function initSlide01Gallery() {
+    var _idx = 0;
+    var _timer = null;
+    function _overlay() { return document.getElementById('ls1GalleryOverlay'); }
+    function _track()   { return document.getElementById('ls1CarTrack'); }
+    function _count()   { return _track() ? _track().querySelectorAll('.ls1-car-slide').length : 0; }
+    function _go(idx)   {
+      if (!_track()) return;
+      _idx = (idx + _count()) % _count();
+      _track().style.transform = 'translateX(' + (-_idx * 100) + '%)';
+    }
+    function _startTimer() {
+      _stopTimer();
+      _timer = setInterval(function () { _go(_idx + 1); }, 3000);
+    }
+    function _stopTimer() {
+      if (_timer) { clearInterval(_timer); _timer = null; }
+    }
+    window.ls1OpenGallery  = function () { _go(0); var o = _overlay(); if (o) o.style.display = 'flex'; _startTimer(); };
+    window.ls1CloseGallery = function () { var o = _overlay(); if (o) o.style.display = 'none'; _stopTimer(); };
+    window.ls1CarMove      = function (dir) { _go(_idx + dir); _startTimer(); }; // reset timer on manual nav
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') window.ls1CloseGallery(); });
+    document.addEventListener('click',   function (e) { if (e.target === _overlay()) window.ls1CloseGallery(); });
+  }
+
   Promise.all(SLIDE_FILES.map(f => fetch(f).then(r => {
     if (!r.ok) throw new Error('Failed to load ' + f);
     return r.text();
@@ -571,6 +600,7 @@
     // createContextualFragment executes <script> tags inside injected HTML
     const frag = document.createRange().createContextualFragment(parts.map(fixPaths).join('\n'));
     container.appendChild(frag);
+    initSlide01Gallery();
     initPresentation();
     if (window.PE) {
       PE.initAll();

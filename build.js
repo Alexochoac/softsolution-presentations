@@ -86,6 +86,19 @@ function extractShell(html, colors) {
   return { css, initJs, utilJs };
 }
 
+// ── SLIDE METADATA ────────────────────────────────────────────────────────────
+// Parses <!-- SLIDE_META {...} --> comment from slide HTML
+function parseSlideMeta(html, filename) {
+  const match = html.match(/<!--\s*SLIDE_META\s*(\{[\s\S]*?\})\s*-->/);
+  if (!match) return { title: filename, default: 'visible', tags: [] };
+  try {
+    return JSON.parse(match[1]);
+  } catch(e) {
+    console.warn(`  ⚠ Invalid SLIDE_META in ${filename} — treating as visible`);
+    return { title: filename, default: 'visible', tags: [] };
+  }
+}
+
 // ── SLIDE PROCESSING ──────────────────────────────────────────────────────────
 function processSlide(html, cfg) {
   // Replace logo placeholder (both .jpg and any variant)
@@ -95,12 +108,12 @@ function processSlide(html, cfg) {
   html = html.replace(/\[Customer\]/g,                       cfg.prospectName);
   html = html.replace(/\[Product or Products\]/g,            cfg.products || 'LineScanner');
   html = html.replace(/\[Category or Categories\] Glass/g,   cfg.glassCategory || 'Glass');
-  if (cfg.contactName)  html = html.replace(/\[Name\]/g,   cfg.contactName);
-  if (cfg.contactTitle) html = html.replace(/\[Title\]/g,  cfg.contactTitle);
-
-  // Replace 'general/' image paths → 'general/' folder in output
-  // (general/ images are copied separately — see asset report)
-  // src="general/..." stays as-is; we collect them separately below
+  if (cfg.contactName)     html = html.replace(/\[contactName\]/g,     cfg.contactName);
+  if (cfg.contactTitle)    html = html.replace(/\[contactTitle\]/g,    cfg.contactTitle);
+  if (cfg.contactEmail)    html = html.replace(/\[contactEmail\]/g,    cfg.contactEmail);
+  if (cfg.contactWhatsApp) html = html.replace(/\[contactWhatsApp\]/g, cfg.contactWhatsApp);
+  if (cfg.contactName)     html = html.replace(/\[Name\]/g,            cfg.contactName);
+  if (cfg.contactTitle)    html = html.replace(/\[Title\]/g,           cfg.contactTitle);
 
   // Strip PE init script block (always at the bottom of each slide)
   html = html.replace(
@@ -126,10 +139,11 @@ function collectAssets(slides) {
   const stripComments = html => html.replace(/\/\/[^\n]*/g, '');
   for (const html of slides) {
     const clean = stripComments(html);
-    for (const m of clean.matchAll(/['"]assets\/([^'"]+)['"]/g))  assets.add(m[1]);
-    for (const m of clean.matchAll(/['"]general\/([^'"]+)['"]/g)) general.add(m[1]);
-    for (const m of clean.matchAll(/src="assets\/([^"]+)"/g))     assets.add(m[1]);
-    for (const m of clean.matchAll(/src="general\/([^"]+)"/g))    general.add(m[1]);
+    for (const m of clean.matchAll(/['"]assets\/([^'"]+)['"]/g))       assets.add(m[1]);
+    for (const m of clean.matchAll(/['"]general\/([^'"]+)['"]/g))      general.add(m[1]);
+    for (const m of clean.matchAll(/src="assets\/([^"]+)"/g))          assets.add(m[1]);
+    for (const m of clean.matchAll(/src="general\/([^"]+)"/g))         general.add(m[1]);
+    for (const m of clean.matchAll(/src="Slide Images\/([^"]+)"/g))    assets.add(m[1]);
   }
   return { assets, general };
 }
@@ -207,6 +221,7 @@ function rewriteAssetPaths(html, logoFile) {
   html = html.split(`assets/${logoFile}`).join(placeholder);
   html = html.replace(/(['"])assets\//g, '$1../shared/assets/');
   html = html.replace(/(['"])general\//g, '$1../shared/general/');
+  html = html.replace(/src="Slide Images\//g, 'src="../shared/assets/');
   html = html.split(placeholder).join(`assets/${logoFile}`);
   return html;
 }
@@ -216,6 +231,103 @@ function extractFirst(html, cls) {
   return m ? m[1].replace(/<[^>]+>/g,'').trim() : null;
 }
 function escRe(s) { return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); }
+
+// ── EXPLORE MORE SLIDE ────────────────────────────────────────────────────────
+// Generates an "Explore More" slide listing hidden slides grouped by tag.
+// Hidden slide HTML is embedded in <template> tags and shown in a modal overlay.
+function generateExploreMoreSlide(hiddenMeta, cfg) {
+  const allTags = [...new Set(hiddenMeta.flatMap(m => m.tags))].sort();
+
+  const logoRow = `<div class="slide-logo-row"><img src="assets/${cfg.logoFile}" alt="${cfg.prospectName}"><span class="slide-logo-sep"></span><img src="assets/logo-litesentry.png" alt="LiteSentry" class="slide-logo-ls"></div>`;
+
+  const filterBtns = [
+    `<button class="em-filter em-filter--active" data-tag="all" onclick="emFilter(this)">All</button>`,
+    ...allTags.map(t => `<button class="em-filter" data-tag="${t}" onclick="emFilter(this)">${t.replace(/-/g,' ')}</button>`)
+  ].join('');
+
+  const cards = hiddenMeta.map(m => `
+    <div class="em-card" data-tags="${m.tags.join(' ')}" onclick="openExploreModal('${m.id}')">
+      <div class="em-card-title">${m.title}</div>
+      <div class="em-card-tags">${m.tags.map(t => `<span class="em-tag">${t.replace(/-/g,' ')}</span>`).join('')}</div>
+      <div class="em-card-arrow">→</div>
+    </div>`).join('');
+
+  return `<div class="slide content em-slide" style="justify-content:flex-start; align-items:center; padding:52px 80px 0;">
+  ${logoRow}
+  <div class="section-label">Explore More</div>
+  <h1 class="slide-title">Go deeper into <span class="blue">what interests you</span></h1>
+  <div class="em-filters">${filterBtns}</div>
+  <div class="em-grid" id="emGrid">${cards}
+  </div>
+  <style>
+    .em-filters { display:flex; gap:8px; flex-wrap:wrap; margin:18px 0 20px; }
+    .em-filter { padding:6px 16px; border-radius:100px; border:1px solid rgba(255,255,255,.15); background:transparent; color:var(--text-muted); font-size:12px; font-weight:600; cursor:pointer; letter-spacing:.04em; text-transform:capitalize; transition:all .2s; font-family:inherit; }
+    .em-filter--active, .em-filter:hover { background:rgba(var(--accent-rgb),.12); border-color:rgba(var(--accent-rgb),.4); color:var(--accent); }
+    .em-grid { display:flex; flex-wrap:wrap; gap:16px; width:100%; max-width:900px; }
+    .em-card { flex:1; min-width:220px; max-width:300px; padding:20px 22px 20px 20px; border-radius:16px; border:1px solid var(--border); background:var(--bg-card); cursor:pointer; transition:all .25s; display:flex; flex-direction:column; gap:10px; position:relative; }
+    .em-card:hover { border-color:var(--border-hover); background:var(--bg-card-hover); transform:translateY(-2px); }
+    .em-card-title { font-size:15px; font-weight:700; color:var(--text); line-height:1.3; padding-right:28px; }
+    .em-card-tags { display:flex; flex-wrap:wrap; gap:6px; }
+    .em-tag { font-size:10px; font-weight:600; letter-spacing:.06em; text-transform:capitalize; padding:3px 8px; border-radius:100px; background:rgba(var(--accent-rgb),.08); color:var(--accent); border:1px solid rgba(var(--accent-rgb),.2); }
+    .em-card-arrow { position:absolute; right:18px; top:20px; color:var(--text-muted); font-size:18px; transition:all .2s; }
+    .em-card:hover .em-card-arrow { color:var(--accent); transform:translateX(3px); }
+    .em-card--hidden { display:none !important; }
+    @media(max-width:768px) {
+      .em-slide { padding:52px 20px 88px !important; }
+      .em-card { min-width:100%; max-width:100%; }
+    }
+  </style>
+  <script>
+    function emFilter(btn) {
+      document.querySelectorAll('.em-filter').forEach(function(b) { b.classList.remove('em-filter--active'); });
+      btn.classList.add('em-filter--active');
+      var tag = btn.getAttribute('data-tag');
+      document.querySelectorAll('#emGrid .em-card').forEach(function(card) {
+        var tags = card.getAttribute('data-tags').split(' ');
+        if (tag === 'all' || tags.indexOf(tag) > -1) {
+          card.classList.remove('em-card--hidden');
+        } else {
+          card.classList.add('em-card--hidden');
+        }
+      });
+    }
+    function openExploreModal(id) {
+      var tpl = document.getElementById('hs-' + id);
+      if (!tpl) return;
+      var body = document.getElementById('em-modal-body');
+      body.innerHTML = tpl.innerHTML;
+      document.getElementById('em-modal').style.display = 'flex';
+    }
+    function closeExploreModal() {
+      document.getElementById('em-modal').style.display = 'none';
+      document.getElementById('em-modal-body').innerHTML = '';
+    }
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeExploreModal(); });
+  </script>
+</div>`;
+}
+
+// ── EXPLORE MODAL HTML ────────────────────────────────────────────────────────
+function exploreModalHtml() {
+  return `
+<!-- Explore More Modal -->
+<div id="em-modal" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);align-items:center;justify-content:center;">
+  <button onclick="closeExploreModal()" title="Back" style="position:absolute;top:20px;right:24px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#ccc;padding:8px 18px;border-radius:100px;cursor:pointer;font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;z-index:1;font-family:inherit;letter-spacing:.02em;">← Back</button>
+  <div id="em-modal-body" style="width:100%;height:100%;position:relative;overflow:auto;">
+    <style>
+      #em-modal-body .slide { position:relative !important; opacity:1 !important; transform:none !important; pointer-events:auto !important; width:100%; min-height:100vh; }
+    </style>
+  </div>
+</div>`;
+}
+
+// ── HIDDEN SLIDE TEMPLATES ────────────────────────────────────────────────────
+function hiddenSlideTemplates(hiddenMeta) {
+  return hiddenMeta.map(m => `
+<template id="hs-${m.id}">
+${m.html}
+</template>`).join('');
+}
 
 // ── SHARE MODAL ───────────────────────────────────────────────────────────────
 function shareModalHtml() {
@@ -289,10 +401,13 @@ function shareModalJs(cfg) {
 }
 
 // ── ASSEMBLY ──────────────────────────────────────────────────────────────────
-function assembleHtml(css, initJs, utilJs, slides, cfg) {
+function assembleHtml(css, initJs, utilJs, slides, hiddenMeta, cfg) {
   const umamiSnippet = cfg.umamiId
     ? `<script defer src="https://cloud.umami.is/script.js" data-website-id="${cfg.umamiId}"></script>`
     : `<!--\n  ANALYTICS: set umamiId in config to activate\n  <script defer src="https://cloud.umami.is/script.js" data-website-id="[UUID]"></script>\n-->`;
+
+  const hiddenTemplates = hiddenMeta.length ? hiddenSlideTemplates(hiddenMeta) : '';
+  const exploreModal    = hiddenMeta.length ? exploreModalHtml() : '';
 
   return `<!DOCTYPE html>
 <html lang="${cfg.lang || 'en'}">
@@ -332,6 +447,8 @@ ${css}
 ${slides.join('\n\n')}
 </div>
 
+${hiddenTemplates}
+${exploreModal}
 ${shareModalHtml()}
 
 <script>
@@ -369,7 +486,7 @@ async function main() {
   const previewHtml = fs.readFileSync(PREVIEW, 'utf8');
   const { css, initJs, utilJs } = extractShell(previewHtml, colors);
 
-  // 3. Read + process slides
+  // 3. Read slides + parse metadata
   let slideList;
   if (cfg.slides === 'all') {
     slideList = fs.readdirSync(SLIDE_DIR)
@@ -382,26 +499,41 @@ async function main() {
     }).filter(Boolean);
   }
 
-  const processedSlides = [];
-  for (const file of slideList) {
-    const raw = fs.readFileSync(path.join(SLIDE_DIR, file), 'utf8');
-    processedSlides.push(processSlide(raw, cfg));
-    console.log(`  ✓ ${file}`);
-  }
+  // Separate visible and hidden based on SLIDE_META
+  const allRaw = slideList.map(file => {
+    const html = fs.readFileSync(path.join(SLIDE_DIR, file), 'utf8');
+    const meta = parseSlideMeta(html, file);
+    return { file, html, meta };
+  });
 
-  // 4. Extract strings → strings-en.json
-  const strings = extractStrings(processedSlides);
+  const visibleRaw = allRaw.filter(s => s.meta.default !== 'hidden');
+  const hiddenRaw  = allRaw.filter(s => s.meta.default === 'hidden');
+
+  // 3a. Process visible slides
+  const processedVisible = visibleRaw.map(s => {
+    console.log(`  ✓ ${s.file}`);
+    return processSlide(s.html, cfg);
+  });
+
+  // 3b. Process hidden slides (for Explore More modal)
+  const processedHidden = hiddenRaw.map(s => {
+    console.log(`  ↓ ${s.file} [hidden → explore more]`);
+    return processSlide(s.html, cfg);
+  });
+
+  // 4. Extract strings → strings-en.json (visible slides only)
+  const strings = extractStrings(processedVisible);
   const stringsEnPath = path.join(OUT_DIR, 'strings-en.json');
   fs.writeFileSync(stringsEnPath, JSON.stringify(strings, null, 2), 'utf8');
   console.log(`\n📝  Strings → strings-en.json`);
 
   // 5. Apply translations (if strings-XX.json exists)
-  let finalSlides = processedSlides;
+  let finalVisible = processedVisible;
   if (cfg.lang && cfg.lang !== 'en') {
     const transPath = path.join(OUT_DIR, `strings-${cfg.lang}.json`);
     if (fs.existsSync(transPath)) {
       const trans = JSON.parse(fs.readFileSync(transPath, 'utf8'));
-      finalSlides = applyTranslations(processedSlides, trans);
+      finalVisible = applyTranslations(processedVisible, trans);
       console.log(`🌍  Translations applied: ${cfg.lang}`);
     } else {
       console.warn(`⚠   No strings-${cfg.lang}.json found — building in English`);
@@ -410,20 +542,37 @@ async function main() {
   }
 
   // 5b. Rewrite asset paths to use shared folder
-  finalSlides = finalSlides.map(html => rewriteAssetPaths(html, cfg.logoFile));
+  finalVisible = finalVisible.map(html => rewriteAssetPaths(html, cfg.logoFile));
+  const finalHidden = processedHidden.map(html => rewriteAssetPaths(html, cfg.logoFile));
+
+  // 5c. Build hidden metadata for Explore More
+  const hiddenMeta = hiddenRaw.map((s, i) => ({
+    id:    s.file.replace(/^slide-0*(\d+).*\.html$/, '$1'),
+    title: s.meta.title,
+    tags:  s.meta.tags,
+    html:  finalHidden[i],
+  }));
+
+  // 5d. Generate Explore More slide and insert before the last visible slide (CTA)
+  let finalSlides = [...finalVisible];
+  if (hiddenMeta.length > 0) {
+    const exploreMore = generateExploreMoreSlide(hiddenMeta, cfg);
+    finalSlides.splice(finalSlides.length - 1, 0, exploreMore);
+    console.log(`\n🗂️   Explore More slide → ${hiddenMeta.length} hidden slide(s)`);
+  }
 
   // 6. Assemble + write
-  const html = assembleHtml(css, initJs, utilJs, finalSlides, cfg);
+  const html = assembleHtml(css, initJs, utilJs, finalSlides, hiddenMeta, cfg);
   const outPath = path.join(OUT_DIR, 'index.html');
   fs.writeFileSync(outPath, html, 'utf8');
   console.log(`\n✅  Written: ${outPath}`);
   console.log(`    Size:    ${(html.length / 1024).toFixed(1)} KB`);
 
   // 7. Copy shared assets (once for all customers)
-  const DOCS_ROOT         = path.join(OUT_DIR, '..');
-  const SHARED_ASSETS_DIR = path.join(DOCS_ROOT, 'shared', 'assets');
+  const DOCS_ROOT          = path.join(OUT_DIR, '..');
+  const SHARED_ASSETS_DIR  = path.join(DOCS_ROOT, 'shared', 'assets');
   const SHARED_GENERAL_DIR = path.join(DOCS_ROOT, 'shared', 'general');
-  const IMAGE_SRC         = path.join(SLIDE_DIR, 'Slide Images');
+  const IMAGE_SRC          = path.join(SLIDE_DIR, 'Slide Images');
 
   fs.mkdirSync(SHARED_ASSETS_DIR, { recursive: true });
   let copied = 0, skipped = 0;

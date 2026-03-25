@@ -2,8 +2,10 @@
 module.exports = {
   prospectName:  'Grupo Navas',
   logoFile:      'LOGO Grupo Navas.png',
-  contactName:   '',          // e.g. 'Jordi Puig'
-  contactTitle:  '',          // e.g. 'Director de Producción'
+  contactName:      'Alex Ochoa',
+  contactTitle:     'Softsolution GmbH · glasquality.com',
+  contactEmail:     'alex.ochoa@softsolution.at',
+  contactWhatsApp:  '436768804501',
   products:      'LineScanner',
   glassCategory: 'Vidrio Plano y Templado',
   shareUrl:      'https://alexochoac.github.io/softsolution-presentations/GrupoNavas-Spain',
