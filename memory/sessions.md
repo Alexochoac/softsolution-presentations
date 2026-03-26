@@ -1,5 +1,19 @@
 # Sessions
 
+## 2026-03-26 — Grupo Navas Spain presentation + lightbox fix
+
+- Created `docs/grupo-navas-spain/` by duplicating `starglass-spain` (already in Spanish)
+- Updated branding: logo, alt text, company name, contact (Cristian Martin, Jefe de Planta), BASE_URL
+- Fixed `openLb()` path bug across all 3 presentations (starglass, vidreira, grupo-navas)
+  - Root cause: `openLb('assets/...')` should be `openLb('../shared/assets/...')` — images displayed but zoom was broken
+  - 12 calls fixed per file, 3 files total
+- Committed and pushed all changes
+
+**Pending:**
+- Replace Phrase 1/2/3 placeholder text slides in gallery with real content
+
+---
+
 ## 2026-03-25 — slide-01 gallery rebuild (JS) + fix-slide skill overhaul
 
 - Rebuilt gallery from scratch: replaced CSS checkbox trick with JS-controlled `position:fixed` overlay
@@ -23,7 +37,3 @@
 - Diagnosed persistent `SyntaxError: Failed to execute 'appendChild'` — confirmed from slide-01 script via line number shifting after code removal
 - Removed entire main IIFE script from the slide to resolve the error
 - Only the tiny `PE.initSlide` script remains
-
-**Pending:**
-- Improvements to carousel (user mentioned wanting to do these next session)
-- Consider adding manual prev/next navigation via CSS radio button pattern

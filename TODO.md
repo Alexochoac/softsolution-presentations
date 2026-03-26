@@ -8,6 +8,8 @@
 - [ ] Decide on gallery carousel improvements across other slides
 
 ## Done
+- [x] Create Grupo Navas Spain presentation (duplicate from starglass-spain)
+- [x] Fix openLb() path bug in all 3 presentations (slides 4 & 5 zoom broken)
 - [x] Migrate existing softsolution folder from presentation-builder
 - [x] Create `dist/` folder and move finished presentations into it
 - [x] Update `outputDir` in all build configs
