@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="pt">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vidreira Algarvia — Inspección de Calidad con LineScanner</title>
+<title>Vidreira Algarvia — Inspeção de Qualidade com LineScanner</title>
 <!-- Umami Analytics -->
 <script defer src="https://umami.wbtm.io/script.js"
   data-website-id="2056a7e6-dbd6-4246-a205-4f89ffe8a37f"
@@ -525,14 +525,14 @@
 <!-- Password Gate -->
 <div id="pw-gate">
   <img id="pw-logo" src="assets/LOGO Vidreira-Algarvia-Portugal.png" alt="Vidreira Algarvia">
-  <div id="pw-badge">Softsolution · Acceso Privado</div>
-  <h2>Acceso a la Presentación</h2>
-  <p>Esta presentación es confidencial. Introduce la contraseña para continuar.</p>
+  <div id="pw-badge">Softsolution · Acesso Privado</div>
+  <h2>Acesso à Apresentação</h2>
+  <p>Esta apresentação é confidencial. Introduza a palavra-passe para continuar.</p>
   <div id="pw-wrap">
-    <input type="password" id="pw-input" placeholder="Contraseña" autocomplete="off">
+    <input type="password" id="pw-input" placeholder="Palavra-passe" autocomplete="off">
     <button id="pw-btn" onclick="checkPw()" data-umami-event="password-unlock-attempt">Entrar →</button>
   </div>
-  <div id="pw-error">Contraseña incorrecta. Inténtalo de nuevo.</div>
+  <div id="pw-error">Palavra-passe incorreta. Tente novamente.</div>
 </div>
 
 <!-- Glow Orbs -->
@@ -546,7 +546,7 @@
 </div>
 
 <!-- Share Button -->
-<button class="share-toggle" id="shareBtn" onclick="shareOpen()" aria-label="Compartir presentación" title="Compartir">
+<button class="share-toggle" id="shareBtn" onclick="shareOpen()" aria-label="Partilhar apresentação" title="Partilhar">
   <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
     <circle cx="12.5" cy="2.5"  r="1.4"/>
     <circle cx="3.5"  cy="8"    r="1.4"/>
@@ -560,20 +560,20 @@
 <div class="share-modal" id="shareModal" onclick="shareClose()">
   <div class="share-card" onclick="event.stopPropagation()">
     <button class="share-modal-close" onclick="shareClose()">×</button>
-    <div class="share-modal-title">Compartir presentación</div>
+    <div class="share-modal-title">Partilhar apresentação</div>
     <div class="share-form-row">
       <div class="share-form-group">
-        <label>Nombre</label>
-        <input id="share-name" type="text" placeholder="Ej. Juan">
+        <label>Nome</label>
+        <input id="share-name" type="text" placeholder="Ex. João">
       </div>
       <div class="share-form-group">
         <label>Cargo</label>
-        <input id="share-pos" type="text" placeholder="Ej. Director Técnico">
+        <input id="share-pos" type="text" placeholder="Ex. Diretor Técnico">
       </div>
     </div>
     <div class="share-form-group" style="margin-bottom:14px;">
-      <label>Mensaje (opcional)</label>
-      <textarea id="share-msg" placeholder="Añade una nota personal..."></textarea>
+      <label>Mensagem (opcional)</label>
+      <textarea id="share-msg" placeholder="Adicione uma nota pessoal..."></textarea>
     </div>
     <div class="share-actions">
       <button class="share-btn-wa"    onclick="shareToggleSub('wa')">WhatsApp</button>
@@ -581,18 +581,18 @@
       <button class="share-btn-copy"  id="share-copy-btn" onclick="shareCopyLink()">Copiar link</button>
     </div>
     <div class="share-sub" id="share-sub-wa">
-      <input id="share-wa-num" type="tel" placeholder="+34 600 000 000">
+      <input id="share-wa-num" type="tel" placeholder="+351 900 000 000">
       <button onclick="shareSendWa()">Enviar ↗</button>
     </div>
     <div class="share-sub" id="share-sub-email">
-      <input id="share-email-to" type="email" placeholder="email@ejemplo.com">
+      <input id="share-email-to" type="email" placeholder="email@exemplo.com">
       <button onclick="shareSendEmail()">Enviar ↗</button>
     </div>
   </div>
 </div>
 
 <!-- Theme Toggle -->
-<button class="theme-toggle" id="themeToggle" aria-label="Cambiar tema">
+<button class="theme-toggle" id="themeToggle" aria-label="Mudar tema">
   <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
 </button>
@@ -613,9 +613,9 @@
     <div class="hero-overlay"></div>
     <div class="hero-left">
       <div class="brand-badge">Softsolution · LineScanner</div>
-      <h1>Inspección de Calidad<br>para el <span class="blue">Vidrio Industrial</span></h1>
-      <h2>Presentación para Vidreira Algarvia · Rogerio Moreira, General Manager</h2>
-      <div class="click-hint">→ Avanzar con flechas o deslizar</div>
+      <h1>Inspeção de Qualidade<br>para o <span class="blue">Vidro Industrial</span></h1>
+      <h2>Apresentação para Vidreira Algarvia · Rogerio Moreira, General Manager</h2>
+      <div class="click-hint">→ Avançar com setas ou deslizar</div>
     </div>
     <div class="hero-right">
       <img class="hero-logo" src="assets/LOGO Vidreira-Algarvia-Portugal.png" alt="Vidreira Algarvia">
@@ -626,19 +626,19 @@
   <div class="slide content co2" style="justify-content:flex-start; align-items:center; padding:52px 80px 0;">
     <img class="slide-logo" src="assets/LOGO Vidreira-Algarvia-Portugal.png" alt="Vidreira Algarvia">
 
-    <div class="section-label">Nuestra Empresa</div>
-    <h1 class="slide-title" style="margin-bottom:14px;">Inspección de calidad <span class="blue">es todo lo que hacemos</span></h1>
+    <div class="section-label">A Nossa Empresa</div>
+    <h1 class="slide-title" style="margin-bottom:14px;">Inspeção de qualidade <span class="blue">é tudo o que fazemos</span></h1>
 
     <!-- ── Always-visible: tagline + IQC ── -->
-    <div class="ss-tagline anim-in">Inspeccionamos cada aspecto de calidad de tu vidrio garantizando el máximo rendimiento y la mejor calidad.</div>
+    <div class="ss-tagline anim-in">Inspecionamos cada aspeto de qualidade do seu vidro, garantindo o máximo desempenho e a melhor qualidade.</div>
     <div class="iqc-wrap">
       <div class="iqc-toggle anim-in" onclick="toggleIQC(this)" data-umami-event="iqc-group-expand">
-        Parte del grupo <strong>IQC – Industrial QC Holding LLC</strong> <span class="iqc-arrow">▾</span>
+        Parte do grupo <strong>IQC – Industrial QC Holding LLC</strong> <span class="iqc-arrow">▾</span>
       </div>
       <div class="iqc-panel" id="iqcPanel">
         <div class="iqc-card">
           <img src="../shared/assets/LOGO SoftSolution grays.png" alt="Softsolution" class="iqc-logo">
-          <div class="iqc-country">Austria</div>
+          <div class="iqc-country">Áustria</div>
           <ul class="iqc-products">
             <li>LineScanner</li>
             <li>BowScanner</li>
@@ -680,42 +680,42 @@
 
     <!-- ── Tab Bar — below IQC ── -->
     <div class="co-tabs">
-      <button class="co-tab active" onclick="coTab(this,'about')" data-umami-event="slide2-tab" data-umami-event-tab="About Us">Sobre Nosotros</button>
-      <button class="co-tab" onclick="coTab(this,'tech')" data-umami-event="slide2-tab" data-umami-event-tab="Technologies">Tecnologías</button>
-      <button class="co-tab" onclick="coTab(this,'network')" data-umami-event="slide2-tab" data-umami-event-tab="Global Network">Red Global</button>
+      <button class="co-tab active" onclick="coTab(this,'about')" data-umami-event="slide2-tab" data-umami-event-tab="About Us">Sobre Nós</button>
+      <button class="co-tab" onclick="coTab(this,'tech')" data-umami-event="slide2-tab" data-umami-event-tab="Technologies">Tecnologias</button>
+      <button class="co-tab" onclick="coTab(this,'network')" data-umami-event="slide2-tab" data-umami-event-tab="Global Network">Rede Global</button>
     </div>
 
     <!-- ── Panels Wrapper ── -->
     <div class="co-panels-wrap">
 
-      <!-- ══ PANEL 1 · Sobre Nosotros ══ -->
+      <!-- ══ PANEL 1 · Sobre Nós ══ -->
       <div class="co-panel active" id="co-about">
         <div class="pillar-list">
           <div class="pillar anim-in">
             <div class="pillar-num">01</div>
             <div class="pillar-content">
-              <div class="pillar-title">Un Solo Socio</div>
-              <div class="pillar-desc">para todas tus necesidades de calidad en vidrio</div>
+              <div class="pillar-title">Um Único Parceiro</div>
+              <div class="pillar-desc">para todas as suas necessidades de qualidade em vidro</div>
             </div>
           </div>
           <div class="pillar anim-in">
             <div class="pillar-num">02</div>
             <div class="pillar-content">
-              <div class="pillar-title">Presencia Global</div>
-              <div class="pillar-desc">hubs de soporte global con expertos locales en 23 países</div>
+              <div class="pillar-title">Presença Global</div>
+              <div class="pillar-desc">hubs de suporte global com especialistas locais em 23 países</div>
             </div>
           </div>
           <div class="pillar anim-in">
             <div class="pillar-num">03</div>
             <div class="pillar-content">
-              <div class="pillar-title">Liderazgo Tecnológico</div>
-              <div class="pillar-desc">true scanning · bright-field · dark-field · reflexión · espectrómetro</div>
+              <div class="pillar-title">Liderança Tecnológica</div>
+              <div class="pillar-desc">true scanning · bright-field · dark-field · reflexão · espectrómetro</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- ══ PANEL 2 · Tecnologías ══ -->
+      <!-- ══ PANEL 2 · Tecnologias ══ -->
       <div class="co-panel" id="co-tech">
         <div class="tech-list">
           <div class="tech-item anim-in" onclick="toggleTech(this)" data-umami-event="technology-expand" data-umami-event-tech="Parallel Light 90">
@@ -723,38 +723,38 @@
               <div class="tech-num">1</div>
               <div class="tech-name">Sistema de Luz Paralela 90°</div>
             </div>
-            <div class="tech-body">Tecnología de sensor con fuente de luz paralela a 90° para detectar defectos superficiales con alta precisión y velocidad en vidrios planos.</div>
+            <div class="tech-body">Tecnologia de sensor com fonte de luz paralela a 90° para detetar defeitos superficiais com alta precisão e velocidade em vidros planos.</div>
           </div>
           <div class="tech-item anim-in" onclick="toggleTech(this)" data-umami-event="technology-expand" data-umami-event-tech="Bright-field Dark-field">
             <div class="tech-hd">
               <div class="tech-num">2</div>
               <div class="tech-name">Bright-field &amp; Dark-field</div>
             </div>
-            <div class="tech-body">Tecnología de cámara con iluminación de campo claro y oscuro para detección integral de inclusiones, rayaduras, burbujas y recubrimientos.</div>
+            <div class="tech-body">Tecnologia de câmara com iluminação de campo claro e escuro para deteção integral de inclusões, riscos, bolhas e revestimentos.</div>
           </div>
           <div class="tech-item anim-in" onclick="toggleTech(this)" data-umami-event="technology-expand" data-umami-event-tech="Reflection">
             <div class="tech-hd">
               <div class="tech-num">3</div>
-              <div class="tech-name">Tecnología de Reflexión</div>
+              <div class="tech-name">Tecnologia de Reflexão</div>
             </div>
-            <div class="tech-body">Tecnología de sensor y luz dispersa por reflexión para detectar defectos de borde y anomalías superficiales en vidrio plano y curvado con alta sensibilidad.</div>
+            <div class="tech-body">Tecnologia de sensor e luz difusa por reflexão para detetar defeitos de bordo e anomalias superficiais em vidro plano e curvado com alta sensibilidade.</div>
           </div>
           <div class="tech-item anim-in" onclick="toggleTech(this)" data-umami-event="technology-expand" data-umami-event-tech="Spectrometer">
             <div class="tech-hd">
               <div class="tech-num">4</div>
               <div class="tech-name">Espectrómetro</div>
             </div>
-            <div class="tech-body">Tecnología de sensor con filtros polarizados para análisis espectral — mide recubrimientos, propiedades ópticas y patrones de tensión con precisión.</div>
+            <div class="tech-body">Tecnologia de sensor com filtros polarizados para análise espectral — mede revestimentos, propriedades óticas e padrões de tensão com precisão.</div>
           </div>
         </div>
-        <div class="ss-tagline" style="margin-top:18px;">¡Todas las tecnologías disponibles!</div>
+        <div class="ss-tagline" style="margin-top:18px;">Todas as tecnologias disponíveis!</div>
       </div>
 
       <!-- ══ PANEL 3 · Red Global ══ -->
       <div class="co-panel" id="co-network">
         <div class="map-wrap" id="mapWrap">
 
-          <!-- Sub-panel A: Oficinas -->
+          <!-- Sub-panel A: Escritórios -->
           <div class="map-panel active" id="mp-offices">
             <div class="map-img-wrap">
               <img class="map-img dark-filter" src="../shared/assets/World Map of locations .jpeg" alt="Mapa Mundial">
@@ -776,19 +776,19 @@
             <div class="map-img-wrap">
               <img class="map-img dark-filter" src="../shared/assets/World Map of locations .jpeg" alt="Mapa Mundial">
               <div class="dist-pin" style="left:19.1%;top:24.4%;" title="Canadá (Toronto)"></div>
-              <div class="dist-pin" style="left:10.9%;top:42.5%;" title="México (Ciudad de México)"></div>
+              <div class="dist-pin" style="left:10.9%;top:42.5%;" title="México (Cidade do México)"></div>
               <div class="dist-pin" style="left:24.3%;top:66.5%;" title="Brasil (São Paulo)"></div>
               <div class="dist-pin" style="left:43.5%;top:28.2%;" title="Reino Unido (Londres)"></div>
-              <div class="dist-pin" style="left:42.0%;top:36.1%;" title="España (Madrid)"></div>
-              <div class="dist-pin" style="left:47.1%;top:34.6%;" title="Italia (Milán)"></div>
-              <div class="dist-pin" style="left:55.4%;top:35.8%;" title="Turquía (Estambul)"></div>
-              <div class="dist-pin" style="left:61.3%;top:25.2%;" title="Rusia (Moscú)"></div>
-              <div class="dist-pin" style="left:72.1%;top:39.3%;" title="China (Shanghái)"></div>
-              <div class="dist-pin" style="left:83.2%;top:73.3%;" title="Australia (Sídney)"></div>
+              <div class="dist-pin" style="left:42.0%;top:36.1%;" title="Espanha (Madrid)"></div>
+              <div class="dist-pin" style="left:47.1%;top:34.6%;" title="Itália (Milão)"></div>
+              <div class="dist-pin" style="left:55.4%;top:35.8%;" title="Turquia (Istambul)"></div>
+              <div class="dist-pin" style="left:61.3%;top:25.2%;" title="Rússia (Moscovo)"></div>
+              <div class="dist-pin" style="left:72.1%;top:39.3%;" title="China (Xangai)"></div>
+              <div class="dist-pin" style="left:83.2%;top:73.3%;" title="Austrália (Sydney)"></div>
               <div class="dist-pin" style="left:46.7%;top:23.0%;" title="Noruega"></div>
-              <div class="dist-pin" style="left:48.3%;top:43.9%;" title="Libia"></div>
-              <div class="dist-pin" style="left:73.3%;top:48.5%;" title="Tailandia"></div>
-              <div class="dist-pin" style="left:52.9%;top:31.5%;" title="Moldavia"></div>
+              <div class="dist-pin" style="left:48.3%;top:43.9%;" title="Líbia"></div>
+              <div class="dist-pin" style="left:73.3%;top:48.5%;" title="Tailândia"></div>
+              <div class="dist-pin" style="left:52.9%;top:31.5%;" title="Moldávia"></div>
               <div class="dist-pin" style="left:49.7%;top:71.5%;" title="Botsuana"></div>
               <div class="dist-pin" style="left:16.8%;top:43.5%;" title="Cuba"></div>
             </div>
@@ -796,16 +796,16 @@
 
           <!-- Sub-tab bar -->
           <div class="map-subtabs">
-            <button class="map-stab active" onclick="mapSubTab(this,'offices')" data-umami-event="map-subtab" data-umami-event-tab="Offices">Oficinas</button>
+            <button class="map-stab active" onclick="mapSubTab(this,'offices')" data-umami-event="map-subtab" data-umami-event-tab="Offices">Escritórios</button>
             <button class="map-stab" onclick="mapSubTab(this,'network')" data-umami-event="map-subtab" data-umami-event-tab="Agents & Distributors">Agentes &amp; Distribuidores</button>
           </div>
 
-          <button class="map-tog-btn" id="mapTogBtn" onclick="toggleMapMode()" data-umami-event="map-color-toggle">&#9728; Colores originales</button>
+          <button class="map-tog-btn" id="mapTogBtn" onclick="toggleMapMode()" data-umami-event="map-color-toggle">&#9728; Cores originais</button>
         </div>
 
         <div class="map-footer">
           <div class="map-legend">
-            <span class="leg-item"><span class="leg-dot" style="background:#E8711A;box-shadow:0 0 8px rgba(232,113,26,.8);"></span>Oficinas</span>
+            <span class="leg-item"><span class="leg-dot" style="background:#E8711A;box-shadow:0 0 8px rgba(232,113,26,.8);"></span>Escritórios</span>
             <span class="leg-item"><span class="leg-dot" style="background:#F5C842;box-shadow:0 0 6px rgba(245,200,66,.6);"></span>Agentes &amp; Distribuidores</span>
           </div>
           <span style="font-size:11px; color:rgba(255,255,255,.4);">Data to 2026</span>
@@ -816,10 +816,10 @@
 
     <!-- ── Stats Bar ── -->
     <div class="co2-stats">
-      <div class="kpi-card"><div class="kpi-value">1999</div><div class="kpi-label">Año de fundación</div></div>
+      <div class="kpi-card"><div class="kpi-value">1999</div><div class="kpi-label">Ano de fundação</div></div>
       <div class="kpi-card"><div class="kpi-value" id="kpi-systems">2.049</div><div class="kpi-label">Sistemas instalados</div></div>
       <div class="kpi-card"><div class="kpi-value" id="kpi-countries">22</div><div class="kpi-label">Países · 6 continentes</div></div>
-      <div class="kpi-card"><div class="kpi-value">60</div><div class="kpi-label">Empleados especializados</div></div>
+      <div class="kpi-card"><div class="kpi-value">60</div><div class="kpi-label">Colaboradores especializados</div></div>
     </div>
 
     <!-- ── Scoped Styles ── -->
@@ -935,7 +935,7 @@
         var btn  = document.getElementById('mapTogBtn');
         var isDark = imgs.length && imgs[0].classList.contains('dark-filter');
         imgs.forEach(function(img){img.classList.toggle('dark-filter',!isDark);img.classList.toggle('light-filter',isDark);});
-        btn.innerHTML = isDark ? '&#9790; Modo oscuro' : '&#9728; Colores originales';
+        btn.innerHTML = isDark ? '&#9790; Modo escuro' : '&#9728; Cores originais';
       };
       function animateCount(el,from,to,duration,suffix){
         var start=null;
@@ -969,8 +969,8 @@
 <div class="slide content why3" style="justify-content:flex-start; align-items:center; padding:52px 80px 0;">
   <img class="slide-logo" src="assets/LOGO Vidreira-Algarvia-Portugal.png" alt="Vidreira Algarvia">
 
-  <div class="section-label">El Argumento para la Inspección</div>
-  <h1 class="slide-title" style="margin-bottom:18px;">Por qué la automatización de la inspección <span class="blue">tiene sentido?</span></h1>
+  <div class="section-label">O Argumento para a Inspeção</div>
+  <h1 class="slide-title" style="margin-bottom:18px;">Porque faz sentido automatizar <span class="blue">a inspeção?</span></h1>
 
   <div class="why3-grid">
 
@@ -978,42 +978,42 @@
     <div class="why3-col prob-col anim-in">
       <div class="why3-col-header">
         <span class="why3-col-icon">⚠️</span>
-        <span class="why3-col-label">Sin Automatización de Inspección</span>
+        <span class="why3-col-label">Sem Automatização de Inspeção</span>
       </div>
       <ul class="why3-list" id="why3-prob-list">
-        <div class="why3-tier-label">Limitaciones Humanas</div>
-        <li class="prob-item">La inspección manual al 100% es imposible a velocidad de producción</li>
-        <li class="prob-item">Al aumentar la velocidad de línea, la efectividad del operario disminuye — mayor producción significa más defectos sin detectar</li>
-        <li class="prob-item">Fatiga del operario — las tasas de detección caen significativamente en turnos largos</li>
-        <li class="prob-item">La distorsión y la anisotropía son <strong>invisibles a simple vista</strong> — sin importar la habilidad del operario</li>
-        <div class="why3-tier-label" style="margin-top:8px;">Impacto en el Negocio</div>
-        <li class="prob-item">Mayor riesgo de responsabilidad legal y daño reputacional</li>
-        <li class="prob-item">Calidad inconsistente y reclamaciones frecuentes de clientes</li>
-        <li class="prob-item">Rechazos en obra — vidrio ya entregado e instalado implica transporte, retrabajo y retrasos en el proyecto</li>
-        <li class="prob-item">Un defecto en automoción puede desencadenar la devolución de un lote completo — costes de envío y material en toda la carga</li>
+        <div class="why3-tier-label">Limitações Humanas</div>
+        <li class="prob-item">A inspeção manual a 100% é impossível à velocidade de produção</li>
+        <li class="prob-item">À medida que a velocidade da linha aumenta, a eficácia do operador diminui — maior produção significa mais defeitos não detetados</li>
+        <li class="prob-item">Fadiga do operador — as taxas de deteção caem significativamente em turnos longos</li>
+        <li class="prob-item">A distorção e a anisotropia são <strong>invisíveis a olho nu</strong> — independentemente da habilidade do operador</li>
+        <div class="why3-tier-label" style="margin-top:8px;">Impacto no Negócio</div>
+        <li class="prob-item">Maior risco de responsabilidade legal e dano reputacional</li>
+        <li class="prob-item">Qualidade inconsistente e reclamações frequentes de clientes</li>
+        <li class="prob-item">Rejeições em obra — vidro já entregue e instalado implica transporte, retrabalho e atrasos no projeto</li>
+        <li class="prob-item">Um defeito na indústria automóvel pode desencadear a devolução de um lote completo — custos de envio e material em toda a carga</li>
       </ul>
       <div class="why3-restore"></div>
-      <button class="why3-add-btn why3-add-prob">+ Añadir elemento</button>
+      <button class="why3-add-btn why3-add-prob">+ Adicionar elemento</button>
     </div>
 
-    <!-- RIGHT — Beneficios -->
+    <!-- RIGHT — Benefícios -->
     <div class="why3-col ben-col anim-in">
       <div class="why3-col-header">
         <span class="why3-col-icon">✓</span>
         <span class="why3-col-label">LineScanner &amp; Osprey</span>
       </div>
       <ul class="why3-list" id="why3-ben-list">
-        <li class="ben-item">Inspección al 100% de cada vidrio, en cada turno — sin fatiga, sin áreas ciegas</li>
-        <li class="ben-item">Demuestre la calidad a los clientes — una defensa documentada ante reclamaciones</li>
-        <li class="ben-item">Control de proceso y retroalimentación de calidad en tiempo real</li>
-        <li class="ben-item">Aumente la producción y reduzca rechazos costosos aguas abajo</li>
-        <li class="ben-item">Base de datos y archivo para trazabilidad por turno y análisis CpK</li>
-        <li class="ben-item">Procedimientos de aceptación para nueva maquinaria (por ejemplo, hornos)</li>
-        <li class="ben-item">Obligatorio según estándares industriales</li>
-        <li class="ben-item">Detecta distorsión, anisotropía y defectos superficiales <strong>invisibles al ojo humano</strong></li>
+        <li class="ben-item">Inspeção a 100% de cada vidro, em cada turno — sem fadiga, sem áreas cegas</li>
+        <li class="ben-item">Demonstre qualidade aos clientes — uma defesa documentada perante reclamações</li>
+        <li class="ben-item">Controlo de processo e retroalimentação de qualidade em tempo real</li>
+        <li class="ben-item">Aumente a produção e reduza rejeições dispendiosas a jusante</li>
+        <li class="ben-item">Base de dados e arquivo para rastreabilidade por turno e análise CpK</li>
+        <li class="ben-item">Procedimentos de aceitação para nova maquinaria (por exemplo, fornos)</li>
+        <li class="ben-item">Obrigatório segundo as normas industriais</li>
+        <li class="ben-item">Deteta distorção, anisotropia e defeitos superficiais <strong>invisíveis ao olho humano</strong></li>
       </ul>
       <div class="why3-restore"></div>
-      <button class="why3-add-btn why3-add-ben">+ Añadir elemento</button>
+      <button class="why3-add-btn why3-add-ben">+ Adicionar elemento</button>
     </div>
 
   </div><!-- why3-grid -->
@@ -1181,7 +1181,7 @@
       // Drag handle
       var dragBtn = document.createElement('button');
       dragBtn.className = 'why3-item-btn why3-drag-btn';
-      dragBtn.textContent = '⠿'; dragBtn.title = 'Drag to reorder';
+      dragBtn.textContent = '⠿'; dragBtn.title = 'Arrastar para reordenar';
       dragBtn.addEventListener('mousedown', function() { li.draggable = true; });
       dragBtn.addEventListener('mouseup',   function() { li.draggable = false; });
 
@@ -1189,7 +1189,7 @@
       var hideBtn = document.createElement('button');
       hideBtn.className = 'why3-item-btn why3-hide-btn';
       hideBtn.textContent = '×';
-      hideBtn.title = isNew ? 'Delete' : 'Hide';
+      hideBtn.title = isNew ? 'Eliminar' : 'Ocultar';
       hideBtn.onclick = function(e) {
         e.stopPropagation();
         if (isNew) {
@@ -1261,7 +1261,7 @@
         e.stopPropagation();
         var li = document.createElement('li');
         li.className = itemClass;
-        li.textContent = 'New item';
+        li.textContent = 'Novo elemento';
         ul.appendChild(li);
         initItem(li, true);
         li.dispatchEvent(new MouseEvent('dblclick'));
@@ -1277,17 +1277,17 @@
 
 </div>
 
-  <!-- SLIDE 4 · EL PRODUCTO — VISIÓN GENERAL DEL LINESCANNER -->
+  <!-- SLIDE 4 · O PRODUTO — VISÃO GERAL DO LINESCANNER -->
 <div class="slide content ls4" style="justify-content:flex-start; align-items:center; padding:52px 80px 0;">
   <img class="slide-logo" src="assets/LOGO Vidreira-Algarvia-Portugal.png" alt="Vidreira Algarvia">
 
-  <div class="section-label">El Producto</div>
-  <h1 class="slide-title" style="margin-bottom:14px;">LineScanner <span class="blue">Visión General de Capacidades</span></h1>
+  <div class="section-label">O Produto</div>
+  <h1 class="slide-title" style="margin-bottom:14px;">LineScanner <span class="blue">Visão Geral de Capacidades</span></h1>
 
   <!-- ── Tab Bar ── -->
   <div class="ls4-tabs">
     <button class="ls4-tab active" onclick="ls4Tab(this,'matrix')" data-umami-event="slide4-tab" data-umami-event-tab="Capability Matrix">Matriz de Capacidades</button>
-    <button class="ls4-tab" onclick="ls4Tab(this,'process')" data-umami-event="slide4-tab" data-umami-event-tab="Where In Your Process">Dónde en Tu Proceso</button>
+    <button class="ls4-tab" onclick="ls4Tab(this,'process')" data-umami-event="slide4-tab" data-umami-event-tab="Where In Your Process">Onde no Seu Processo</button>
   </div>
 
   <!-- ── Panels Wrapper ── -->
@@ -1313,48 +1313,48 @@
             </thead>
             <tbody>
               <tr class="ls4-shaded">
-                <td>Control de Calidad</td>
+                <td>Controlo de Qualidade</td>
                 <td><span class="ls4-dot ls4-dot-off">◇</span></td>
                 <td><span class="ls4-dot ls4-dot-on">◆</span></td>
                 <td></td><td></td><td></td>
               </tr>
               <tr>
-                <td>Chips de Borde</td>
+                <td>Lascas de Bordo</td>
                 <td><span class="ls4-dot ls4-dot-off">◇</span></td>
                 <td><span class="ls4-dot ls4-dot-on">◆</span></td>
                 <td></td><td></td><td></td>
               </tr>
               <tr class="ls4-shaded">
-                <td>Verificación Dimensional</td>
+                <td>Verificação Dimensional</td>
                 <td><span class="ls4-dot ls4-dot-off">◇</span></td>
                 <td><span class="ls4-dot ls4-dot-on">◆</span></td>
                 <td></td><td></td><td></td>
               </tr>
               <tr>
-                <td>Verificación de Posición y Calidad de Logo</td>
+                <td>Verificação de Posição e Qualidade do Logótipo</td>
                 <td><span class="ls4-dot ls4-dot-off">◇</span></td>
                 <td><span class="ls4-dot ls4-dot-on">◆</span></td>
                 <td></td><td></td><td></td>
               </tr>
               <tr class="ls4-shaded">
-                <td>Verificación de Distorsión</td>
+                <td>Verificação de Distorção</td>
                 <td><span class="ls4-dot ls4-dot-off">◇</span></td>
                 <td></td><td></td><td></td><td></td>
               </tr>
               <tr>
-                <td>Verificación de Anisotropía</td>
+                <td>Verificação de Anisotropia</td>
                 <td><span class="ls4-dot ls4-dot-off">◇</span></td>
                 <td><span class="ls4-dot ls4-dot-on">◆</span></td>
                 <td></td><td></td><td></td>
               </tr>
               <tr class="ls4-shaded">
-                <td>Control de Carga</td>
+                <td>Controlo de Carga</td>
                 <td></td>
                 <td><span class="ls4-dot ls4-dot-on">◆</span></td>
                 <td></td><td></td><td></td>
               </tr>
               <tr>
-                <td>Verificación de Curvatura General</td>
+                <td>Verificação de Curvatura Geral</td>
                 <td></td>
                 <td><span class="ls4-dot ls4-dot-on">◆</span></td>
                 <td></td>
@@ -1362,7 +1362,7 @@
                 <td></td>
               </tr>
               <tr class="ls4-shaded">
-                <td>Verificación de Espesor de Vidrio</td>
+                <td>Verificação de Espessura do Vidro</td>
                 <td><span class="ls4-dot ls4-dot-off">◇</span></td>
                 <td><span class="ls4-dot ls4-dot-on">◆</span></td>
                 <td></td>
@@ -1370,19 +1370,19 @@
                 <td></td>
               </tr>
               <tr>
-                <td>Reconocimiento de Tipo de Vidrio</td>
+                <td>Reconhecimento do Tipo de Vidro</td>
                 <td><span class="ls4-dot ls4-dot-off">◇</span></td>
                 <td><span class="ls4-dot ls4-dot-on">◆</span></td>
                 <td></td><td></td><td></td>
               </tr>
               <tr class="ls4-shaded">
-                <td>Interpretación de Código de Matriz de Datos</td>
+                <td>Leitura de Código de Matriz de Dados</td>
                 <td></td>
                 <td><span class="ls4-dot ls4-dot-on">◆</span></td>
                 <td></td><td></td><td></td>
               </tr>
               <tr>
-                <td>Verificación de Patrón de Rotura</td>
+                <td>Verificação de Padrão de Rotura</td>
                 <td></td><td></td><td></td><td></td>
                 <td><span class="ls4-dot ls4-dot-off">◇</span></td>
               </tr>
@@ -1394,7 +1394,7 @@
                 <td></td><td></td>
               </tr>
               <tr>
-                <td>Verificación de Sightline</td>
+                <td>Verificação de Sightline</td>
                 <td></td>
                 <td><span class="ls4-dot ls4-dot-on">◆</span></td>
                 <td></td><td></td><td></td>
@@ -1402,12 +1402,12 @@
             </tbody>
           </table>
           <div class="ls4-legend">
-            <span class="ls4-leg-item"><span class="ls4-dot ls4-dot-on">◆</span> Estándar</span>
+            <span class="ls4-leg-item"><span class="ls4-dot ls4-dot-on">◆</span> Padrão</span>
             <span class="ls4-leg-item"><span class="ls4-dot ls4-dot-off">◇</span> Opcional</span>
           </div>
           <div class="ls4-col-restore"></div>
           <div class="ls4-row-restore"></div>
-          <button class="ls4-add-row-btn" data-table="matrix">+ Añadir fila</button>
+          <button class="ls4-add-row-btn" data-table="matrix">+ Adicionar linha</button>
         </div>
 
         <!-- Scanner cards -->
@@ -1429,11 +1429,11 @@
       </div><!-- ls4-grid -->
     </div><!-- ls4-matrix -->
 
-    <!-- ══ PANEL 2 · Dónde en Tu Proceso ══ -->
+    <!-- ══ PANEL 2 · Onde no Seu Processo ══ -->
     <div class="ls4-panel" id="ls4-process">
       <div class="ls4-proc-grid">
 
-        <!-- LEFT: Tabla de capacidades por escáner -->
+        <!-- LEFT: Tabela de capacidades por scanner -->
         <div class="ls4-proc-table-wrap anim-in">
           <table class="ls4-table ls4-proc-table">
             <colgroup><col><col><col><col></colgroup>
@@ -1447,79 +1447,79 @@
             </thead>
             <tbody>
               <tr class="ls4-shaded">
-                <td>Control de Calidad (Rayaduras, Inclusiones, Huellas, Suciedad, Defectos de Coating, Automoción)</td>
+                <td>Controlo de Qualidade (Riscos, Inclusões, Impressões Digitais, Sujidade, Defeitos de Revestimento, Automóvel)</td>
                 <td><span class="ls4-dot ls4-dot-on">◆</span></td>
                 <td><span class="ls4-dot ls4-dot-red">◆</span></td>
                 <td><span class="ls4-dot ls4-dot-blue">◆</span></td>
               </tr>
               <tr>
-                <td>Chips de Borde</td>
+                <td>Lascas de Bordo</td>
                 <td><span class="ls4-dot ls4-dot-on">◆</span></td>
                 <td><span class="ls4-dot ls4-dot-red">◆</span></td>
                 <td><span class="ls4-dot ls4-dot-blue">◆</span></td>
               </tr>
               <tr class="ls4-shaded">
-                <td>Verificación de Línea de Visión para Unidad IG, Defectos de Butil, Alineación de Rejilla</td>
+                <td>Verificação de Linha de Visão para Unidade IG, Defeitos de Butilo, Alinhamento de Grelha</td>
                 <td><span class="ls4-dot ls4-dot-on">◆</span></td>
                 <td></td>
                 <td></td>
               </tr>
               <tr>
-                <td>Verificación Dimensional (Dimensiones Generales, Posición de Agujeros de Taladro, Diámetro, Recortes)</td>
+                <td>Verificação Dimensional (Dimensões Gerais, Posição de Furos de Furação, Diâmetro, Recortes)</td>
                 <td><span class="ls4-dot ls4-dot-on">◆</span></td>
                 <td><span class="ls4-dot ls4-dot-red">◆</span></td>
                 <td><span class="ls4-dot ls4-dot-blue">◆</span></td>
               </tr>
               <tr class="ls4-shaded">
-                <td>Verificación de Calidad de Logo (Existencia, Posición y Calidad del Logo)</td>
+                <td>Verificação de Qualidade do Logótipo (Existência, Posição e Qualidade do Logótipo)</td>
                 <td><span class="ls4-dot ls4-dot-on">◆</span></td>
                 <td><span class="ls4-dot ls4-dot-red">◆</span></td>
                 <td><span class="ls4-dot ls4-dot-blue">◆</span></td>
               </tr>
               <tr>
-                <td>Verificación de Distorsión (Rollerwave, EdgeLift, Distorsión de Bolsillo, Kink Central, Picture Framing)</td>
+                <td>Verificação de Distorção (Rollerwave, EdgeLift, Distorção de Bolso, Kink Central, Picture Framing)</td>
                 <td></td>
                 <td></td>
                 <td><span class="ls4-dot ls4-dot-blue">◆</span></td>
               </tr>
               <tr class="ls4-shaded">
-                <td>Verificación de Anisotropía (Retardación, Valores de Isotropía)</td>
+                <td>Verificação de Anisotropia (Retardação, Valores de Isotropia)</td>
                 <td><span class="ls4-dot ls4-dot-on">◆</span></td>
                 <td><span class="ls4-dot ls4-dot-red">◆</span></td>
                 <td><span class="ls4-dot ls4-dot-blue">◆</span></td>
               </tr>
               <tr>
-                <td>White Haze (Predicción, Efecto Óptico Real)</td>
+                <td>White Haze (Previsão, Efeito Ótico Real)</td>
                 <td></td>
                 <td><span class="ls4-dot ls4-dot-red">◆</span></td>
                 <td><span class="ls4-dot ls4-dot-blue">◆</span></td>
               </tr>
               <tr class="ls4-shaded">
-                <td>Control de Carga (Ubicación de Vidrios, Distancia, Carga Larga y Ancha, Esquinas Rotas)</td>
+                <td>Controlo de Carga (Localização dos Vidros, Distância, Carga Longa e Larga, Cantos Partidos)</td>
                 <td></td>
                 <td><span class="ls4-dot ls4-dot-red">◆</span></td>
                 <td></td>
               </tr>
               <tr>
-                <td>Verificación de Curvatura General (6 Mediciones para Todos los Bordes)</td>
+                <td>Verificação de Curvatura Geral (6 Medições para Todos os Bordos)</td>
                 <td><span class="ls4-dot ls4-dot-on">◆</span></td>
                 <td></td>
                 <td></td>
               </tr>
               <tr class="ls4-shaded">
-                <td>Verificación de Espesor (Espesor, Lado del Coating)</td>
+                <td>Verificação de Espessura (Espessura, Lado do Revestimento)</td>
                 <td><span class="ls4-dot ls4-dot-on">◆</span></td>
                 <td><span class="ls4-dot ls4-dot-red">◆</span></td>
                 <td><span class="ls4-dot ls4-dot-blue">◆</span></td>
               </tr>
               <tr>
-                <td>Reconocimiento de Tipo de Vidrio / Tipo y Espesor de Coating</td>
+                <td>Reconhecimento do Tipo de Vidro / Tipo e Espessura de Revestimento</td>
                 <td><span class="ls4-dot ls4-dot-on">◆</span></td>
                 <td><span class="ls4-dot ls4-dot-red">◆</span></td>
                 <td><span class="ls4-dot ls4-dot-blue">◆</span></td>
               </tr>
               <tr class="ls4-shaded">
-                <td>Interpretación de Código de Matriz de Datos</td>
+                <td>Leitura de Código de Matriz de Dados</td>
                 <td><span class="ls4-dot ls4-dot-on">◆</span></td>
                 <td><span class="ls4-dot ls4-dot-red">◆</span></td>
                 <td><span class="ls4-dot ls4-dot-blue">◆</span></td>
@@ -1533,52 +1533,52 @@
           </div>
           <div class="ls4-col-restore"></div>
           <div class="ls4-row-restore"></div>
-          <button class="ls4-add-row-btn" data-table="proc">+ Añadir fila</button>
+          <button class="ls4-add-row-btn" data-table="proc">+ Adicionar linha</button>
         </div>
 
-        <!-- RIGHT: Tarjetas de renderizado por etapa -->
+        <!-- RIGHT: Cartões de render por etapa -->
         <div class="ls4-proc-cards anim-in">
 
           <div class="ls4-proc-card" onclick="openLb('assets/Render Grinding Line.png')" data-umami-event="render-card-zoom" data-umami-event-card="Grinding Line">
-            <img src="../shared/assets/Render Grinding Line.png" alt="Esmerilado">
-            <div class="ls4-proc-card-label">Esmerilado</div>
+            <img src="../shared/assets/Render Grinding Line.png" alt="Maquinagem">
+            <div class="ls4-proc-card-label">Maquinagem</div>
             <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Ocultar">✕</button>
-            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Subir">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Bajar">▼</button></div>
+            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Subir">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Baixar">▼</button></div>
           </div>
 
           <div class="ls4-proc-card" onclick="openLb('assets/Render Tempering Line.png')" data-umami-event="render-card-zoom" data-umami-event-card="Tempering Line">
-            <img src="../shared/assets/Render Tempering Line.png" alt="Templado">
-            <div class="ls4-proc-card-label">Templado</div>
+            <img src="../shared/assets/Render Tempering Line.png" alt="Temperagem">
+            <div class="ls4-proc-card-label">Temperagem</div>
             <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Ocultar">✕</button>
-            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Subir">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Bajar">▼</button></div>
+            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Subir">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Baixar">▼</button></div>
           </div>
 
           <div class="ls4-proc-card" onclick="openLb('assets/Render Lamination Line.png')" data-umami-event="render-card-zoom" data-umami-event-card="Lamination Line">
-            <img src="../shared/assets/Render Lamination Line.png" alt="Laminado">
-            <div class="ls4-proc-card-label">Laminado</div>
+            <img src="../shared/assets/Render Lamination Line.png" alt="Laminagem">
+            <div class="ls4-proc-card-label">Laminagem</div>
             <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Ocultar">✕</button>
-            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Subir">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Bajar">▼</button></div>
+            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Subir">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Baixar">▼</button></div>
           </div>
 
           <div class="ls4-proc-card" onclick="openLb('assets/Render IG LIne.png')" data-umami-event="render-card-zoom" data-umami-event-card="IG Line">
-            <img src="../shared/assets/Render IG LIne.png" alt="Línea IG">
-            <div class="ls4-proc-card-label">Línea IG</div>
+            <img src="../shared/assets/Render IG LIne.png" alt="Linha IG">
+            <div class="ls4-proc-card-label">Linha IG</div>
             <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Ocultar">✕</button>
-            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Subir">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Bajar">▼</button></div>
+            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Subir">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Baixar">▼</button></div>
           </div>
 
           <div class="ls4-proc-card" onclick="openLb('assets/Render Coating line.png')" data-umami-event="render-card-zoom" data-umami-event-card="Coating Line">
             <img src="../shared/assets/Render Coating line.png" alt="Coating">
             <div class="ls4-proc-card-label">Coating</div>
             <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Ocultar">✕</button>
-            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Subir">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Bajar">▼</button></div>
+            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Subir">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Baixar">▼</button></div>
           </div>
 
           <div class="ls4-proc-card" onclick="openLb('assets/Render Automotive Printing Line.png')" data-umami-event="render-card-zoom" data-umami-event-card="Automotive Printing Line">
-            <img src="../shared/assets/Render Automotive Printing Line.png" alt="Impresión Automotriz">
-            <div class="ls4-proc-card-label">Impresión Automotriz</div>
+            <img src="../shared/assets/Render Automotive Printing Line.png" alt="Impressão Automóvel">
+            <div class="ls4-proc-card-label">Impressão Automóvel</div>
             <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Ocultar">✕</button>
-            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Subir">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Bajar">▼</button></div>
+            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Subir">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Baixar">▼</button></div>
           </div>
 
         </div>
@@ -2027,7 +2027,7 @@
       var drag = document.createElement('span');
       drag.className = 'ls4-row-drag';
       drag.textContent = '⠿';
-      drag.title = 'Arrastrar para reordenar';
+      drag.title = 'Arrastar para reordenar';
       drag.addEventListener('mousedown', function() { tr.draggable = true; });
       drag.addEventListener('mouseup', function() { tr.draggable = false; });
       firstTd.insertBefore(drag, firstTd.firstChild);
@@ -2065,7 +2065,7 @@
       hideBtn.className = 'ls4-row-hide-btn';
       hideBtn.textContent = '×';
       var isNew = tr.dataset.new === 'true';
-      hideBtn.title = isNew ? 'Eliminar fila' : 'Ocultar fila';
+      hideBtn.title = isNew ? 'Eliminar linha' : 'Ocultar linha';
       hideBtn.onclick = function(ev) {
         ev.stopPropagation();
         if (isNew) {
@@ -2124,7 +2124,7 @@
         var cols = table.querySelectorAll('colgroup col').length;
         var tr = document.createElement('tr');
         tr.dataset.new = 'true';
-        var cells = '<td>Nueva fila</td>';
+        var cells = '<td>Nova linha</td>';
         for (var i = 1; i < cols; i++) cells += '<td></td>';
         tr.innerHTML = cells;
         tbody.appendChild(tr);
@@ -2161,77 +2161,77 @@
 
 </div>
 
-  <!-- SLIDE 5 · LA TECNOLOGÍA — VISIÓN GENERAL -->
+  <!-- SLIDE 5 · A TECNOLOGIA — VISÃO GERAL -->
 <div class="slide content t5" style="justify-content:flex-start; align-items:center; padding:52px 80px 0;">
   <img class="slide-logo" src="assets/LOGO Vidreira-Algarvia-Portugal.png" alt="Vidreira Algarvia">
 
-  <div class="section-label">La Tecnología</div>
-  <h1 class="slide-title" style="margin-bottom:14px;">Cómo el LineScanner <span class="blue">ve lo que otros no pueden</span></h1>
+  <div class="section-label">A Tecnologia</div>
+  <h1 class="slide-title" style="margin-bottom:14px;">Como o LineScanner <span class="blue">vê o que outros não conseguem</span></h1>
 
   <div class="t5-panels-wrap">
 
-    <!-- ══ PANEL 1 · Cómo Funciona ══ -->
+    <!-- ══ PANEL 1 · Como Funciona ══ -->
     <div class="t5-panel active" id="t5-howitworks">
       <div class="t5-hiw">
 
-        <!-- Top: 2×2 tarjetas de componentes -->
+        <!-- Top: 2×2 cartões de componentes -->
         <div class="t5-components anim-in">
-          <div class="t5-comp-card"><span class="t5-num">1</span><span class="t5-comp-text"><strong>Luz telecéntrica</strong> iluminación uniforme independiente de la posición del vidrio</span></div>
-          <div class="t5-comp-card"><span class="t5-num">2</span><span class="t5-comp-text"><strong>Sensor de imagen lineal</strong> escaneo real línea a línea</span></div>
-          <div class="t5-comp-card"><span class="t5-num">3</span><span class="t5-comp-text"><strong>Vidrio</strong> inspeccionado continuamente a plena velocidad de producción</span></div>
-          <div class="t5-comp-card"><span class="t5-num">4</span><span class="t5-comp-text"><strong>Módulo electrónico</strong> procesamiento de 16 bits a alta velocidad</span></div>
+          <div class="t5-comp-card"><span class="t5-num">1</span><span class="t5-comp-text"><strong>Luz telecentrada</strong> iluminação uniforme independente da posição do vidro</span></div>
+          <div class="t5-comp-card"><span class="t5-num">2</span><span class="t5-comp-text"><strong>Sensor de imagem linear</strong> digitalização real linha a linha</span></div>
+          <div class="t5-comp-card"><span class="t5-num">3</span><span class="t5-comp-text"><strong>Vidro</strong> inspecionado continuamente à plena velocidade de produção</span></div>
+          <div class="t5-comp-card"><span class="t5-num">4</span><span class="t5-comp-text"><strong>Módulo eletrónico</strong> processamento de 16 bits a alta velocidade</span></div>
         </div>
 
-        <!-- Bottom: diagrama a ancho completo -->
+        <!-- Bottom: diagrama a largura total -->
         <div class="t5-diagram t5-diagram-full anim-in" onclick="openLb('assets/Image Explaining the technology 1 Telecentric light 2 linear image sensor 3 glass 4 electronic module.png')" data-umami-event="image-zoom" data-umami-event-image="Technology Diagram - How It Works">
-          <img src="../shared/assets/Image Explaining the technology 1 Telecentric light 2 linear image sensor 3 glass 4 electronic module.png" alt="Diagrama de tecnología del escáner">
-          <div class="t5-img-hint">clic para ampliar</div>
+          <img src="../shared/assets/Image Explaining the technology 1 Telecentric light 2 linear image sensor 3 glass 4 electronic module.png" alt="Diagrama de tecnologia do scanner">
+          <div class="t5-img-hint">clique para ampliar</div>
         </div>
 
       </div>
     </div>
 
-    <!-- ══ PANEL 2 · Ventaja 16-bit ══ -->
+    <!-- ══ PANEL 2 · Vantagem 16-bit ══ -->
     <div class="t5-panel" id="t5-sixteenbit">
       <div class="t5-hiw">
 
-        <!-- 2×2 tarjetas de características -->
+        <!-- 2×2 cartões de características -->
         <div class="t5-components anim-in">
-          <div class="t5-comp-card"><span class="t5-fnum">1</span><span class="t5-comp-text"><strong>Detección de bajo contraste:</strong> Identifica defectos que los sistemas de 8 bits no pueden ver — inclusiones sutiles, variaciones de coating, microrayaduras.</span></div>
-          <div class="t5-comp-card"><span class="t5-fnum">2</span><span class="t5-comp-text"><strong>Homogeneización de transmisión:</strong> Vidrio del 15% al 99% procesado con la misma configuración — resultados idénticos en todos los tipos.</span></div>
-          <div class="t5-comp-card"><span class="t5-fnum">3</span><span class="t5-comp-text"><strong>Cada píxel es igual:</strong> Sin variación por posición — siempre consistente, eliminando falsos positivos y rechazos innecesarios.</span></div>
-          <div class="t5-comp-card"><span class="t5-fnum">4</span><span class="t5-comp-text"><strong>Velocidad de procesamiento extrema:</strong> Sin compromiso de producción. Compatible con cadencias automotrices y ferroviarias.</span></div>
+          <div class="t5-comp-card"><span class="t5-fnum">1</span><span class="t5-comp-text"><strong>Deteção de baixo contraste:</strong> Identifica defeitos que os sistemas de 8 bits não conseguem ver — inclusões subtis, variações de revestimento, micro-riscos.</span></div>
+          <div class="t5-comp-card"><span class="t5-fnum">2</span><span class="t5-comp-text"><strong>Homogeneização de transmissão:</strong> Vidro de 15% a 99% processado com a mesma configuração — resultados idênticos em todos os tipos.</span></div>
+          <div class="t5-comp-card"><span class="t5-fnum">3</span><span class="t5-comp-text"><strong>Cada pixel é igual:</strong> Sem variação por posição — sempre consistente, eliminando falsos positivos e rejeições desnecessárias.</span></div>
+          <div class="t5-comp-card"><span class="t5-fnum">4</span><span class="t5-comp-text"><strong>Velocidade de processamento extrema:</strong> Sem compromisso de produção. Compatível com cadências automóvel e ferroviário.</span></div>
         </div>
 
-        <!-- Diagrama 16-bit a ancho completo -->
+        <!-- Diagrama 16-bit a largura total -->
         <div class="t5-diagram t5-diagram-full anim-in" onclick="openLb('assets/16 bit tech.jpg')" data-umami-event="image-zoom" data-umami-event-image="16-bit Technology Diagram">
-          <img src="../shared/assets/16 bit tech.jpg" alt="Tecnología de 16 bits — rango dinámico extendido">
-          <div class="t5-img-hint">clic para ampliar</div>
+          <img src="../shared/assets/16 bit tech.jpg" alt="Tecnologia de 16 bits — gama dinâmica alargada">
+          <div class="t5-img-hint">clique para ampliar</div>
         </div>
 
       </div>
     </div>
 
-    <!-- ══ PANEL 3 · vs Sistemas de Cámara ══ -->
+    <!-- ══ PANEL 3 · vs Sistemas de Câmara ══ -->
     <div class="t5-panel" id="t5-vscamera">
       <div class="t5-vc-wrap anim-in">
 
-        <!-- LEFT — Sistemas basados en cámara -->
+        <!-- LEFT — Sistemas baseados em câmara -->
         <div class="t5-cmp-col t5-cmp-bad">
           <div class="t5-cmp-header">
             <span class="t5-cmp-icon">📷</span>
-            <span>Sistemas Basados en Cámara</span>
+            <span>Sistemas Baseados em Câmara</span>
           </div>
           <ul class="t5-cmp-list" id="t5-vc-bad-list">
-            <li><strong>Cobertura por instantes:</strong> Captura fotogramas periódicos — los defectos entre fotogramas no se detectan</li>
-            <li><strong>Desenfoque de movimiento a alta velocidad:</strong> Las líneas de producción rápidas causan borrosidad, reduciendo la precisión de detección</li>
-            <li><strong>Profundidad de la tecnología 8 bits:</strong> Solo 256 niveles de gris — los defectos de bajo contraste son invisibles</li>
-            <li><strong>Iluminación es dependiente de la posición:</strong> La luz no uniforme en el campo visual distorsiona los resultados</li>
-            <li><strong>Requiere recalibración:</strong> La sensibilidad debe reajustarse para cada tipo de vidrio y nivel de transmisión</li>
-            <li><strong>Falsos positivos y rechazos:</strong> La variación de píxeles por posición genera alarmas innecesarias</li>
+            <li><strong>Cobertura por instantes:</strong> Captura fotogramas periódicos — os defeitos entre fotogramas não são detetados</li>
+            <li><strong>Desfoque de movimento a alta velocidade:</strong> As linhas de produção rápidas causam desfoque, reduzindo a precisão de deteção</li>
+            <li><strong>Profundidade da tecnologia 8 bits:</strong> Apenas 256 níveis de cinzento — os defeitos de baixo contraste são invisíveis</li>
+            <li><strong>Iluminação dependente da posição:</strong> A luz não uniforme no campo visual distorce os resultados</li>
+            <li><strong>Requer recalibração:</strong> A sensibilidade tem de ser reajustada para cada tipo de vidro e nível de transmissão</li>
+            <li><strong>Falsos positivos e rejeições:</strong> A variação de pixels por posição gera alarmes desnecessários</li>
           </ul>
           <div class="t5-vc-list-restore" id="t5-vc-bad-restore"></div>
-          <button class="t5-vc-add-btn t5-vc-add-bad">+ Añadir elemento</button>
+          <button class="t5-vc-add-btn t5-vc-add-bad">+ Adicionar elemento</button>
         </div>
 
         <!-- CENTER — imágenes comparativas -->
@@ -2240,19 +2240,19 @@
           <div class="t5-vc-card" id="t5-vc-camhole">
             <button class="t5-vc-hide" onclick="t5VcHide('camhole')" title="Ocultar">×</button>
             <div class="t5-diagram" style="flex:1;min-height:0;" onclick="openLb('assets/Picture of how a drillhole is seeing on a camera base system it has an angle.jpeg')" data-umami-event="image-zoom" data-umami-event-image="Drillhole - Camera System">
-              <img src="../shared/assets/Picture of how a drillhole is seeing on a camera base system it has an angle.jpeg" alt="Agujero de taladro — sistema de cámara">
-              <div class="t5-img-hint">clic para ampliar</div>
+              <img src="../shared/assets/Picture of how a drillhole is seeing on a camera base system it has an angle.jpeg" alt="Furo de furação — sistema de câmara">
+              <div class="t5-img-hint">clique para ampliar</div>
             </div>
-            <div class="t5-vc-label">Agujero de taladro — Sistema de cámara</div>
+            <div class="t5-vc-label">Furo de furação — Sistema de câmara</div>
           </div>
 
           <div class="t5-vc-card" id="t5-vc-lshole">
             <button class="t5-vc-hide" onclick="t5VcHide('lshole')" title="Ocultar">×</button>
             <div class="t5-diagram" style="flex:1;min-height:0;" onclick="openLb('assets/Comparison on image taken by Camera Above and LineScanner below of a Ig unit .jpg')" data-umami-event="image-zoom" data-umami-event-image="IG Unit - Camera vs LineScanner">
-              <img src="../shared/assets/Comparison on image taken by Camera Above and LineScanner below of a Ig unit .jpg" alt="Comparación Cámara vs LineScanner — unidad IG">
-              <div class="t5-img-hint">clic para ampliar</div>
+              <img src="../shared/assets/Comparison on image taken by Camera Above and LineScanner below of a Ig unit .jpg" alt="Comparação Câmara vs LineScanner — unidade IG">
+              <div class="t5-img-hint">clique para ampliar</div>
             </div>
-            <div class="t5-vc-label">Cámara (arriba) vs LineScanner (abajo) — Unidad IG</div>
+            <div class="t5-vc-label">Câmara (em cima) vs LineScanner (em baixo) — Unidade IG</div>
           </div>
 
           <!-- Restore chips -->
@@ -2267,15 +2267,15 @@
             <span>LineScanner</span>
           </div>
           <ul class="t5-cmp-list" id="t5-vc-good-list">
-            <li><strong>Escaneo 100% línea a línea:</strong> Cada milímetro de vidrio es inspeccionado, cero huecos, cero áreas ciegas</li>
-            <li><strong>Sin desenfoque por movimiento:</strong> El sensor lineal lee una línea a la vez, perfectamente sincronizado con la velocidad de producción</li>
-            <li><strong>Profundidad de tecnología 16 bits:</strong> 65.536 niveles de gris, detecta las inclusiones más sutiles, variaciones de coating y microrayaduras</li>
-            <li><strong>Iluminación telecéntrica:</strong> Campo de luz uniforme independiente de la posición del vidrio, resultados consistentes en todo momento</li>
-            <li><strong>Una configuración para todo el vidrio:</strong> Transmisión del 15% al 99% gestionada automáticamente con la misma configuración</li>
-            <li><strong>Cada píxel es igual:</strong> Sin variación por posicion, elimina falsos positivos y rechazos innecesarios</li>
+            <li><strong>Digitalização 100% linha a linha:</strong> Cada milímetro de vidro é inspecionado, zero lacunas, zero áreas cegas</li>
+            <li><strong>Sem desfoque por movimento:</strong> O sensor linear lê uma linha de cada vez, perfeitamente sincronizado com a velocidade de produção</li>
+            <li><strong>Profundidade de tecnologia 16 bits:</strong> 65.536 níveis de cinzento, deteta as inclusões mais subtis, variações de revestimento e micro-riscos</li>
+            <li><strong>Iluminação telecentrada:</strong> Campo de luz uniforme independente da posição do vidro, resultados consistentes em qualquer momento</li>
+            <li><strong>Uma configuração para todo o vidro:</strong> Transmissão de 15% a 99% gerida automaticamente com a mesma configuração</li>
+            <li><strong>Cada pixel é igual:</strong> Sem variação por posição, elimina falsos positivos e rejeições desnecessárias</li>
           </ul>
           <div class="t5-vc-list-restore" id="t5-vc-good-restore"></div>
-          <button class="t5-vc-add-btn t5-vc-add-good">+ Añadir elemento</button>
+          <button class="t5-vc-add-btn t5-vc-add-good">+ Adicionar elemento</button>
         </div>
 
       </div>
@@ -2285,9 +2285,9 @@
 
   <!-- Tab bar — bottom -->
   <div class="t5-tabs">
-    <button class="t5-tab active" onclick="t5Tab(this,'howitworks')" data-umami-event="slide5-tab" data-umami-event-tab="How It Works">Cómo Funciona</button>
-    <button class="t5-tab" onclick="t5Tab(this,'sixteenbit')" data-umami-event="slide5-tab" data-umami-event-tab="16-bit Advantage">Ventaja 16-bit</button>
-    <button class="t5-tab" onclick="t5Tab(this,'vscamera')" data-umami-event="slide5-tab" data-umami-event-tab="vs Camera Systems">vs Sistemas de Cámara</button>
+    <button class="t5-tab active" onclick="t5Tab(this,'howitworks')" data-umami-event="slide5-tab" data-umami-event-tab="How It Works">Como Funciona</button>
+    <button class="t5-tab" onclick="t5Tab(this,'sixteenbit')" data-umami-event="slide5-tab" data-umami-event-tab="16-bit Advantage">Vantagem 16-bit</button>
+    <button class="t5-tab" onclick="t5Tab(this,'vscamera')" data-umami-event="slide5-tab" data-umami-event-tab="vs Camera Systems">vs Sistemas de Câmara</button>
   </div>
 
   <style>
@@ -2568,14 +2568,14 @@
 
       var dragBtn = document.createElement('button');
       dragBtn.className = 't5-vc-item-btn t5-vc-drag-btn';
-      dragBtn.textContent = '⠿'; dragBtn.title = 'Drag to reorder';
+      dragBtn.textContent = '⠿'; dragBtn.title = 'Arrastar para reordenar';
       dragBtn.addEventListener('mousedown', function() { li.draggable = true; });
       dragBtn.addEventListener('mouseup',   function() { li.draggable = false; });
 
       var hideBtn = document.createElement('button');
       hideBtn.className = 't5-vc-item-btn t5-vc-hide-btn';
       hideBtn.textContent = '×';
-      hideBtn.title = isNew ? 'Delete' : 'Hide';
+      hideBtn.title = isNew ? 'Eliminar' : 'Ocultar';
       hideBtn.onclick = function(e) {
         e.stopPropagation();
         if (isNew) {
@@ -2641,7 +2641,7 @@
       addBtn.onclick = function(e) {
         e.stopPropagation();
         var li = document.createElement('li');
-        li.textContent = 'New item';
+        li.textContent = 'Novo elemento';
         ul.appendChild(li);
         initItem(li, true);
         li.dispatchEvent(new MouseEvent('dblclick'));
@@ -2690,20 +2690,20 @@
   <div class="slide content s6" style="justify-content:flex-start; align-items:center; padding:52px 80px 0;">
     <img class="slide-logo" src="assets/LOGO Vidreira-Algarvia-Portugal.png" alt="Vidreira Algarvia">
 
-    <div class="section-label">Calidad Superficial</div>
-    <h1 class="slide-title" style="margin-bottom:8px;">Detección de defectos con <span class="blue">Inteligencia Artificial</span></h1>
-    <p class="slide-subtitle" style="margin-bottom:14px;">Red neuronal entrenada para clasificar automáticamente cada tipo de defecto.</p>
+    <div class="section-label">Qualidade Superficial</div>
+    <h1 class="slide-title" style="margin-bottom:8px;">Deteção de defeitos com <span class="blue">Inteligência Artificial</span></h1>
+    <p class="slide-subtitle" style="margin-bottom:14px;">Rede neuronal treinada para classificar automaticamente cada tipo de defeito.</p>
 
-    <!-- Selector de tipo de defecto -->
+    <!-- Seletor de tipo de defeito -->
     <div class="s6-selector anim-in" id="s6-selector"></div>
 
-    <!-- Carrusel de imágenes -->
+    <!-- Carrossel de imagens -->
     <div class="s6-stage">
       <button class="s6-arrow s6-prev" id="s6-prev">&#8249;</button>
       <div class="s6-viewport" id="s6-viewport">
         <div class="s6-empty" id="s6-empty">
           <div class="s6-empty-icon">🔍</div>
-          <div>No hay imágenes de ejemplo para este tipo de defecto aún.</div>
+          <div>Ainda não existem imagens de exemplo para este tipo de defeito.</div>
         </div>
       </div>
       <button class="s6-arrow s6-next" id="s6-next">&#8250;</button>
@@ -2825,40 +2825,40 @@
     <script>
     (function () {
       var DEFECTS = [
-        { name: 'Rayaduras',    row: 0, images: [
+        { name: 'Riscos',       row: 0, images: [
             { type: 'compare',
-              caption: 'Rayadura en vidrio con coating — cámara vs LineScanner',
-              left:  { src: '../shared/assets/Defect of a Coating Camera image 2.png',             label: 'Cámara' },
+              caption: 'Risco em vidro com revestimento — câmara vs LineScanner',
+              left:  { src: '../shared/assets/Defect of a Coating Camera image 2.png',             label: 'Câmara' },
               right: { src: '../shared/assets/Defect of a Coating image LineScanner Raw Image.png', label: 'LineScanner' }
             },
             { type: 'compare',
-              caption: 'Rayadura en vidrio con coating — ángulo alternativo',
-              left:  { src: '../shared/assets/Defect of a Coating Camera image.png',               label: 'Cámara' },
+              caption: 'Risco em vidro com revestimento — ângulo alternativo',
+              left:  { src: '../shared/assets/Defect of a Coating Camera image.png',               label: 'Câmara' },
               right: { src: '../shared/assets/Defect of a Coating image LineScanner Raw Image.png', label: 'LineScanner' }
             }
         ]},
-        { name: 'Inclusiones',  row: 1, images: [] },
-        { name: 'Suciedad',     row: 2, images: [] },
-        { name: 'Polvo',        row: 3, images: [] },
-        { name: 'Agua',         row: 4, images: [] },
-        { name: 'Huellas',      row: 5, images: [
-            { src: '../shared/assets/Defect of a Finger prints LineScanner Raw Image.png', caption: 'Escáner RAW — defecto de huella dactilar' }
+        { name: 'Inclusões',    row: 1, images: [] },
+        { name: 'Sujidade',     row: 2, images: [] },
+        { name: 'Pó',           row: 3, images: [] },
+        { name: 'Água',         row: 4, images: [] },
+        { name: 'Impressões',   row: 5, images: [
+            { src: '../shared/assets/Defect of a Finger prints LineScanner Raw Image.png', caption: 'Scanner RAW — defeito de impressão digital' }
         ]},
         { name: 'Ignorar',      row: 6, images: [] },
-        { name: 'Bordes',       row: 7, images: [
-            { src: '../shared/assets/Defect of micro edge chips on a cutout detction marks.png', caption: 'Microastillas en borde — marcas de detección de recorte' },
-            { src: '../shared/assets/image52.png', caption: 'Defecto de borde' }
+        { name: 'Bordos',       row: 7, images: [
+            { src: '../shared/assets/Defect of micro edge chips on a cutout detction marks.png', caption: 'Micro-lascas de bordo — marcas de deteção de recorte' },
+            { src: '../shared/assets/image52.png', caption: 'Defeito de bordo' }
         ]},
-        { name: 'Marco / Barras', row: 8, images: [
-            { src: '../shared/assets/Defect on an IGU Insulated Glass Secondary Seal inside the unit.jpeg', caption: 'Defecto en sellado secundario — unidad IGU' }
+        { name: 'Caixilho / Barras', row: 8, images: [
+            { src: '../shared/assets/Defect on an IGU Insulated Glass Secondary Seal inside the unit.jpeg', caption: 'Defeito na vedação secundária — unidade IGU' }
         ]},
         { name: 'Indefinido',   row: 9, images: [
-            { src: '../shared/assets/Defect Arcing on LineScanner Raw Image.png', caption: 'Escáner RAW — defecto de arco' }
+            { src: '../shared/assets/Defect Arcing on LineScanner Raw Image.png', caption: 'Scanner RAW — defeito de arco' }
         ]},
         { name: 'Coating',      icon: '◈', images: [
             { type: 'compare',
-              caption: 'Defecto de coating — cámara vs LineScanner',
-              left:  { src: '../shared/assets/Defect of a Coating 2 Camera image.png',                       label: 'Cámara' },
+              caption: 'Defeito de revestimento — câmara vs LineScanner',
+              left:  { src: '../shared/assets/Defect of a Coating 2 Camera image.png',                       label: 'Câmara' },
               right: { src: '../shared/assets/Defect of a Coating 2 Camera image LineScanner Raw Image.png', label: 'LineScanner' }
             }
         ]}
@@ -3004,8 +3004,8 @@
 
       // ── Default state: no tab selected, show intro carousel ──
       var DEFAULT_SLIDES = [
-        { src: '../shared/assets/Slide19.jpg', caption: 'Defecto superficial detectado — escáner RAW' },
-        { src: '../shared/assets/Slide20.jpg', caption: 'Clasificación de defecto — salida de IA' }
+        { src: '../shared/assets/Slide19.jpg', caption: 'Defeito superficial detetado — scanner RAW' },
+        { src: '../shared/assets/Slide20.jpg', caption: 'Classificação de defeito — saída de IA' }
       ];
       var defaultImg = 0;
 
@@ -3067,10 +3067,10 @@
   <div class="slide content ls7" style="justify-content:flex-start; align-items:center; padding:52px 80px 0;">
     <img class="slide-logo" src="assets/LOGO Vidreira-Algarvia-Portugal.png" alt="Vidreira Algarvia">
 
-    <div class="section-label">Control Dimensional</div>
-    <h1 class="slide-title" style="margin-bottom:14px;">Medición precisa de <span class="blue">dimensiones y recortes</span></h1>
+    <div class="section-label">Controlo Dimensional</div>
+    <h1 class="slide-title" style="margin-bottom:14px;">Medição precisa de <span class="blue">dimensões e recortes</span></h1>
 
-    <!-- Carrusel inline -->
+    <!-- Carrossel inline -->
     <div class="ls7-carousel anim-in">
       <button class="ls7-arrow ls7-prev" id="ls7-prev">&#8249;</button>
       <div class="ls7-viewport" id="ls7-viewport"></div>
@@ -3078,26 +3078,26 @@
       <div class="ls7-counter" id="ls7-counter"></div>
     </div>
 
-    <!-- Tarjetas de información -->
+    <!-- Cartões de informação -->
     <div class="ls7-cards anim-in">
       <div class="col-card">
-        <div class="col-label">¿Qué se mide?</div>
+        <div class="col-label">O que é medido?</div>
         <div class="col-list">
-          <div class="col-item"><strong>Dimensión general</strong> del cristal</div>
-          <div class="col-item"><strong>Posición y tamaño</strong> de agujeros</div>
-          <div class="col-item"><strong>Recortes y escotaduras</strong></div>
-          <div class="col-item"><strong>Ángulos y paralelismo</strong> de bordes</div>
-          <div class="col-item"><strong>Rotación y posición</strong> en línea</div>
+          <div class="col-item"><strong>Dimensão geral</strong> do vidro</div>
+          <div class="col-item"><strong>Posição e tamanho</strong> dos furos</div>
+          <div class="col-item"><strong>Recortes e reentrâncias</strong></div>
+          <div class="col-item"><strong>Ângulos e paralelismo</strong> dos bordos</div>
+          <div class="col-item"><strong>Rotação e posição</strong> na linha</div>
         </div>
       </div>
       <div class="col-card">
-        <div class="col-label">Configuración y tolerancias</div>
+        <div class="col-label">Configuração e tolerâncias</div>
         <div class="col-list">
-          <div class="col-item">Tolerancias individuales por medida</div>
-          <div class="col-item">Importación de modelos <strong>DXF</strong></div>
-          <div class="col-item">Verificación en <strong>2 pasos</strong>: global + detalle</div>
-          <div class="col-item">Compatible con <strong class="ls7-trigger" onclick="ls7OpenConveyor()" data-umami-event="conveyor-lightbox-open">transportes de cinta ↗</strong></div>
-          <div class="col-item">Luz paralela para <strong>precisión máxima</strong></div>
+          <div class="col-item">Tolerâncias individuais por medição</div>
+          <div class="col-item">Importação de modelos <strong>DXF</strong></div>
+          <div class="col-item">Verificação em <strong>2 passos</strong>: global + detalhe</div>
+          <div class="col-item">Compatível com <strong class="ls7-trigger" onclick="ls7OpenConveyor()" data-umami-event="conveyor-lightbox-open">tapetes transportadores ↗</strong></div>
+          <div class="col-item">Luz paralela para <strong>precisão máxima</strong></div>
         </div>
       </div>
     </div>
@@ -3232,11 +3232,11 @@
     (function () {
       var IMAGES = [
         { src: '../shared/assets/Dimension control screenshot shape piece of glass with and scratch and a inclusion.jpg',
-          caption: 'Control dimensional — rayadura e inclusión detectadas' },
+          caption: 'Controlo dimensional — risco e inclusão detetados' },
         { src: '../shared/assets/Dimension control screenshot drillhole alignment.jpg',
-          caption: 'Alineación de agujeros de taladro — control dimensional' },
+          caption: 'Alinhamento de furos de furação — controlo dimensional' },
         { src: '../shared/assets/Screenshot Scanned Piece of glass with cutouts and a shape and defects.png',
-          caption: 'Control dimensional — vidrio con recortes y formas' },
+          caption: 'Controlo dimensional — vidro com recortes e formas' },
         { src: '../shared/assets/image63.png', caption: '' },
         { src: '../shared/assets/image64.png', caption: '' },
         { src: '../shared/assets/image65.png', caption: '' },
@@ -3245,8 +3245,8 @@
       ];
 
       var CONVEYOR_IMAGES = [
-        { src: '../shared/assets/Belt Conveyor Diagram.jpg',      caption: 'Diagrama del transportador de cinta' },
-        { src: '../shared/assets/Band Conveyor Picture.jpg',      caption: 'Transportador de banda' },
+        { src: '../shared/assets/Belt Conveyor Diagram.jpg',      caption: 'Diagrama do tapete transportador' },
+        { src: '../shared/assets/Band Conveyor Picture.jpg',      caption: 'Tapete transportador de banda' },
         { src: '../shared/assets/Benteler Conveyor Picture .jpg', caption: 'Transportador Benteler' },
         { src: '../shared/assets/LOGO Benteler.jpg',              caption: 'Benteler' }
       ];
@@ -3342,23 +3342,23 @@
   <div class="slide content ls8a" style="justify-content:flex-start; align-items:center; padding:52px 80px 0;">
     <img class="slide-logo" src="assets/LOGO Vidreira-Algarvia-Portugal.png" alt="Vidreira Algarvia">
 
-    <div class="section-label">Serigrafía</div>
-    <h1 class="slide-title" style="margin-bottom:8px;">Control automático de calidad en <span class="blue">vidrio serigráfico</span></h1>
-    <p class="slide-subtitle" style="margin-bottom:16px;">La inspección de logos y serigrafía es ahora estándar — totalmente automática, el 100% del tiempo.</p>
+    <div class="section-label">Serigrafia</div>
+    <h1 class="slide-title" style="margin-bottom:8px;">Controlo automático de qualidade em <span class="blue">vidro serigráfico</span></h1>
+    <p class="slide-subtitle" style="margin-bottom:16px;">A inspeção de logótipos e serigrafia é agora padrão — totalmente automática, 100% do tempo.</p>
 
     <!-- Two column: checks list + carousel -->
     <div class="ls8a-layout">
 
       <!-- Left: what gets checked -->
       <div class="col-card">
-        <div class="col-label">Qué controla el LineScanner</div>
+        <div class="col-label">O que o LineScanner controla</div>
         <div class="col-list">
-          <div class="col-item"><strong>Posición correcta</strong> de la serigrafía</div>
-          <div class="col-item"><strong>Partes faltantes</strong> dentro de un logo</div>
-          <div class="col-item"><strong>Consistencia del grosor</strong> de impresión</div>
-          <div class="col-item"><strong>Errores de detalle</strong> en gráficos</div>
-          <div class="col-item"><strong>Errores y defectos</strong> de serigrafía</div>
-          <div class="col-item"><strong>Posición y rotación</strong> del logo</div>
+          <div class="col-item"><strong>Posição correta</strong> da serigrafia</div>
+          <div class="col-item"><strong>Partes em falta</strong> dentro de um logótipo</div>
+          <div class="col-item"><strong>Consistência da espessura</strong> de impressão</div>
+          <div class="col-item"><strong>Erros de detalhe</strong> em gráficos</div>
+          <div class="col-item"><strong>Erros e defeitos</strong> de serigrafia</div>
+          <div class="col-item"><strong>Posição e rotação</strong> do logótipo</div>
         </div>
       </div>
 
@@ -3367,16 +3367,16 @@
         <button class="ls8a-arrow ls8a-prev" id="ls8aPrev" disabled>&#8249;</button>
         <div class="ls8a-viewport" id="ls8aViewport">
           <div class="ls8a-slide active">
-            <img src="../shared/assets/Slide35.jpg" alt="Control de posición">
-            <div class="ls8a-cap">Control de posición</div>
+            <img src="../shared/assets/Slide35.jpg" alt="Controlo de posição">
+            <div class="ls8a-cap">Controlo de posição</div>
           </div>
           <div class="ls8a-slide">
-            <img src="../shared/assets/image82.png" alt="Detección de pinholes en vidrio impreso">
-            <div class="ls8a-cap">Detección de pinholes en vidrio impreso</div>
+            <img src="../shared/assets/image82.png" alt="Deteção de pinholes em vidro impresso">
+            <div class="ls8a-cap">Deteção de pinholes em vidro impresso</div>
           </div>
           <div class="ls8a-slide">
-            <img src="../shared/assets/image83.png" alt="Verificación de posición de logo">
-            <div class="ls8a-cap">Verificación de posición de logo</div>
+            <img src="../shared/assets/image83.png" alt="Verificação de posição do logótipo">
+            <div class="ls8a-cap">Verificação de posição do logótipo</div>
           </div>
         </div>
         <button class="ls8a-arrow ls8a-next" id="ls8aNext">&#8250;</button>
@@ -3480,8 +3480,8 @@
   <div class="slide content ls8b" style="justify-content:flex-start; align-items:center; padding:52px 80px 0;">
     <img class="slide-logo" src="assets/LOGO Vidreira-Algarvia-Portugal.png" alt="Vidreira Algarvia">
 
-    <div class="section-label">Serigrafía &amp; Logotipo</div>
-    <h1 class="slide-title" style="margin-bottom:14px;">Posición y <span class="blue">control de calidad del marcado</span></h1>
+    <div class="section-label">Serigrafia &amp; Logótipo</div>
+    <h1 class="slide-title" style="margin-bottom:14px;">Posição e <span class="blue">controlo de qualidade da marcação</span></h1>
 
     <!-- Inline carousel -->
     <div class="ls8b-carousel anim-in">
@@ -3494,12 +3494,12 @@
     <!-- Clickable tags -->
     <div class="ls8b-info anim-in">
       <div class="tag-grid" style="justify-content:center;">
-        <span class="tag error">❌ Serigrafía ausente</span>
-        <span class="tag error ls8b-tag" data-img="1">📐 Distorsión</span>
-        <span class="tag warn">💡 Tinta brillante</span>
-        <span class="tag warn ls8b-tag" data-img="2">🔄 Rotación</span>
-        <span class="tag error ls8b-tag" data-img="3">📍 Fuera de posición</span>
-        <span class="tag ls8b-tag" data-img="4">⬛ Ítems "llenos"</span>
+        <span class="tag error">❌ Serigrafia ausente</span>
+        <span class="tag error ls8b-tag" data-img="1">📐 Distorção</span>
+        <span class="tag warn">💡 Tinta brilhante</span>
+        <span class="tag warn ls8b-tag" data-img="2">🔄 Rotação</span>
+        <span class="tag error ls8b-tag" data-img="3">📍 Fora de posição</span>
+        <span class="tag ls8b-tag" data-img="4">⬛ Itens "preenchidos"</span>
       </div>
     </div>
 
@@ -3558,10 +3558,10 @@
     (function () {
       var IMAGES = [
         { src: '../shared/assets/image89.png', caption: '' },
-        { src: '../shared/assets/image90.png', caption: 'Distorsión' },
-        { src: '../shared/assets/image91.png', caption: 'Rotación' },
-        { src: '../shared/assets/image92.png', caption: 'Fuera de posición' },
-        { src: '../shared/assets/image96.png', caption: 'Ítems llenos' }
+        { src: '../shared/assets/image90.png', caption: 'Distorção' },
+        { src: '../shared/assets/image91.png', caption: 'Rotação' },
+        { src: '../shared/assets/image92.png', caption: 'Fora de posição' },
+        { src: '../shared/assets/image96.png', caption: 'Itens preenchidos' }
       ];
       var current  = 0;
       var lbIdx    = 0;
@@ -3639,13 +3639,13 @@
   <div class="slide content ls10" style="justify-content:flex-start; align-items:center; padding:52px 80px 0;">
     <img class="slide-logo" src="assets/LOGO Vidreira-Algarvia-Portugal.png" alt="Vidreira Algarvia">
 
-    <div class="section-label">Trazabilidad &amp; Gestión</div>
-    <h1 class="slide-title" style="margin-bottom:10px;">Decisiones basadas en <span class="blue">datos reales</span></h1>
+    <div class="section-label">Rastreabilidade &amp; Gestão</div>
+    <h1 class="slide-title" style="margin-bottom:10px;">Decisões baseadas em <span class="blue">dados reais</span></h1>
 
     <!-- ── Tabs ── -->
     <div class="ls10-tabs">
-      <button class="ls10-tab active" data-tab="archive" onclick="ls10Switch('archive')">Archivo</button>
-      <button class="ls10-tab"        data-tab="console" onclick="ls10Switch('console')">Consola de Gestión</button>
+      <button class="ls10-tab active" data-tab="archive" onclick="ls10Switch('archive')">Arquivo</button>
+      <button class="ls10-tab"        data-tab="console" onclick="ls10Switch('console')">Consola de Gestão</button>
     </div>
 
     <!-- ── Carousel ── -->
@@ -3656,36 +3656,36 @@
       <div class="ls10-counter" id="ls10-counter"></div>
     </div>
 
-    <!-- ── Feature cards: Archivo ── -->
+    <!-- ── Feature cards: Arquivo ── -->
     <div class="ls10-cards" id="ls10-cards-archive" style="display:grid;">
       <div class="col-card">
         <div class="col-list">
-          <div class="col-item"><strong>Recibe datos</strong> del LineScanner y Osprey</div>
-          <div class="col-item"><strong>Busca</strong> vidrios/escaneos concretos con evaluación del operario</div>
-          <div class="col-item"><strong>Combina</strong> datos individuales del ERP</div>
+          <div class="col-item"><strong>Recebe dados</strong> do LineScanner e Osprey</div>
+          <div class="col-item"><strong>Pesquisa</strong> vidros/digitalizações específicos com avaliação do operador</div>
+          <div class="col-item"><strong>Combina</strong> dados individuais do ERP</div>
         </div>
       </div>
       <div class="col-card">
         <div class="col-list">
-          <div class="col-item"><strong>Imprime certificados</strong> por vidrio / escaneo</div>
-          <div class="col-item"><strong>Reportes automáticos</strong> según programaciones</div>
-          <div class="col-item"><strong>Estadísticas individuales</strong> para minimizar workflows críticos</div>
+          <div class="col-item"><strong>Imprime certificados</strong> por vidro / digitalização</div>
+          <div class="col-item"><strong>Relatórios automáticos</strong> conforme programações</div>
+          <div class="col-item"><strong>Estatísticas individuais</strong> para minimizar fluxos críticos</div>
         </div>
       </div>
     </div>
 
-    <!-- ── Feature cards: Consola de Gestión ── -->
+    <!-- ── Feature cards: Consola de Gestão ── -->
     <div class="ls10-cards" id="ls10-cards-console" style="display:none;">
       <div class="col-card">
         <div class="col-list">
-          <div class="col-item"><strong>Vista en vivo</strong> — monitorización de producción en tiempo real</div>
-          <div class="col-item"><strong>Alertas</strong> — por cantidad, ratio bueno/malo, períodos flexibles</div>
+          <div class="col-item"><strong>Vista em direto</strong> — monitorização de produção em tempo real</div>
+          <div class="col-item"><strong>Alertas</strong> — por quantidade, rácio bom/mau, períodos flexíveis</div>
         </div>
       </div>
       <div class="col-card">
         <div class="col-list">
-          <div class="col-item"><strong>Múltiples destinatarios</strong> por regla de alerta</div>
-          <div class="col-item"><strong>Configuración central</strong> — gestiona todas las unidades LineScanner desde un solo lugar</div>
+          <div class="col-item"><strong>Múltiplos destinatários</strong> por regra de alerta</div>
+          <div class="col-item"><strong>Configuração central</strong> — gere todas as unidades LineScanner a partir de um único local</div>
         </div>
       </div>
     </div>
@@ -3835,14 +3835,14 @@
 
       var TABS = {
         archive: [
-          { src: '../shared/assets/image101.png', caption: 'Archivo — base de datos de trazabilidad completa' },
-          { src: '../shared/assets/image104.png', caption: 'GlassIQ Archive — detalle de escaneo' }
+          { src: '../shared/assets/image101.png', caption: 'Arquivo — base de dados de rastreabilidade completa' },
+          { src: '../shared/assets/image104.png', caption: 'GlassIQ Archive — detalhe de digitalização' }
         ],
         console: [
-          { src: '../shared/assets/Slide43.jpg',  caption: 'Consola de Gestión — todo controlado desde uno' },
-          { src: '../shared/assets/image108.png', caption: 'Consola de Gestión — panel de producción' },
-          { src: '../shared/assets/Slide44.jpg',  caption: 'Alertas móviles — notificaciones y umbrales por línea' },
-          { src: '../shared/assets/Slide46.jpg',  caption: 'Configuración central — todas las unidades LineScanner del grupo' }
+          { src: '../shared/assets/Slide43.jpg',  caption: 'Consola de Gestão — tudo controlado a partir de um único lugar' },
+          { src: '../shared/assets/image108.png', caption: 'Consola de Gestão — painel de produção' },
+          { src: '../shared/assets/Slide44.jpg',  caption: 'Alertas móveis — notificações e limiares por linha' },
+          { src: '../shared/assets/Slide46.jpg',  caption: 'Configuração central — todas as unidades LineScanner do grupo' }
         ]
       };
 
@@ -3954,8 +3954,8 @@
   <div class="slide content lssen" style="justify-content:flex-start; align-items:center; padding:52px 80px 0;">
     <img class="slide-logo" src="assets/LOGO Vidreira-Algarvia-Portugal.png" alt="Vidreira Algarvia">
 
-    <div class="section-label">Ajuste de Sensibilidad</div>
-    <h1 class="slide-title" style="margin-bottom:14px;">Ajuste de sensibilidad <span class="blue">completamente automático</span></h1>
+    <div class="section-label">Ajuste de Sensibilidade</div>
+    <h1 class="slide-title" style="margin-bottom:14px;">Ajuste de sensibilidade <span class="blue">completamente automático</span></h1>
 
     <!-- ── Carousel ── -->
     <div class="lssen-carousel anim-in">
@@ -3967,30 +3967,30 @@
 
     <!-- ── Steps ── -->
     <div class="lssen-steps-wrap anim-in">
-      <div class="lssen-steps-label">Selección Automática de Receta de Calidad</div>
+      <div class="lssen-steps-label">Seleção Automática de Receita de Qualidade</div>
       <div class="lssen-steps">
         <div class="lssen-step">
           <div class="lssen-num">1</div>
-          <div>Recibe información del vidrio vía interfaz <span class="lssen-muted">(archivo de transferencia, PLC…)</span></div>
+          <div>Recebe informação do vidro via interface <span class="lssen-muted">(ficheiro de transferência, PLC…)</span></div>
         </div>
         <div class="lssen-step">
           <div class="lssen-num">2</div>
-          <div>Logo detectado → selecciona sensibilidad de <strong>Vidrio Templado</strong></div>
+          <div>Logótipo detetado → seleciona sensibilidade de <strong>Vidro Temperado</strong></div>
         </div>
         <div class="lssen-step">
           <div class="lssen-num">3</div>
-          <div>Sensor GSS detecta lámina laminada → configuración de <strong>Vidrio Laminado</strong></div>
+          <div>Sensor GSS deteta folha laminada → configuração de <strong>Vidro Laminado</strong></div>
         </div>
         <div class="lssen-step">
           <div class="lssen-num">4</div>
-          <div>Revestimiento detectado → ajuste de sensibilidad para <strong>Vidrio con Recubrimiento</strong></div>
+          <div>Revestimento detetado → ajuste de sensibilidade para <strong>Vidro com Revestimento</strong></div>
         </div>
         <div class="lssen-step">
           <div class="lssen-num">5</div>
-          <div>Cualquier otro caso → configuración de calidad y sensibilidad <strong>Por Defecto</strong></div>
+          <div>Qualquer outro caso → configuração de qualidade e sensibilidade <strong>Por Defeito</strong></div>
         </div>
       </div>
-      <div class="lssen-tagline">LineScanner — tan fácil como un teléfono inteligente</div>
+      <div class="lssen-tagline">LineScanner — tão fácil como um telemóvel inteligente</div>
     </div>
 
     <!-- ── Fullscreen lightbox ── -->
@@ -4145,10 +4145,10 @@
     (function () {
 
       var IMAGES = [
-        { src: '../shared/assets/Slide62.jpg', caption: 'Opciones de Selección de Calidad y Sensibilidad — receta automática' },
-        { src: '../shared/assets/Slide63.jpg', caption: 'Zonas de sensibilidad — Borde, Exterior, Principal, Especial (DXF)' },
-        { src: '../shared/assets/Slide64.jpg', caption: 'Ajuste de sensibilidad totalmente automático — categorización IA' },
-        { src: '../shared/assets/Slide65.jpg', caption: 'Interfaz de control de sensibilidad — tan fácil como un teléfono' }
+        { src: '../shared/assets/Slide62.jpg', caption: 'Opções de Seleção de Qualidade e Sensibilidade — receita automática' },
+        { src: '../shared/assets/Slide63.jpg', caption: 'Zonas de sensibilidade — Bordo, Exterior, Principal, Especial (DXF)' },
+        { src: '../shared/assets/Slide64.jpg', caption: 'Ajuste de sensibilidade totalmente automático — categorização por IA' },
+        { src: '../shared/assets/Slide65.jpg', caption: 'Interface de controlo de sensibilidade — tão fácil como um telemóvel' }
       ];
 
       var current  = 0;
@@ -4236,9 +4236,9 @@
   <div class="slide content ls11" style="justify-content:flex-start; align-items:center; padding:52px 80px 0;">
     <img class="slide-logo" src="assets/LOGO Vidreira-Algarvia-Portugal.png" alt="Vidreira Algarvia">
 
-    <div class="section-label">Instalación</div>
-    <h1 class="slide-title">Modular — <span class="blue">mínima huella de instalación</span></h1>
-    <p class="slide-subtitle" style="margin-bottom:8px; margin-top:-6px;">único · en todo el mundo</p>
+    <div class="section-label">Instalação</div>
+    <h1 class="slide-title">Modular — <span class="blue">mínima pegada de instalação</span></h1>
+    <p class="slide-subtitle" style="margin-bottom:8px; margin-top:-6px;">único · em todo o mundo</p>
 
     <!-- ── Carousel ── -->
     <div class="ls11-carousel anim-in">
@@ -4252,11 +4252,11 @@
     <div class="ls11-badges-row">
       <div class="ls11-badge">
         <div class="ls11-badge-title">Horizontal</div>
-        <div class="ls11-badge-spec">Profundidad ~475 mm · Ancho individual según necesidad</div>
+        <div class="ls11-badge-spec">Profundidade ~475 mm · Largura individual conforme necessidade</div>
       </div>
       <div class="ls11-badge">
         <div class="ls11-badge-title">Vertical</div>
-        <div class="ls11-badge-spec">Ancho ~700 mm · Profundidad de solo 420 mm</div>
+        <div class="ls11-badge-spec">Largura ~700 mm · Profundidade de apenas 420 mm</div>
       </div>
     </div>
 
@@ -4398,7 +4398,7 @@
     (function () {
 
       var IMAGES = [
-        { src: '../shared/assets/Slide66.jpg', caption: 'LineScanner — Huella de instalación modular' }
+        { src: '../shared/assets/Slide66.jpg', caption: 'LineScanner — Pegada de instalação modular' }
       ];
 
       var current  = 0;
@@ -4496,21 +4496,21 @@
   <div class="slide content" style="position:relative; justify-content:flex-start; padding:60px 80px 0;">
     <img src="../shared/assets/image112.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.06;pointer-events:none;z-index:0;">
     <img class="slide-logo" src="assets/LOGO Vidreira-Algarvia-Portugal.png" alt="Vidreira Algarvia">
-    <div class="section-label">Próximos Pasos</div>
-    <h1 class="slide-title">¿Hablamos de una<br><span class="blue">demostración en vivo?</span></h1>
+    <div class="section-label">Próximos Passos</div>
+    <h1 class="slide-title">Falamos de uma<br><span class="blue">demonstração ao vivo?</span></h1>
     <div class="divider"></div>
     <div class="cta-box anim-in" style="flex:1; min-height:0; display:flex; flex-direction:column; justify-content:center; padding-bottom:72px; max-width:680px; width:100%;">
-      <p>Proponemos una visita técnica a nuestras instalaciones para realizar una demostración in situ con <strong>vidrio real de vuestras líneas</strong> — automotriz de alta gama, tren y autobús.</p>
+      <p>Propomos uma visita técnica às nossas instalações para realizar uma demonstração in situ com <strong>vidro real das vossas linhas</strong> — automóvel de alta gama, comboio e autocarro.</p>
       <div class="cta-steps">
-        <div class="cta-step"><div class="step-num">1</div>Análisis de vuestra línea de producción actual</div>
-        <div class="cta-step"><div class="step-num">2</div>Demo en vivo con muestras de Vidreira Algarvia</div>
-        <div class="cta-step"><div class="step-num">3</div>Propuesta técnica y económica personalizada</div>
+        <div class="cta-step"><div class="step-num">1</div>Análise da vossa linha de produção atual</div>
+        <div class="cta-step"><div class="step-num">2</div>Demo ao vivo com amostras da Vidreira Algarvia</div>
+        <div class="cta-step"><div class="step-num">3</div>Proposta técnica e económica personalizada</div>
       </div>
       <div class="cta-contact">
         <div class="cta-contact-name">
           <strong>Alex Ochoa</strong>
           <span class="cta-contact-role">Softsolution GmbH · glasquality.com</span>
-          <span class="cta-contact-addr">Im Vogelsang 18 · 3340 Waidhofen · Austria</span>
+          <span class="cta-contact-addr">Im Vogelsang 18 · 3340 Waidhofen · Áustria</span>
         </div>
         <div class="cta-contact-btns">
           <a class="cta-btn-wa" href="https://wa.me/436768804501" target="_blank" data-umami-event="cta-whatsapp">
@@ -4730,21 +4730,21 @@
 
   window.shareSendWa = function () {
     var phone  = val('share-wa-num').replace(/\D/g, '');
-    var name   = val('share-name') || 'ahí';
+    var name   = val('share-name') || 'aí';
     var custom = val('share-msg');
     var url    = buildUrl('whatsapp');
-    var msg    = 'Hola ' + name + ',\n\n' + (custom ? custom + '\n\n' : 'Aquí tienes la presentación de LineScanner:\n') + url;
+    var msg    = 'Olá ' + name + ',\n\n' + (custom ? custom + '\n\n' : 'Aqui está a apresentação do LineScanner:\n') + url;
     window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
     shareClose();
   };
 
   window.shareSendEmail = function () {
     var to      = val('share-email-to');
-    var name    = val('share-name') || 'ahí';
+    var name    = val('share-name') || 'aí';
     var custom  = val('share-msg');
     var url     = buildUrl('email');
-    var subject = encodeURIComponent('Presentación LineScanner');
-    var body    = 'Hola ' + name + ',\n\n' + (custom ? custom + '\n\n' : 'Aquí tienes la presentación:\n') + url + '\n\nSaludos';
+    var subject = encodeURIComponent('Apresentação LineScanner');
+    var body    = 'Olá ' + name + ',\n\n' + (custom ? custom + '\n\n' : 'Aqui está a apresentação:\n') + url + '\n\nCumprimentos';
     window.open('mailto:' + to + '?subject=' + subject + '&body=' + encodeURIComponent(body));
     shareClose();
   };
