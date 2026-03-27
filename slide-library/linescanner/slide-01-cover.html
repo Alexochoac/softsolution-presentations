@@ -1,4 +1,3 @@
-<!-- SLIDE_META {"title":"Cover","default":"visible","tags":["company"]} -->
 <div class="slide hero">
   <!-- SoftSolution + LiteSentry logo row — top left -->
   <div class="slide-logo-row" style="position:absolute; top:22px; left:36px; z-index:10; margin-bottom:0;">
@@ -12,10 +11,47 @@
 
   <!-- Customer logo — centered in right half -->
   <div class="ls1-customer-logo">
-    <img class="ls1-cust-img" src="assets/LOGO Customer TEST.png" alt="[Customer]"
-         onerror="this.classList.add('ls1-cust-img--missing')">
+    <img class="ls1-cust-img" src="assets/LOGO Customer TEST.png" alt="[Customer]" onerror="this.classList.add('ls1-cust-img--missing')">
     <label class="ls1-cust-placeholder" for="ls1-logo-file" title="Click to upload logo">
-      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline><!-- Code injected by live-server -->
+<script>
+	//   &lt;-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i &lt; sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href &amp;&amp; typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&amp;|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') &gt;= 0 ? '&amp;' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage &amp;&amp; !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// 
+</script>
+</svg>
       <span>Customer Logo</span>
       <small>Click to upload</small>
     </label>
@@ -32,22 +68,78 @@
 
   <!-- ── Gallery button ── -->
   <button class="ls1-gallery-btn" onclick="ls1OpenGallery()" title="Show installation gallery">
-    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><!-- Code injected by live-server -->
+<script>
+	//   &lt;-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i &lt; sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href &amp;&amp; typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&amp;|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') &gt;= 0 ? '&amp;' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage &amp;&amp; !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// 
+</script>
+</svg>
     Gallery
   </button>
 
   <!-- ── Gallery overlay — position:fixed escapes the slide stacking context ── -->
   <div class="ls1-gallery-overlay" id="ls1GalleryOverlay" style="display:none;">
     <div class="ls1-gallery-popup">
-      <button class="ls1-gallery-close" onclick="ls1CloseGallery()">&#x2715;</button>
+      <button class="ls1-gallery-close" onclick="ls1CloseGallery()">✕</button>
       <div class="ls1-car-wrap" id="ls1CarWrap">
         <div class="ls1-car-track" id="ls1CarTrack">
-          <div class="ls1-car-slide"><img src="Slide Images/Render Tempering Line.png" alt="Tempering Line"><div class="ls1-car-caption" contenteditable="true" spellcheck="false">Tempering Line</div></div>
-          <div class="ls1-car-slide"><img src="Slide Images/Render IG LIne.png" alt="IG Line"><div class="ls1-car-caption" contenteditable="true" spellcheck="false">IG Line</div></div>
-          <div class="ls1-car-slide"><img src="Slide Images/Render Automotive Printing Line.png" alt="Automotive Printing Line"><div class="ls1-car-caption" contenteditable="true" spellcheck="false">Automotive Printing Line</div></div>
-          <div class="ls1-car-slide ls1-car-slide--text"><div class="ls1-car-phrase" contenteditable="true" spellcheck="false">Phrase 1</div></div>
-          <div class="ls1-car-slide ls1-car-slide--text"><div class="ls1-car-phrase" contenteditable="true" spellcheck="false">Phrase 2</div></div>
-          <div class="ls1-car-slide ls1-car-slide--text"><div class="ls1-car-phrase" contenteditable="true" spellcheck="false">Phrase 3</div></div>
+          <div class="ls1-car-slide"><img src="assets/Render Tempering Line.png" alt="Tempering Line"><div class="ls1-car-caption" contenteditable="true" spellcheck="false">Tempering Line</div></div>
+          <div class="ls1-car-slide ls1-car-slide--text">
+            <div class="ls1-stat-block">
+              <div class="section-label">Cost of Quality Defects</div>
+              <span class="stat-number">Rule 1+10+100 </span>
+              <div class="stat-label">Catching a defect early costs 1, while letting it reach the customer can cost 100 times more in replacements and recalls</div>
+            </div>
+          </div>
+          <div class="ls1-car-slide"><img src="assets/Render IG LIne.png" alt="IG Line"><div class="ls1-car-caption" contenteditable="true" spellcheck="false">IG Line</div></div>
+          <div class="ls1-car-slide ls1-car-slide--text">
+            <div class="ls1-stat-block">
+              <div class="section-label">The Human Limit</div>
+              <span class="stat-number">Ghost Zone</span>
+              <div class="stat-label">Human inspectors lose nearly all accuracy once line speeds increases</div>
+            </div>
+          </div>
+          <div class="ls1-car-slide"><img src="assets/Render Automotive Printing Line.png" alt="Automotive Printing Line"><div class="ls1-car-caption" contenteditable="true" spellcheck="false">Automotive Printing Line</div></div>
+          <div class="ls1-car-slide ls1-car-slide--text">
+            <div class="ls1-stat-block">
+              <div class="section-label">Invisible Risks</div>
+              <span class="stat-number">Anisotropy &amp; Distortion</span>
+              <div class="stat-label">By seeing what the eye misses, you prevent unplanned costs before the product ever leaves to your customer</div>
+            </div>
+          </div>
         </div>
         <button class="ls1-car-prev" onclick="ls1CarMove(-1)">&#8249;</button>
         <button class="ls1-car-next" onclick="ls1CarMove(1)">&#8250;</button>
@@ -239,21 +331,13 @@
       background: linear-gradient(135deg, #0d1117 0%, #1a1f2e 100%);
       display: flex; align-items: center; justify-content: center;
     }
-    .ls1-car-phrase {
-      color: rgba(255,255,255,.90);
-      font-size: clamp(20px, 3vw, 32px);
-      font-weight: 700;
-      letter-spacing: .04em;
-      text-align: center;
-      padding: 32px;
-      border: 2px dashed rgba(255,255,255,.15);
-      border-radius: 16px;
-      min-width: 60%;
-      line-height: 1.4;
-      outline: none;
-      transition: border-color .2s;
+    .ls1-stat-block {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 4px; padding: 32px; width: 100%; text-align: center;
     }
-    .ls1-car-phrase:focus { border-color: rgba(var(--accent-rgb), .60); }
+    .ls1-stat-block .stat-number { font-size:clamp(48px,8vw,88px); font-weight:900; letter-spacing:-.03em; line-height:1; background:linear-gradient(135deg,var(--accent),var(--accent-light)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; display:block; text-align:center; }
+    .ls1-stat-block .stat-label  { font-size:15px; color:var(--text-muted); margin-top:8px; font-weight:500; text-align:center; }
+    .ls1-gallery-overlay [contenteditable="true"] { outline: none !important; background: transparent !important; }
 
     @media (max-width: 900px) {
       .ls1-car-wrap  { width: 90vw; height: 54vw; }
@@ -264,37 +348,6 @@
       .ls1-gallery-btn { bottom: 80px; right: 16px; }
     }
   </style>
-
-  <script>
-  /* ── Gallery open / close / navigate ── */
-  (function () {
-    var _idx = 0;
-
-    function _overlay() { return document.getElementById('ls1GalleryOverlay'); }
-    function _track()   { return document.getElementById('ls1CarTrack'); }
-    function _count()   { return _track().querySelectorAll('.ls1-car-slide').length; }
-
-    function _go(idx) {
-      _idx = (idx + _count()) % _count();
-      _track().style.transform = 'translateX(' + (-_idx * 100) + '%)';
-    }
-
-    window.ls1OpenGallery  = function () { _go(0); _overlay().style.display = 'flex'; };
-    window.ls1CloseGallery = function () { _overlay().style.display = 'none'; };
-    window.ls1CarMove      = function (dir) { _go(_idx + dir); };
-
-    /* Click on backdrop (not popup) closes gallery */
-    document.addEventListener('click', function (e) {
-      var ov = _overlay();
-      if (ov && e.target === ov) ls1CloseGallery();
-    });
-
-    /* Escape key closes gallery */
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') ls1CloseGallery();
-    });
-  })();
-  </script>
 
   <script>
   (function () { var s = document.currentScript;

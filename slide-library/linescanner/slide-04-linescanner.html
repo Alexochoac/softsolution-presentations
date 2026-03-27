@@ -1,4 +1,3 @@
-<!-- SLIDE_META {"title":"Capabilities Overview","default":"visible","tags":["capabilities","linescanner","bowscanner","culletscanner","osprey"]} -->
 <div class="slide content ls4" style="justify-content:flex-start; align-items:center; padding:52px 80px 0;">
   <div class="slide-logo-row"><img src="assets/LOGO SoftSolution grays.png" alt="Softsolution"><span class="slide-logo-sep"></span><img src="assets/logo-litesentry.png" alt="LiteSentry" class="slide-logo-ls"></div>
 
@@ -7,15 +6,15 @@
 
   <!-- ── Tab Bar ── -->
   <div class="ls4-tabs">
-    <button class="ls4-tab active" onclick="ls4Tab(this,'matrix')">Capability Matrix</button>
-    <button class="ls4-tab" onclick="ls4Tab(this,'process')">Where in Your Process</button>
+    <button class="ls4-tab" onclick="ls4Tab(this,'matrix')">Capability Matrix</button>
+    <button class="ls4-tab active" onclick="ls4Tab(this,'process')">Where in Your Process</button>
   </div>
 
   <!-- ── Panels Wrapper ── -->
   <div class="ls4-panels-wrap">
 
     <!-- ══ PANEL 1 · Capability Matrix ══ -->
-    <div class="ls4-panel active" id="ls4-matrix">
+    <div class="ls4-panel" id="ls4-matrix">
       <div class="ls4-grid">
 
         <!-- Table -->
@@ -131,19 +130,26 @@
           <button class="ls4-add-row-btn" data-table="matrix">+ Add row</button>
         </div>
 
-        <!-- Scanner cards -->
-        <div class="ls4-cards anim-in" style="">
-          <div class="ls4-card ls4-card-v" onclick="openLb('assets/Vertical LineScanner.png')">
-            <div class="ls4-card-img">
+        <!-- Scanner carousel -->
+        <div class="ls4-carousel anim-in" style="">
+          <div class="ls4-car-viewport">
+            <div class="ls4-car-slide ls4-car-active" onclick="openLb('assets/Vertical LineScanner.png')">
               <img src="assets/Vertical LineScanner.png" alt="Vertical LineScanner">
+              <div class="ls4-car-label">Vertical LineScanner</div>
             </div>
-            <div class="ls4-card-label">Vertical LineScanner</div>
-          </div>
-          <div class="ls4-card ls4-card-wide" onclick="openLb('assets/Horizontal LineScanner.png')">
-            <div class="ls4-card-img">
+            <div class="ls4-car-slide" onclick="openLb('assets/Horizontal LineScanner.png')">
               <img src="assets/Horizontal LineScanner.png" alt="Horizontal LineScanner">
+              <div class="ls4-car-label">Horizontal LineScanner</div>
             </div>
-            <div class="ls4-card-label">Horizontal LineScanner</div>
+            <div class="ls4-car-slide" onclick="openLb('assets/Osprey Only.png')">
+              <img src="assets/Osprey Only.png" alt="Osprey">
+              <div class="ls4-car-label">Osprey</div>
+            </div>
+          </div>
+          <div class="ls4-car-dots">
+            <button class="ls4-car-dot ls4-car-dot-active" onclick="ls4CarGo(0,event)"></button>
+            <button class="ls4-car-dot" onclick="ls4CarGo(1,event)"></button>
+            <button class="ls4-car-dot" onclick="ls4CarGo(2,event)"></button>
           </div>
         </div>
 
@@ -151,7 +157,7 @@
     </div><!-- ls4-matrix -->
 
     <!-- ══ PANEL 2 · Where in Your Process ══ -->
-    <div class="ls4-panel" id="ls4-process">
+    <div class="ls4-panel active" id="ls4-process">
       <div class="ls4-proc-grid" style="grid-template-columns: 1.1fr 1fr;">
 
         <!-- LEFT: Capability table per scanner -->
@@ -260,48 +266,48 @@
         <!-- RIGHT: Stage render cards -->
         <div class="ls4-proc-cards anim-in" style="">
 
-          <div class="ls4-proc-card" onclick="openLb('assets/Render Grinding Line.png')">
+          <div class="ls4-proc-card" onclick="openLb('assets/Render Tempering Line.png')">
+            <img src="assets/Render Tempering Line.png" alt="Tempering Line">
+            <div class="ls4-proc-card-label">Tempering</div>
+            <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide">✕</button>
+            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down">▼</button></div>
+          </div><div class="ls4-proc-card" onclick="openLb('assets/Render of a Vertical IG Line with LineScanners on Orange to show the position.png')">
+            <img src="assets/Render of a Vertical IG Line with LineScanners on Orange to show the position.png" alt="IG Line">
+            <div class="ls4-proc-card-label">IG Line</div>
+            <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide">✕</button>
+            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down">▼</button></div>
+          </div><div class="ls4-proc-card" onclick="openLb('assets/Render Lamination Line.png')">
+            <img src="assets/Render Lamination Line.png" alt="Lamination Line">
+            <div class="ls4-proc-card-label">Lamination</div>
+            <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide">✕</button>
+            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down">▼</button></div>
+          </div><div class="ls4-proc-card" onclick="openLb('assets/Render Grinding Line.png')">
             <img src="assets/Render Grinding Line.png" alt="Grinding Line">
             <div class="ls4-proc-card-label">Grinding</div>
             <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide">✕</button>
             <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down">▼</button></div>
           </div>
 
-          <div class="ls4-proc-card" onclick="openLb('assets/Render Tempering Line.png')">
-            <img src="assets/Render Tempering Line.png" alt="Tempering Line">
-            <div class="ls4-proc-card-label">Tempering</div>
-            <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide">✕</button>
-            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down">▼</button></div>
-          </div>
+          
 
-          <div class="ls4-proc-card" onclick="openLb('assets/Render Lamination Line.png')">
-            <img src="assets/Render Lamination Line.png" alt="Lamination Line">
-            <div class="ls4-proc-card-label">Lamination</div>
-            <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide">✕</button>
-            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down">▼</button></div>
-          </div>
+          
 
-          <div class="ls4-proc-card" onclick="openLb('assets/Render of a Vertical IG Line with LineScanners on Orange to show the position.png')">
-            <img src="assets/Render of a Vertical IG Line with LineScanners on Orange to show the position.png" alt="IG Line">
-            <div class="ls4-proc-card-label">IG Line</div>
-            <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide">✕</button>
-            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down">▼</button></div>
-          </div>
+          
 
           <div class="ls4-proc-card" onclick="openLb('assets/Render Coating line.png')">
             <img src="assets/Render Coating line.png" alt="Coating Line">
             <div class="ls4-proc-card-label">Coating</div>
             <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide">✕</button>
             <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down">▼</button></div>
-          </div>
-
-          <div class="ls4-proc-card">
+          </div><div class="ls4-proc-card">
             <img src="assets/Render Automotive Printing Line.png" alt="Automotive Printing Line" onclick="openLb('assets/Render Automotive Printing Line.png')" style="cursor:zoom-in;">
             <div class="ls4-proc-card-label">Automotive Printing</div>
             <div class="ls4-table-hint" onclick="ls4OpenAutoModal(event)">⊞ view data</div>
             <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide">✕</button>
             <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down">▼</button></div>
           </div>
+
+          
 
           <!-- Automotive Modal -->
           
@@ -411,31 +417,36 @@
       font-size:11px; color:var(--text-muted);
     }
 
-    /* ── Scanner cards ── */
-    .ls4-cards {
-      display:flex; flex-direction:column; gap:10px; min-height:0;
-      padding-bottom:80px;
+    /* ── Scanner carousel ── */
+    .ls4-carousel { display:flex; flex-direction:column; padding-bottom:80px; }
+    .ls4-car-viewport {
+      height:460px;
+      border:1px solid var(--border); border-radius:12px; overflow:hidden;
+      background:#000;
     }
-    .ls4-card {
-      width:60%; border:1px solid var(--border); border-radius:12px; overflow:hidden;
-      background:var(--bg-card); cursor:zoom-in; transition:border-color .2s;
+    .ls4-car-slide {
+      display:none; flex-direction:column; width:100%; height:100%; cursor:zoom-in;
     }
-    .ls4-card:hover { border-color:rgba(232,113,26,.4); }
-    .ls4-card-v { width:60%; }
-    .ls4-card-v .ls4-card-img { height:auto; }
-    .ls4-card-v .ls4-card-img img { height:auto; }
-    .ls4-card-img {
-      width:100%; height:200px; overflow:hidden; background:#000;
+    .ls4-car-slide.ls4-car-active {
+      display:flex; animation:ls4FadeIn .4s ease;
     }
-    .ls4-card-img img {
-      width:100%; height:100%; object-fit:contain; display:block;
-      transition:transform .3s;
+    @keyframes ls4FadeIn { from { opacity:0; } to { opacity:1; } }
+    .ls4-car-slide img {
+      flex:1; min-height:0; width:100%; object-fit:contain; display:block;
     }
-    .ls4-card:hover .ls4-card-img img { transform:scale(1.05); }
-    .ls4-card-label {
-      padding:7px 10px; font-size:11px; font-weight:600;
+    .ls4-car-label {
+      padding:8px 12px; font-size:11px; font-weight:600; flex-shrink:0;
       color:var(--text-muted); text-align:center; letter-spacing:.04em;
+      background:var(--bg-card);
     }
+    .ls4-car-dots {
+      display:flex; justify-content:center; gap:8px; padding:10px 0 0; flex-shrink:0;
+    }
+    .ls4-car-dot {
+      width:8px; height:8px; border-radius:50%; border:none; padding:0;
+      background:rgba(255,255,255,.2); cursor:pointer; transition:background .2s;
+    }
+    .ls4-car-dot.ls4-car-dot-active { background:#E8711A; }
 
     /* ── Panel 2: process layout ── */
     .ls4-proc-grid {
@@ -955,6 +966,27 @@
     btn.textContent = collapsed ? '+' : '✕';
     btn.title = collapsed ? 'Show' : 'Hide';
   };
+
+  // ── Scanner carousel ──
+  (function () {
+    var slides, dots, idx = 0, timer;
+    function go(n) {
+      slides[idx].classList.remove('ls4-car-active');
+      dots[idx].classList.remove('ls4-car-dot-active');
+      idx = n % slides.length;
+      slides[idx].classList.add('ls4-car-active');
+      dots[idx].classList.add('ls4-car-dot-active');
+    }
+    function start() { timer = setInterval(function () { go(idx + 1); }, 3500); }
+    window.ls4CarGo = function (n, e) { if (e) e.stopPropagation(); clearInterval(timer); go(n); start(); };
+    setTimeout(function () {
+      var car = document.querySelector('.ls4-carousel');
+      if (!car) return;
+      slides = car.querySelectorAll('.ls4-car-slide');
+      dots   = car.querySelectorAll('.ls4-car-dot');
+      start();
+    }, 0);
+  }());
 
   window.ls4Tab = function(btn, id) {
     var slide = btn.closest('.slide');

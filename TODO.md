@@ -2,10 +2,10 @@
 
 ## In Progress
 - [ ] Replace Phrase 1/2/3 placeholder text slides in gallery with real content
+- [ ] Adjust font sizes on gallery text slides
 
 ## Backlog
 - [ ] Consolidate into one repo (Option B) — merge `softsolution-presentations` into this repo under `dist/`
-- [ ] Decide on gallery carousel improvements across other slides
 
 ## Done
 - [x] Create Grupo Navas Spain presentation (duplicate from starglass-spain)
@@ -23,3 +23,6 @@
 - [x] slide-01 gallery button — CSS-only carousel popup (open/close + auto-advance)
 - [x] Rebuild gallery with JS-controlled fixed overlay + auto-advance (3 s) + text placeholder slides
 - [x] Rewrite fix-slide skill as diagnostic-first process
+- [x] Build slide validator (scripts/validate.js) with watch mode
+- [x] Fix slide-12 outer class ls11 → ls12
+- [x] Replace 3 stacked scanner cards in slide-04 with auto-rotating carousel

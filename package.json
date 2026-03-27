@@ -4,7 +4,9 @@
   "description": "Build tool for Softsolution LineScanner presentations",
   "private": true,
   "scripts": {
-    "build": "node build.js"
+    "build":    "node build.js",
+    "validate": "node scripts/validate.js",
+    "watch":    "node scripts/validate.js --watch"
   },
   "dependencies": {
     "node-vibrant": "^4.0.4"

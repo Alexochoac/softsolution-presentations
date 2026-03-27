@@ -136,4 +136,5 @@ Use CSS variables (`var(--text)`, `var(--bg-card)`, `var(--border)`) — never h
 ### After generating
 1. Save the file
 2. Update `SLIDE_FILES` in `_preview.html`
-3. Tell the user: "Open Live Server on `_preview.html` to preview slide [NN]"
+3. Run `npm run validate` — fix any errors before continuing
+4. Tell the user: "Open Live Server on `_preview.html` to preview. Run `npm run watch` in a terminal to catch issues as you edit."

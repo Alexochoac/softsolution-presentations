@@ -1,100 +1,80 @@
 # Fix Slide — Softsolution LineScanner
 
-Use this command whenever editing an existing slide in `customers/softsolution/slide-library/linescanner/`.
-
 ---
 
-## Before Touching Anything
+## Step 1 — Run the Validator First
 
-1. **Read the full slide file first.** Never edit from memory or assumptions.
-2. **Check if the fix affects other slides.** If changing a CSS class name, grep for it across all slides. If renaming a global JS function, check who calls it.
-3. **If anything will be deleted, flag it explicitly to the user first.** "I'm about to remove X — confirm?" Never silently delete working content.
-
----
-
-## Architecture Rules (Non-Negotiable)
-
-### Slide templates are the source of truth
-- `_preview.html` is a **dev tool only** — it never ships to the customer
-- Each template must be fully self-contained: its own scoped `<style>`, its own IIFE `<script>`
-- Templates are later assembled into a single `index.html` per customer project — this is why namespacing matters so much
-
-### Unique namespace per slide — CRITICAL
-Every slide gets its own prefix based on its number. **No two slides share a prefix.**
-
-| Slide | Prefix |
-|---|---|
-| slide-01 | `ls01-` |
-| slide-02 | `ls02-` |
-| slide-06 | `ls06-` / `s6` |
-| slide-07 | `ls7-` |
-| slide-08 | `ls8p-` |
-| slide-09 | `ls8-` (legacy) |
-| slide-10 | `ls10-` |
-| slide-11 | `ls11-` |
-
-Apply to:
-- CSS class names: `.ls10-carousel`, `.ls11-viewport`, etc.
-- Global JS functions: `ls10LbClose()`, `ls11LbNav()`, etc.
-- Element IDs: `id="ls10-lb"`, `id="ls11-prev"`, etc.
-
-> If you create a new slide or notice a collision, rename to the correct prefix immediately.
-
-### Image paths always use `assets/`
-```html
-<!-- ✅ Correct -->
-<img src="assets/image101.png">
-{ src: 'assets/Slide43.jpg', caption: '...' }
-
-<!-- ❌ Wrong -->
-<img src="linescanner/Slide Images/image101.png">
-<img src="Slide%20Images/image101.png">
 ```
-`_preview.html` rewrites `assets/` → `linescanner/Slide Images/` at preview time. The build process handles it at build time.
+npm run validate
+```
 
-### No bottom clearance compensation
-`_preview.html` globally applies `padding-bottom: 80px !important` to `.slide.content`. **Never add `margin-bottom` or `padding-bottom` to slide content to compensate** — it will double-stack.
+This catches most issues instantly: missing files, duplicate classes/IDs, broken asset paths, unbalanced tags. **Fix anything it reports before going further.**
 
-### Standard slide wrapper
+If the validator is clean but the problem persists → go to Step 2.
+
+---
+
+## Step 2 — Read Before Touching
+
+Read the full slide file. Never edit from memory. If anything will be deleted, flag it to the user first.
+
+---
+
+## Step 3 — Diagnose by Symptom
+
+### Images not showing
+- All paths must use `src="assets/filename.png"` — never hardcoded preview paths
+- Confirm the file exists in `slide-library/linescanner/Slide Images/`
+- If using a new path pattern, update `fixPaths()` in `_preview.html` and `rewriteAssetPaths()` in `build.js`
+
+### JS / onclick not working
+`<script>` blocks in slides don't execute in preview (createContextualFragment limitation). Any `onclick="fn()"` must also be defined in `_preview.html`'s post-load init block and called after `container.appendChild`.
+
+Keep the function in the slide's `<script>` too — it runs correctly in built presentations.
+
+### Overlay hidden behind other elements
+Use `position: fixed; z-index: 9000+` — never `position: absolute`. The slide's `transform: scale()` traps absolutely positioned children inside the stacking context.
+
+### Layout collapsed / wrong size
+- `height: 100%` only works if every ancestor has an explicit height — use `min-height` or `px` instead
+- `.slide.content` already has `padding-bottom: 80px !important` — don't add more
+
+### Slide missing from preview (validator passes)
+1. Check it's in `SLIDE_FILES` in `_preview.html`
+2. If listed but absent from DOM: `_preview.html` must inject slides one-by-one, not as one joined string — see the confirmed fix in the validator docs
+3. Check the outer div class is unique and matches the slide number
+
+### CSS leaking between slides
+Every slide needs a unique prefix for CSS classes, IDs, and JS function names. Run:
+```
+grep -r "ls[NN]-" slide-library/linescanner/
+```
+before renaming anything.
+
+---
+
+## Step 4 — After-Fix Checklist
+
+- [ ] `npm run validate` is clean
+- [ ] All `src` values use `assets/`
+- [ ] Full-screen overlays use `position: fixed; z-index: 9000+`
+- [ ] Class/ID/function names use this slide's unique prefix
+- [ ] PE init script is the last `<script>` block in the slide
+- [ ] Nothing was silently removed
+
+---
+
+## Reference — Standard Slide Wrapper
+
 ```html
+<!-- SLIDE_META {"title":"...", "default":"visible", "tags":["..."]} -->
 <div class="slide content ls[NN]" style="justify-content:flex-start; align-items:center; padding:52px 80px 0;">
   <div class="slide-logo-row">...</div>
   <!-- content -->
+  <style>/* scoped styles — ls[NN]- prefix */</style>
   <script>
   (function () { var s = document.currentScript;
     setTimeout(function () { if (window.PE && s) PE.initSlide(s.closest('.slide')); }, 0); })();
   </script>
 </div>
 ```
-
-### Carousel requirements
-Any carousel the editor should be able to add images to needs:
-```html
-<div class="ls[NN]-viewport" id="ls[NN]-viewport" data-pe-carousel=""></div>
-```
-And in JS:
-```js
-viewport._peAddImage = function (src, caption) { ... };
-```
-
----
-
-## Making the Fix
-
-1. Read the slide → understand current structure
-2. Make the smallest change that achieves the goal
-3. Check: does this introduce a class collision? Does it break carousel path rewriting?
-4. If `SLIDE_FILES` in `_preview.html` needs updating (new slide, reorder), do it
-5. Tell the user what changed and what to look for in the preview
-
----
-
-## After the Fix — Quick Checklist
-
-- [ ] Class/ID names are unique to this slide's prefix
-- [ ] Global JS function names are namespaced
-- [ ] All image `src` values use `assets/`
-- [ ] No compensating `margin-bottom` / `padding-bottom` added
-- [ ] PE init script is still the last `<script>` block
-- [ ] Nothing was silently removed
-- [ ] If carousel exists: `data-pe-carousel` present + `_peAddImage` exposed
