@@ -14,17 +14,29 @@ Active — in progress
 ## Goal
 Allow one reusable slide library to be configured and built into tailored
 presentations for different customers, with custom colors, logos, and content.
+A local web builder app (`builder/`) is being built to make this fast (1 customer/day).
 
 ## Next Steps
 - [x] Migrate existing softsolution folder from presentation-builder
-- [ ] Consolidate into one repo (Option B) — merge `softsolution-presentations` into this repo under `dist/`:
-  - [x] Create `dist/` folder here and move finished presentations into it
-  - [x] Update `outputDir` in all build configs (e.g. `builds/grupo-navas.js`) to point to `docs/GrupoNavas-Spain/` etc.
-  - [x] Update GitHub Pages settings on this repo to serve from `/docs`
-- [x] Refactor build system to use a shared assets folder — LineScanner images now live in `docs/shared/assets/` and `docs/shared/general/`. Build auto-copies them on first run. Each customer output only contains their logo + index.html.
+- [x] Consolidate into one repo — presentations served from `/docs` via GitHub Pages
+- [x] Refactor build system to use a shared assets folder
+- [x] Design new builder architecture (self-contained slides, data-edit, lazy loading)
+- [x] Build builder foundation: server.js, style.css, slide-01-cover.html, preview.html
+- [x] Auto-save, image upload, carousel thumbnail strip, auto-advance
+- [ ] Build remaining slides 02–14 in new system
+- [ ] Build customer config UI (name, logo, language, slide defaults per customer)
+- [ ] Build customer list page in builder
+- [ ] Build "publish to GitHub" flow from builder
+- [ ] Strip `data-builder-only` elements during customer presentation build
 
 ## Key Decisions
-(Record important choices made during the project)
+- New slides live in `builder/slides/` — old `slide-library/linescanner/` kept as read-only reference
+- Each slide is self-contained: own HTML, scoped CSS, own JS
+- `data-edit` attributes mark editable elements; `contenteditable` enables inline editing
+- Auto-save debounced 1.5s, saves back to slide file via cheerio
+- Umami events: `slide:name`, `slide:name:time {seconds}`, `gallery:image-name`, `zoom:name`, `cta:email/whatsapp`
+- Carousel auto-advance interval stored as `data-autoplay` on track element, saved to file
+- Builder-only UI marked with `data-builder-only` — to be stripped at build time
 
 ## Notes
 

@@ -1,28 +1,31 @@
 # TODO — Presentation Builder Softsolution
 
 ## In Progress
-- [ ] Replace Phrase 1/2/3 placeholder text slides in gallery with real content
-- [ ] Adjust font sizes on gallery text slides
+- [ ] Build remaining slides 02–14 in new builder system
+- [ ] Build customer config UI (name, logo, language, per-slide defaults)
 
 ## Backlog
-- [ ] Consolidate into one repo (Option B) — merge `softsolution-presentations` into this repo under `dist/`
+- [ ] Build customer list page in builder
+- [ ] Build "publish to GitHub" flow from builder
+- [ ] Strip `data-builder-only` elements during customer presentation build
+- [ ] Add `window.__BUILDER__` flag for builder-only features
+- [ ] Replace Phrase 1/2/3 placeholder text slides in old gallery with real content
 
 ## Done
-- [x] Create Grupo Navas Spain presentation (duplicate from starglass-spain)
-- [x] Fix openLb() path bug in all 3 presentations (slides 4 & 5 zoom broken)
-- [x] Migrate existing softsolution folder from presentation-builder
-- [x] Create `dist/` folder and move finished presentations into it
-- [x] Update `outputDir` in all build configs
-- [x] Update GitHub Pages settings to serve from `/docs`
-- [x] Refactor build system to use a shared assets folder
-- [x] Fix slides 02, 07, 08, 09, 10, 11
-- [x] Add tabs to slide-10
-- [x] Fix ls10/ls11 class collision
-- [x] Build share button with UTM tracking
-- [x] Create fix-slide, create-slide, build-presentation commands
-- [x] slide-01 gallery button — CSS-only carousel popup (open/close + auto-advance)
-- [x] Rebuild gallery with JS-controlled fixed overlay + auto-advance (3 s) + text placeholder slides
-- [x] Rewrite fix-slide skill as diagnostic-first process
+- [x] Build builder foundation: server.js, style.css, slide-01-cover.html, preview.html
+- [x] Auto-save (1.5s debounce) with green dot indicator
+- [x] Customer logo upload + image swap in carousel
+- [x] Carousel thumbnail strip with drag-to-reorder
+- [x] Carousel auto-advance (pause on hover, configurable interval, saved to file)
+- [x] Add image / add text buttons in carousel
+- [x] Umami event naming convention defined and implemented
+- [x] Create Grupo Navas Spain presentation
+- [x] Fix openLb() path bug in all 3 presentations
 - [x] Build slide validator (scripts/validate.js) with watch mode
 - [x] Fix slide-12 outer class ls11 → ls12
 - [x] Replace 3 stacked scanner cards in slide-04 with auto-rotating carousel
+- [x] Rebuild gallery with JS-controlled fixed overlay + auto-advance
+- [x] Rewrite fix-slide skill as diagnostic-first process
+- [x] Migrate existing softsolution folder from presentation-builder
+- [x] Refactor build system to use shared assets folder
+- [x] Update GitHub Pages to serve from /docs
