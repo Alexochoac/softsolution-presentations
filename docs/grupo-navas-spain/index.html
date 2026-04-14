@@ -680,9 +680,9 @@
 
     <!-- ── Tab Bar — below IQC ── -->
     <div class="co-tabs">
-      <button class="co-tab active" onclick="coTab(this,'about')" data-umami-event="slide2-tab" data-umami-event-tab="About Us">Sobre Nosotros</button>
-      <button class="co-tab" onclick="coTab(this,'tech')" data-umami-event="slide2-tab" data-umami-event-tab="Technologies">Tecnologías</button>
-      <button class="co-tab" onclick="coTab(this,'network')" data-umami-event="slide2-tab" data-umami-event-tab="Global Network">Red Global</button>
+      <button class="co-tab active" onclick="coTab(this,'about')" data-umami-event="company-tab" data-umami-event-tab="About Us">Sobre Nosotros</button>
+      <button class="co-tab" onclick="coTab(this,'tech')" data-umami-event="company-tab" data-umami-event-tab="Technologies">Tecnologías</button>
+      <button class="co-tab" onclick="coTab(this,'network')" data-umami-event="company-tab" data-umami-event-tab="Global Network">Red Global</button>
     </div>
 
     <!-- ── Panels Wrapper ── -->
@@ -1286,8 +1286,8 @@
 
   <!-- ── Tab Bar ── -->
   <div class="ls4-tabs">
-    <button class="ls4-tab active" onclick="ls4Tab(this,'matrix')" data-umami-event="slide4-tab" data-umami-event-tab="Capability Matrix">Matriz de Capacidades</button>
-    <button class="ls4-tab" onclick="ls4Tab(this,'process')" data-umami-event="slide4-tab" data-umami-event-tab="Where In Your Process">Dónde en Tu Proceso</button>
+    <button class="ls4-tab active" onclick="ls4Tab(this,'matrix')" data-umami-event="applications-tab" data-umami-event-tab="Capability Matrix">Matriz de Capacidades</button>
+    <button class="ls4-tab" onclick="ls4Tab(this,'process')" data-umami-event="applications-tab" data-umami-event-tab="Where In Your Process">Dónde en Tu Proceso</button>
   </div>
 
   <!-- ── Panels Wrapper ── -->
@@ -1539,42 +1539,42 @@
         <!-- RIGHT: Tarjetas de renderizado por etapa -->
         <div class="ls4-proc-cards anim-in">
 
-          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Grinding Line.png')" data-umami-event="render-card-zoom" data-umami-event-card="Grinding Line">
+          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Grinding Line.png')" data-umami-event="process-zoom: Grinding Line">
             <img src="../shared/assets/Render Grinding Line.png" alt="Esmerilado">
             <div class="ls4-proc-card-label">Esmerilado</div>
             <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Ocultar">✕</button>
             <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Subir">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Bajar">▼</button></div>
           </div>
 
-          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Tempering Line.png')" data-umami-event="render-card-zoom" data-umami-event-card="Tempering Line">
+          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Tempering Line.png')" data-umami-event="process-zoom: Tempering Line">
             <img src="../shared/assets/Render Tempering Line.png" alt="Templado">
             <div class="ls4-proc-card-label">Templado</div>
             <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Ocultar">✕</button>
             <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Subir">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Bajar">▼</button></div>
           </div>
 
-          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Lamination Line.png')" data-umami-event="render-card-zoom" data-umami-event-card="Lamination Line">
+          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Lamination Line.png')" data-umami-event="process-zoom: Lamination Line">
             <img src="../shared/assets/Render Lamination Line.png" alt="Laminado">
             <div class="ls4-proc-card-label">Laminado</div>
             <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Ocultar">✕</button>
             <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Subir">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Bajar">▼</button></div>
           </div>
 
-          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render IG LIne.png')" data-umami-event="render-card-zoom" data-umami-event-card="IG Line">
+          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render IG LIne.png')" data-umami-event="process-zoom: IG Line">
             <img src="../shared/assets/Render IG LIne.png" alt="Línea IG">
             <div class="ls4-proc-card-label">Línea IG</div>
             <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Ocultar">✕</button>
             <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Subir">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Bajar">▼</button></div>
           </div>
 
-          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Coating line.png')" data-umami-event="render-card-zoom" data-umami-event-card="Coating Line">
+          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Coating line.png')" data-umami-event="process-zoom: Coating Line">
             <img src="../shared/assets/Render Coating line.png" alt="Coating">
             <div class="ls4-proc-card-label">Coating</div>
             <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Ocultar">✕</button>
             <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Subir">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Bajar">▼</button></div>
           </div>
 
-          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Automotive Printing Line.png')" data-umami-event="render-card-zoom" data-umami-event-card="Automotive Printing Line">
+          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Automotive Printing Line.png')" data-umami-event="process-zoom: Automotive Printing Line">
             <img src="../shared/assets/Render Automotive Printing Line.png" alt="Impresión Automotriz">
             <div class="ls4-proc-card-label">Impresión Automotriz</div>
             <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Ocultar">✕</button>
@@ -2285,9 +2285,9 @@
 
   <!-- Tab bar — bottom -->
   <div class="t5-tabs">
-    <button class="t5-tab active" onclick="t5Tab(this,'howitworks')" data-umami-event="slide5-tab" data-umami-event-tab="How It Works">Cómo Funciona</button>
-    <button class="t5-tab" onclick="t5Tab(this,'sixteenbit')" data-umami-event="slide5-tab" data-umami-event-tab="16-bit Advantage">Ventaja 16-bit</button>
-    <button class="t5-tab" onclick="t5Tab(this,'vscamera')" data-umami-event="slide5-tab" data-umami-event-tab="vs Camera Systems">vs Sistemas de Cámara</button>
+    <button class="t5-tab active" onclick="t5Tab(this,'howitworks')" data-umami-event="technology-tab" data-umami-event-tab="How It Works">Cómo Funciona</button>
+    <button class="t5-tab" onclick="t5Tab(this,'sixteenbit')" data-umami-event="technology-tab" data-umami-event-tab="16-bit Advantage">Ventaja 16-bit</button>
+    <button class="t5-tab" onclick="t5Tab(this,'vscamera')" data-umami-event="technology-tab" data-umami-event-tab="vs Camera Systems">vs Sistemas de Cámara</button>
   </div>
 
   <style>
@@ -4641,7 +4641,7 @@
     current = n;
     slides[current].classList.add('active');
     updateNav();
-    if (window.umami) umami.track('slide-view', { slide: n + 1, name: SLIDE_NAMES[n] || 'Slide ' + (n + 1) });
+    if (window.umami) umami.track('slide-view: ' + (SLIDE_NAMES[n] || 'Slide ' + (n + 1)), { slide: n + 1 });
     // Re-trigger entry animations
     slides[current].querySelectorAll('.anim-in').forEach(el => {
       el.style.animation = 'none';

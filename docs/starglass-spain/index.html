@@ -680,9 +680,9 @@
 
     <!-- ── Tab Bar — below IQC ── -->
     <div class="co-tabs">
-      <button class="co-tab active" onclick="coTab(this,'about')" data-umami-event="About Us">Sobre Nosotros</button>
-      <button class="co-tab" onclick="coTab(this,'tech')" data-umami-event="Technologies">Tecnologías</button>
-      <button class="co-tab" onclick="coTab(this,'network')" data-umami-event="Global Network">Red Global</button>
+      <button class="co-tab active" onclick="coTab(this,'about')" data-umami-event="company-tab" data-umami-event-tab="About Us">Sobre Nosotros</button>
+      <button class="co-tab" onclick="coTab(this,'tech')" data-umami-event="company-tab" data-umami-event-tab="Technologies">Tecnologías</button>
+      <button class="co-tab" onclick="coTab(this,'network')" data-umami-event="company-tab" data-umami-event-tab="Global Network">Red Global</button>
     </div>
 
     <!-- ── Panels Wrapper ── -->
@@ -718,28 +718,28 @@
       <!-- ══ PANEL 2 · Tecnologías ══ -->
       <div class="co-panel" id="co-tech">
         <div class="tech-list">
-          <div class="tech-item anim-in" onclick="toggleTech(this)" data-umami-event="Technologies" data-umami-event-tech="Parallel Light 90">
+          <div class="tech-item anim-in" onclick="toggleTech(this)" data-umami-event="technology-expand" data-umami-event-tech="Parallel Light 90">
             <div class="tech-hd">
               <div class="tech-num">1</div>
               <div class="tech-name">Sistema de Luz Paralela 90°</div>
             </div>
             <div class="tech-body">Tecnología de sensor con fuente de luz paralela a 90° para detectar defectos superficiales con alta precisión y velocidad en vidrios planos.</div>
           </div>
-          <div class="tech-item anim-in" onclick="toggleTech(this)" data-umami-event="Technologies" data-umami-event-tech="Bright-field Dark-field">
+          <div class="tech-item anim-in" onclick="toggleTech(this)" data-umami-event="technology-expand" data-umami-event-tech="Bright-field Dark-field">
             <div class="tech-hd">
               <div class="tech-num">2</div>
               <div class="tech-name">Bright-field &amp; Dark-field</div>
             </div>
             <div class="tech-body">Tecnología de cámara con iluminación de campo claro y oscuro para detección integral de inclusiones, rayaduras, burbujas y recubrimientos.</div>
           </div>
-          <div class="tech-item anim-in" onclick="toggleTech(this)" data-umami-event="Technologies" data-umami-event-tech="Reflection">
+          <div class="tech-item anim-in" onclick="toggleTech(this)" data-umami-event="technology-expand" data-umami-event-tech="Reflection">
             <div class="tech-hd">
               <div class="tech-num">3</div>
               <div class="tech-name">Tecnología de Reflexión</div>
             </div>
             <div class="tech-body">Tecnología de sensor y luz dispersa por reflexión para detectar defectos de borde y anomalías superficiales en vidrio plano y curvado con alta sensibilidad.</div>
           </div>
-          <div class="tech-item anim-in" onclick="toggleTech(this)" data-umami-event="Technologies" data-umami-event-tech="Spectrometer">
+          <div class="tech-item anim-in" onclick="toggleTech(this)" data-umami-event="technology-expand" data-umami-event-tech="Spectrometer">
             <div class="tech-hd">
               <div class="tech-num">4</div>
               <div class="tech-name">Espectrómetro</div>
@@ -1286,8 +1286,8 @@
 
   <!-- ── Tab Bar ── -->
   <div class="ls4-tabs">
-    <button class="ls4-tab active" onclick="ls4Tab(this,'matrix')" data-umami-event="Capability Matrix">Matriz de Capacidades</button>
-    <button class="ls4-tab" onclick="ls4Tab(this,'process')" data-umami-event="Where In Your Process">Dónde en Tu Proceso</button>
+    <button class="ls4-tab active" onclick="ls4Tab(this,'matrix')" data-umami-event="applications-tab" data-umami-event-tab="Capability Matrix">Matriz de Capacidades</button>
+    <button class="ls4-tab" onclick="ls4Tab(this,'process')" data-umami-event="applications-tab" data-umami-event-tab="Where In Your Process">Dónde en Tu Proceso</button>
   </div>
 
   <!-- ── Panels Wrapper ── -->
@@ -2285,9 +2285,9 @@
 
   <!-- Tab bar — bottom -->
   <div class="t5-tabs">
-    <button class="t5-tab active" onclick="t5Tab(this,'howitworks')" data-umami-event="How It Works">Cómo Funciona</button>
-    <button class="t5-tab" onclick="t5Tab(this,'sixteenbit')" data-umami-event="16-bit Advantage">Ventaja 16-bit</button>
-    <button class="t5-tab" onclick="t5Tab(this,'vscamera')"  data-umami-event="vs Camera Systems">vs Sistemas de Cámara</button>
+    <button class="t5-tab active" onclick="t5Tab(this,'howitworks')" data-umami-event="technology-tab" data-umami-event-tab="How It Works">Cómo Funciona</button>
+    <button class="t5-tab" onclick="t5Tab(this,'sixteenbit')" data-umami-event="technology-tab" data-umami-event-tab="16-bit Advantage">Ventaja 16-bit</button>
+    <button class="t5-tab" onclick="t5Tab(this,'vscamera')"  data-umami-event="technology-tab" data-umami-event-tab="vs Camera Systems">vs Sistemas de Cámara</button>
   </div>
 
   <style>
@@ -3485,9 +3485,9 @@
 
     <!-- Inline carousel -->
     <div class="ls8b-carousel anim-in">
-      <button class="ls8b-arrow ls8b-prev" id="ls8bPrev" data-umami-event="ScreenPrinting" disabled>&#8249;</button>
+      <button class="ls8b-arrow ls8b-prev" id="ls8bPrev" data-umami-event="carousel-prev" data-umami-event-slide="serigrafia" disabled>&#8249;</button>
       <div class="ls8b-viewport" id="ls8bViewport"></div>
-      <button class="ls8b-arrow ls8b-next" id="ls8bNext" data-umami-event="ScreenPrinting">&#8250;</button>
+      <button class="ls8b-arrow ls8b-next" id="ls8bNext" data-umami-event="carousel-next" data-umami-event-slide="serigrafia">&#8250;</button>
       <div class="ls8b-counter" id="ls8bCounter">1 / 5</div>
     </div>
 
@@ -4641,7 +4641,7 @@
     current = n;
     slides[current].classList.add('active');
     updateNav();
-    if (window.umami) umami.track('slide-view', { slide: n + 1, name: SLIDE_NAMES[n] || 'Slide ' + (n + 1) });
+    if (window.umami) umami.track('slide-view: ' + (SLIDE_NAMES[n] || 'Slide ' + (n + 1)), { slide: n + 1 });
     // Re-trigger entry animations
     slides[current].querySelectorAll('.anim-in').forEach(el => {
       el.style.animation = 'none';
