@@ -546,7 +546,7 @@
 </div>
 
 <!-- Share Button -->
-<button class="share-toggle" id="shareBtn" onclick="shareOpen()" aria-label="Share presentation" title="Share" data-umami-event="share-modal-open">
+<button class="share-toggle" id="shareBtn" onclick="shareOpen()" aria-label="Share presentation" title="Share">
   <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
     <circle cx="12.5" cy="2.5"  r="1.4"/>
     <circle cx="3.5"  cy="8"    r="1.4"/>
@@ -576,8 +576,8 @@
       <textarea id="share-msg" placeholder="Add a personal note..."></textarea>
     </div>
     <div class="share-actions">
-      <button class="share-btn-wa"    onclick="shareToggleSub('wa')"    data-umami-event="share-whatsapp">WhatsApp</button>
-      <button class="share-btn-email" onclick="shareToggleSub('email')" data-umami-event="share-email">Email</button>
+      <button class="share-btn-wa"    onclick="shareToggleSub('wa')">WhatsApp</button>
+      <button class="share-btn-email" onclick="shareToggleSub('email')">Email</button>
       <button class="share-btn-copy"  id="share-copy-btn" onclick="shareCopyLink()">Copy link</button>
     </div>
     <div class="share-sub" id="share-sub-wa">
@@ -632,7 +632,7 @@
     <!-- ── Always-visible: tagline + IQC ── -->
     <div class="ss-tagline anim-in">We inspect every quality aspect of your glass, ensuring maximum performance and the best quality.</div>
     <div class="iqc-wrap">
-      <div class="iqc-toggle anim-in" onclick="toggleIQC(this)" data-umami-event="iqc-group-expand">
+      <div class="iqc-toggle anim-in" onclick="toggleIQC(this)">
         Part of the <strong>IQC – Industrial QC Holding LLC</strong> group <span class="iqc-arrow">▾</span>
       </div>
       <div class="iqc-panel" id="iqcPanel">
@@ -680,9 +680,9 @@
 
     <!-- ── Tab Bar — below IQC ── -->
     <div class="co-tabs">
-      <button class="co-tab active" onclick="coTab(this,'about')" data-umami-event="company-tab" data-umami-event-tab="About Us">About Us</button>
-      <button class="co-tab" onclick="coTab(this,'tech')" data-umami-event="company-tab" data-umami-event-tab="Technologies">Technologies</button>
-      <button class="co-tab" onclick="coTab(this,'network')" data-umami-event="company-tab" data-umami-event-tab="Global Network">Global Network</button>
+      <button class="co-tab active" onclick="coTab(this,'about')">About Us</button>
+      <button class="co-tab" onclick="coTab(this,'tech')">Technologies</button>
+      <button class="co-tab" onclick="coTab(this,'network')">Global Network</button>
     </div>
 
     <!-- ── Panels Wrapper ── -->
@@ -718,28 +718,28 @@
       <!-- ══ PANEL 2 · Tecnologias ══ -->
       <div class="co-panel" id="co-tech">
         <div class="tech-list">
-          <div class="tech-item anim-in" onclick="toggleTech(this)" data-umami-event="technology-expand" data-umami-event-tech="Parallel Light 90">
+          <div class="tech-item anim-in" onclick="toggleTech(this)" data-tech-name="Parallel Light 90">
             <div class="tech-hd">
               <div class="tech-num">1</div>
               <div class="tech-name">Parallel Light System 90°</div>
             </div>
             <div class="tech-body">Sensor technology with a 90° parallel light source to detect surface defects with high precision and speed in flat glass.</div>
           </div>
-          <div class="tech-item anim-in" onclick="toggleTech(this)" data-umami-event="technology-expand" data-umami-event-tech="Bright-field Dark-field">
+          <div class="tech-item anim-in" onclick="toggleTech(this)" data-tech-name="Bright-field Dark-field">
             <div class="tech-hd">
               <div class="tech-num">2</div>
               <div class="tech-name">Bright-field &amp; Dark-field</div>
             </div>
             <div class="tech-body">Camera technology with bright-field and dark-field illumination for comprehensive detection of inclusions, scratches, bubbles, and coatings.</div>
           </div>
-          <div class="tech-item anim-in" onclick="toggleTech(this)" data-umami-event="technology-expand" data-umami-event-tech="Reflection">
+          <div class="tech-item anim-in" onclick="toggleTech(this)" data-tech-name="Reflection">
             <div class="tech-hd">
               <div class="tech-num">3</div>
               <div class="tech-name">Reflection Technology</div>
             </div>
             <div class="tech-body">Sensor and diffuse reflection light technology to detect edge defects and surface anomalies in flat and curved glass with high sensitivity.</div>
           </div>
-          <div class="tech-item anim-in" onclick="toggleTech(this)" data-umami-event="technology-expand" data-umami-event-tech="Spectrometer">
+          <div class="tech-item anim-in" onclick="toggleTech(this)" data-tech-name="Spectrometer">
             <div class="tech-hd">
               <div class="tech-num">4</div>
               <div class="tech-name">Spectrometer</div>
@@ -796,11 +796,11 @@
 
           <!-- Sub-tab bar -->
           <div class="map-subtabs">
-            <button class="map-stab active" onclick="mapSubTab(this,'offices')" data-umami-event="map-subtab" data-umami-event-tab="Offices">Offices</button>
-            <button class="map-stab" onclick="mapSubTab(this,'network')" data-umami-event="map-subtab" data-umami-event-tab="Agents & Distributors">Agents &amp; Distributors</button>
+            <button class="map-stab active" onclick="mapSubTab(this,'offices')">Offices</button>
+            <button class="map-stab" onclick="mapSubTab(this,'network')">Agents &amp; Distributors</button>
           </div>
 
-          <button class="map-tog-btn" id="mapTogBtn" onclick="toggleMapMode()" data-umami-event="map-color-toggle">&#9728; Original colors</button>
+          <button class="map-tog-btn" id="mapTogBtn" onclick="toggleMapMode()">&#9728; Original colors</button>
         </div>
 
         <div class="map-footer">
@@ -909,6 +909,7 @@
       window.toggleIQC = function(btn){
         btn.classList.toggle('open');
         document.getElementById('iqcPanel').classList.toggle('open');
+        if (window.umami) umami.track('iqc-group-expand', { slide: currentSlideName });
       };
       window.coTab = function(btn,id){
         var slide = btn.closest('.slide');
@@ -918,17 +919,23 @@
         var panel = document.getElementById('co-'+id);
         panel.classList.add('active');
         panel.querySelectorAll('.anim-in').forEach(function(el){el.style.animation='none';void el.offsetHeight;el.style.animation='';});
+        if (window.umami) umami.track('tab-click: ' + btn.textContent.trim(), { slide: currentSlideName });
       };
       window.toggleTech = function(item){
         var wasOpen = item.classList.contains('open');
         item.closest('.tech-list').querySelectorAll('.tech-item').forEach(function(i){i.classList.remove('open');});
-        if(!wasOpen) item.classList.add('open');
+        if(!wasOpen) {
+          item.classList.add('open');
+          var techName = item.dataset.techName || item.querySelector('.tech-name').textContent.trim();
+          if (window.umami) umami.track('technology-expand: ' + techName, { slide: currentSlideName });
+        }
       };
       window.mapSubTab = function(btn,id){
         document.querySelectorAll('.map-stab').forEach(function(t){t.classList.remove('active');});
         document.querySelectorAll('.map-panel').forEach(function(p){p.classList.remove('active');});
         btn.classList.add('active');
         document.getElementById('mp-'+id).classList.add('active');
+        if (window.umami) umami.track('subtab-click: ' + btn.textContent.trim(), { slide: currentSlideName });
       };
       window.toggleMapMode = function(){
         var imgs = document.querySelectorAll('#mapWrap .map-img');
@@ -936,6 +943,7 @@
         var isDark = imgs.length && imgs[0].classList.contains('dark-filter');
         imgs.forEach(function(img){img.classList.toggle('dark-filter',!isDark);img.classList.toggle('light-filter',isDark);});
         btn.innerHTML = isDark ? '&#9790; Modo escuro' : '&#9728; Cores originais';
+        if (window.umami) umami.track('map-color-toggle', { slide: currentSlideName });
       };
       function animateCount(el,from,to,duration,suffix){
         var start=null;
@@ -1286,8 +1294,8 @@
 
   <!-- ── Tab Bar ── -->
   <div class="ls4-tabs">
-    <button class="ls4-tab active" onclick="ls4Tab(this,'matrix')" data-umami-event="applications-tab" data-umami-event-tab="Capability Matrix">Capability Matrix</button>
-    <button class="ls4-tab" onclick="ls4Tab(this,'process')" data-umami-event="applications-tab" data-umami-event-tab="Where In Your Process">Where In Your Process</button>
+    <button class="ls4-tab active" onclick="ls4Tab(this,'matrix')">Capability Matrix</button>
+    <button class="ls4-tab" onclick="ls4Tab(this,'process')">Where In Your Process</button>
   </div>
 
   <!-- ── Panels Wrapper ── -->
@@ -1304,11 +1312,11 @@
             <thead>
               <tr>
                 <th class="ls4-check-col"></th>
-                <th class="ls4-prod-col"><span class="ls4-col-label">Osprey-25</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)" data-umami-event="matrix-column-toggle" data-umami-event-column="Osprey-25">−</button></th>
-                <th class="ls4-prod-col ls4-highlight-col"><span class="ls4-col-label">LineScanner</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)" data-umami-event="matrix-column-toggle" data-umami-event-column="LineScanner">−</button></th>
-                <th class="ls4-prod-col ls4-highlight-col"><span class="ls4-col-label">White Haze</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)" data-umami-event="matrix-column-toggle" data-umami-event-column="White Haze">−</button></th>
-                <th class="ls4-prod-col"><span class="ls4-col-label">BowScanner</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)" data-umami-event="matrix-column-toggle" data-umami-event-column="BowScanner">−</button></th>
-                <th class="ls4-prod-col"><span class="ls4-col-label">CulletScanner</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)" data-umami-event="matrix-column-toggle" data-umami-event-column="CulletScanner">−</button></th>
+                <th class="ls4-prod-col"><span class="ls4-col-label">Osprey-25</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)">−</button></th>
+                <th class="ls4-prod-col ls4-highlight-col"><span class="ls4-col-label">LineScanner</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)">−</button></th>
+                <th class="ls4-prod-col ls4-highlight-col"><span class="ls4-col-label">White Haze</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)">−</button></th>
+                <th class="ls4-prod-col"><span class="ls4-col-label">BowScanner</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)">−</button></th>
+                <th class="ls4-prod-col"><span class="ls4-col-label">CulletScanner</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)">−</button></th>
               </tr>
             </thead>
             <tbody>
@@ -1412,13 +1420,13 @@
 
         <!-- Scanner cards -->
         <div class="ls4-cards anim-in">
-          <div class="ls4-card ls4-card-v" onclick="openLb('../shared/assets/Vertical LineScanner.png')" data-umami-event="image-zoom" data-umami-event-image="Vertical LineScanner">
+          <div class="ls4-card ls4-card-v" onclick="openLb('../shared/assets/Vertical LineScanner.png'); if(window.umami) umami.track('image-zoom: Vertical LineScanner', { slide: currentSlideName })">
             <div class="ls4-card-img">
               <img src="../shared/assets/Vertical LineScanner.png" alt="LineScanner Vertical">
             </div>
             <div class="ls4-card-label">LineScanner Vertical</div>
           </div>
-          <div class="ls4-card ls4-card-wide" onclick="openLb('../shared/assets/Horizontal LineScanner.png')" data-umami-event="image-zoom" data-umami-event-image="Horizontal LineScanner">
+          <div class="ls4-card ls4-card-wide" onclick="openLb('../shared/assets/Horizontal LineScanner.png'); if(window.umami) umami.track('image-zoom: Horizontal LineScanner', { slide: currentSlideName })">
             <div class="ls4-card-img">
               <img src="../shared/assets/Horizontal LineScanner.png" alt="LineScanner Horizontal">
             </div>
@@ -1440,9 +1448,9 @@
             <thead>
               <tr>
                 <th class="ls4-check-col"></th>
-                <th class="ls4-prod-col ls4-col-orange"><span class="ls4-col-label">LSC-V</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)" data-umami-event="matrix-column-toggle" data-umami-event-column="LSC-V">−</button></th>
-                <th class="ls4-prod-col ls4-col-red"><span class="ls4-col-label">LSC-H</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)" data-umami-event="matrix-column-toggle" data-umami-event-column="LSC-H">−</button></th>
-                <th class="ls4-prod-col ls4-col-blue"><span class="ls4-col-label">Osprey-25</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)" data-umami-event="matrix-column-toggle" data-umami-event-column="Osprey-25">−</button></th>
+                <th class="ls4-prod-col ls4-col-orange"><span class="ls4-col-label">LSC-V</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)">−</button></th>
+                <th class="ls4-prod-col ls4-col-red"><span class="ls4-col-label">LSC-H</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)">−</button></th>
+                <th class="ls4-prod-col ls4-col-blue"><span class="ls4-col-label">Osprey-25</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)">−</button></th>
               </tr>
             </thead>
             <tbody>
@@ -1539,46 +1547,46 @@
         <!-- RIGHT: Render cards by process stage -->
         <div class="ls4-proc-cards anim-in">
 
-          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Grinding Line.png')" data-umami-event="process-zoom: Grinding Line">
+          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Grinding Line.png'); if(window.umami) umami.track('process-zoom: Grinding Line', { slide: currentSlideName })">
             <img src="../shared/assets/Render Grinding Line.png" alt="Grinding Line">
             <div class="ls4-proc-card-label">Grinding Line</div>
-            <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide" data-umami-event="process-card-toggle" data-umami-event-card="Grinding Line">✕</button>
-            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up" data-umami-event="process-card-move" data-umami-event-direction="up" data-umami-event-card="Grinding Line">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down" data-umami-event="process-card-move" data-umami-event-direction="down" data-umami-event-card="Grinding Line">▼</button></div>
+            <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide">✕</button>
+            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down">▼</button></div>
           </div>
 
-          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Tempering Line.png')" data-umami-event="process-zoom: Tempering Line">
+          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Tempering Line.png'); if(window.umami) umami.track('process-zoom: Tempering Line', { slide: currentSlideName })">
             <img src="../shared/assets/Render Tempering Line.png" alt="Tempering Line">
             <div class="ls4-proc-card-label">Tempering Line</div>
-            <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide" data-umami-event="process-card-toggle" data-umami-event-card="Tempering Line">✕</button>
-            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up" data-umami-event="process-card-move" data-umami-event-direction="up" data-umami-event-card="Tempering Line">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down" data-umami-event="process-card-move" data-umami-event-direction="down" data-umami-event-card="Tempering Line">▼</button></div>
+            <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide">✕</button>
+            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down">▼</button></div>
           </div>
 
-          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Lamination Line.png')" data-umami-event="process-zoom: Lamination Line">
+          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Lamination Line.png'); if(window.umami) umami.track('process-zoom: Lamination Line', { slide: currentSlideName })">
             <img src="../shared/assets/Render Lamination Line.png" alt="Lamination Line">
             <div class="ls4-proc-card-label">Lamination Line</div>
-            <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide" data-umami-event="process-card-toggle" data-umami-event-card="Lamination Line">✕</button>
-            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up" data-umami-event="process-card-move" data-umami-event-direction="up" data-umami-event-card="Lamination Line">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down" data-umami-event="process-card-move" data-umami-event-direction="down" data-umami-event-card="Lamination Line">▼</button></div>
+            <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide">✕</button>
+            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down">▼</button></div>
           </div>
 
-          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render IG LIne.png')" data-umami-event="process-zoom: IG Line">
+          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render IG LIne.png'); if(window.umami) umami.track('process-zoom: IG Line', { slide: currentSlideName })">
             <img src="../shared/assets/Render IG LIne.png" alt="IG Line">
             <div class="ls4-proc-card-label">IG Line</div>
-            <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide" data-umami-event="process-card-toggle" data-umami-event-card="IG Line">✕</button>
-            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up" data-umami-event="process-card-move" data-umami-event-direction="up" data-umami-event-card="IG Line">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down" data-umami-event="process-card-move" data-umami-event-direction="down" data-umami-event-card="IG Line">▼</button></div>
+            <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide">✕</button>
+            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down">▼</button></div>
           </div>
 
-          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Coating line.png')" data-umami-event="process-zoom: Coating Line">
+          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Coating line.png'); if(window.umami) umami.track('process-zoom: Coating Line', { slide: currentSlideName })">
             <img src="../shared/assets/Render Coating line.png" alt="Coating Line">
             <div class="ls4-proc-card-label">Coating Line</div>
-            <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide" data-umami-event="process-card-toggle" data-umami-event-card="Coating Line">✕</button>
-            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up" data-umami-event="process-card-move" data-umami-event-direction="up" data-umami-event-card="Coating Line">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down" data-umami-event="process-card-move" data-umami-event-direction="down" data-umami-event-card="Coating Line">▼</button></div>
+            <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide">✕</button>
+            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down">▼</button></div>
           </div>
 
-          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Automotive Printing Line.png')" data-umami-event="process-zoom: Automotive Printing Line">
+          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Automotive Printing Line.png'); if(window.umami) umami.track('process-zoom: Automotive Printing Line', { slide: currentSlideName })">
             <img src="../shared/assets/Render Automotive Printing Line.png" alt="Automotive Printing Line">
             <div class="ls4-proc-card-label">Automotive Printing Line</div>
-            <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide" data-umami-event="process-card-toggle" data-umami-event-card="Automotive Printing Line">✕</button>
-            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up" data-umami-event="process-card-move" data-umami-event-direction="up" data-umami-event-card="Automotive Printing Line">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down" data-umami-event="process-card-move" data-umami-event-direction="down" data-umami-event-card="Automotive Printing Line">▼</button></div>
+            <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide">✕</button>
+            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down">▼</button></div>
           </div>
 
         </div>
@@ -1961,6 +1969,7 @@
     var name = th.querySelector('.ls4-col-label').textContent.trim();
     col.classList.add('ls4-col-collapsed');
     ls4UpdateProcGrid(table);
+    if (window.umami) umami.track('matrix-column-toggle: ' + name, { slide: currentSlideName });
 
     var wrap = ls4GetWrap(table);
     var restoreArea = wrap ? wrap.querySelector('.ls4-col-restore') : null;
@@ -1985,6 +1994,8 @@
     var collapsed = card.classList.toggle('ls4-collapsed');
     btn.textContent = collapsed ? '+' : '✕';
     btn.title = collapsed ? 'Mostrar' : 'Ocultar';
+    var cardName = card.querySelector('.ls4-proc-card-label') ? card.querySelector('.ls4-proc-card-label').textContent.trim() : '';
+    if (window.umami) umami.track('process-card-toggle: ' + cardName, { slide: currentSlideName });
   };
 
   window.ls4MoveCard = function(btn, dir, e) {
@@ -1998,6 +2009,8 @@
     if (!target) return;
     if (dir < 0) container.insertBefore(card, target);
     else container.insertBefore(target, card);
+    var cardName = card.querySelector('.ls4-proc-card-label') ? card.querySelector('.ls4-proc-card-label').textContent.trim() : '';
+    if (window.umami) umami.track('process-card-move: ' + cardName, { direction: dir < 0 ? 'up' : 'down', slide: currentSlideName });
   };
 
   window.ls4Tab = function(btn, id) {
@@ -2006,6 +2019,7 @@
     slide.querySelectorAll('.ls4-panel').forEach(function(p) { p.classList.remove('active'); });
     btn.classList.add('active');
     document.getElementById('ls4-' + id).classList.add('active');
+    if (window.umami) umami.track('tab-click: ' + btn.textContent.trim(), { slide: currentSlideName });
   };
 
   setTimeout(function() {
@@ -2183,7 +2197,7 @@
         </div>
 
         <!-- Bottom: full-width diagram -->
-        <div class="t5-diagram t5-diagram-full anim-in" onclick="openLb('../shared/assets/Image Explaining the technology 1 Telecentric light 2 linear image sensor 3 glass 4 electronic module.png')" data-umami-event="image-zoom" data-umami-event-image="Technology Diagram - How It Works">
+        <div class="t5-diagram t5-diagram-full anim-in" onclick="openLb('../shared/assets/Image Explaining the technology 1 Telecentric light 2 linear image sensor 3 glass 4 electronic module.png'); if(window.umami) umami.track('image-zoom: Technology Diagram - How It Works', { slide: currentSlideName })">
           <img src="../shared/assets/Image Explaining the technology 1 Telecentric light 2 linear image sensor 3 glass 4 electronic module.png" alt="Scanner technology diagram">
           <div class="t5-img-hint">click to enlarge</div>
         </div>
@@ -2204,7 +2218,7 @@
         </div>
 
         <!-- Full-width 16-bit diagram -->
-        <div class="t5-diagram t5-diagram-full anim-in" onclick="openLb('../shared/assets/16 bit tech.jpg')" data-umami-event="image-zoom" data-umami-event-image="16-bit Technology Diagram">
+        <div class="t5-diagram t5-diagram-full anim-in" onclick="openLb('../shared/assets/16 bit tech.jpg'); if(window.umami) umami.track('image-zoom: 16-bit Technology Diagram', { slide: currentSlideName })">
           <img src="../shared/assets/16 bit tech.jpg" alt="16-bit technology — extended dynamic range">
           <div class="t5-img-hint">click to enlarge</div>
         </div>
@@ -2238,8 +2252,8 @@
         <div class="t5-vc-imgs" id="t5-vc-imgs">
 
           <div class="t5-vc-card" id="t5-vc-camhole">
-            <button class="t5-vc-hide" onclick="t5VcHide('camhole')" title="Hide" data-umami-event="diagram-hide-toggle" data-umami-event-diagram="Drillhole - Camera System">×</button>
-            <div class="t5-diagram" style="flex:1;min-height:0;" onclick="openLb('../shared/assets/Picture of how a drillhole is seeing on a camera base system it has an angle.jpeg')" data-umami-event="image-zoom" data-umami-event-image="Drillhole - Camera System">
+            <button class="t5-vc-hide" onclick="t5VcHide('camhole'); if(window.umami) umami.track('diagram-hide-toggle: Drillhole - Camera System', { slide: currentSlideName })" title="Hide">×</button>
+            <div class="t5-diagram" style="flex:1;min-height:0;" onclick="openLb('../shared/assets/Picture of how a drillhole is seeing on a camera base system it has an angle.jpeg'); if(window.umami) umami.track('image-zoom: Drillhole - Camera System', { slide: currentSlideName })">
               <img src="../shared/assets/Picture of how a drillhole is seeing on a camera base system it has an angle.jpeg" alt="Drill hole — camera system">
               <div class="t5-img-hint">click to enlarge</div>
             </div>
@@ -2247,8 +2261,8 @@
           </div>
 
           <div class="t5-vc-card" id="t5-vc-lshole">
-            <button class="t5-vc-hide" onclick="t5VcHide('lshole')" title="Hide" data-umami-event="diagram-hide-toggle" data-umami-event-diagram="IG Unit - Camera vs LineScanner">×</button>
-            <div class="t5-diagram" style="flex:1;min-height:0;" onclick="openLb('../shared/assets/Comparison on image taken by Camera Above and LineScanner below of a Ig unit .jpg')" data-umami-event="image-zoom" data-umami-event-image="IG Unit - Camera vs LineScanner">
+            <button class="t5-vc-hide" onclick="t5VcHide('lshole'); if(window.umami) umami.track('diagram-hide-toggle: IG Unit - Camera vs LineScanner', { slide: currentSlideName })" title="Hide">×</button>
+            <div class="t5-diagram" style="flex:1;min-height:0;" onclick="openLb('../shared/assets/Comparison on image taken by Camera Above and LineScanner below of a Ig unit .jpg'); if(window.umami) umami.track('image-zoom: IG Unit - Camera vs LineScanner', { slide: currentSlideName })">
               <img src="../shared/assets/Comparison on image taken by Camera Above and LineScanner below of a Ig unit .jpg" alt="Camera vs LineScanner comparison — IG unit">
               <div class="t5-img-hint">click to enlarge</div>
             </div>
@@ -2285,9 +2299,9 @@
 
   <!-- Tab bar — bottom -->
   <div class="t5-tabs">
-    <button class="t5-tab active" onclick="t5Tab(this,'howitworks')" data-umami-event="technology-tab" data-umami-event-tab="How It Works">How It Works</button>
-    <button class="t5-tab" onclick="t5Tab(this,'sixteenbit')" data-umami-event="technology-tab" data-umami-event-tab="16-bit Advantage">16-bit Advantage</button>
-    <button class="t5-tab" onclick="t5Tab(this,'vscamera')" data-umami-event="technology-tab" data-umami-event-tab="vs Camera Systems">vs Camera Systems</button>
+    <button class="t5-tab active" onclick="t5Tab(this,'howitworks')">How It Works</button>
+    <button class="t5-tab" onclick="t5Tab(this,'sixteenbit')">16-bit Advantage</button>
+    <button class="t5-tab" onclick="t5Tab(this,'vscamera')">vs Camera Systems</button>
   </div>
 
   <style>
@@ -2681,6 +2695,7 @@
     slide.querySelectorAll('.t5-panel').forEach(function(p) { p.classList.remove('active'); });
     btn.classList.add('active');
     document.getElementById('t5-' + id).classList.add('active');
+    if (window.umami) umami.track('tab-click: ' + btn.textContent.trim(), { slide: currentSlideName });
   };
   </script>
 
@@ -3098,7 +3113,7 @@
           <div class="col-item">Individual tolerances per measurement</div>
           <div class="col-item"><strong>DXF</strong> template import</div>
           <div class="col-item"><strong>2-step</strong> verification: global + detail</div>
-          <div class="col-item">Compatible with <strong class="ls7-trigger" onclick="ls7OpenConveyor()" data-umami-event="conveyor-lightbox-open">belt conveyors ↗</strong></div>
+          <div class="col-item">Compatible with <strong class="ls7-trigger" onclick="ls7OpenConveyor(); if(window.umami) umami.track('conveyor-lightbox-open', { slide: currentSlideName })">belt conveyors ↗</strong></div>
           <div class="col-item">Parallel light for <strong>maximum precision</strong></div>
         </div>
       </div>
@@ -3487,9 +3502,9 @@
 
     <!-- Inline carousel -->
     <div class="ls8b-carousel anim-in">
-      <button class="ls8b-arrow ls8b-prev" id="ls8bPrev" data-umami-event="carousel-prev" data-umami-event-slide="serigrafia" disabled>&#8249;</button>
+      <button class="ls8b-arrow ls8b-prev" id="ls8bPrev" disabled>&#8249;</button>
       <div class="ls8b-viewport" id="ls8bViewport"></div>
-      <button class="ls8b-arrow ls8b-next" id="ls8bNext" data-umami-event="carousel-next" data-umami-event-slide="serigrafia">&#8250;</button>
+      <button class="ls8b-arrow ls8b-next" id="ls8bNext">&#8250;</button>
       <div class="ls8b-counter" id="ls8bCounter">1 / 5</div>
     </div>
 
@@ -3609,8 +3624,8 @@
         slide.querySelectorAll('.ls8b-tag').forEach(function (tag) { tag.classList.toggle('active', parseInt(tag.dataset.img) === current); });
       }
 
-      prevBtn.addEventListener('click', function () { if (current > 0) { current--; render(); } });
-      nextBtn.addEventListener('click', function () { if (current < IMAGES.length - 1) { current++; render(); } });
+      prevBtn.addEventListener('click', function () { if (current > 0) { current--; render(); if (window.umami) umami.track('carousel-prev', { slide: currentSlideName }); } });
+      nextBtn.addEventListener('click', function () { if (current < IMAGES.length - 1) { current++; render(); if (window.umami) umami.track('carousel-next', { slide: currentSlideName }); } });
       render();
 
       slide.querySelectorAll('.ls8b-tag').forEach(function (tag) {
@@ -4538,11 +4553,11 @@
           <span class="cta-contact-addr">Im Vogelsang 18 · 3340 Waidhofen · Austria</span>
         </div>
         <div class="cta-contact-btns">
-          <a class="cta-btn-wa" href="https://wa.me/436768804501" target="_blank" data-umami-event="cta-whatsapp">
+          <a class="cta-btn-wa" href="https://wa.me/436768804501" target="_blank" onclick="if(window.umami) umami.track('cta-whatsapp', { slide: currentSlideName })">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.117.554 4.103 1.523 5.83L.057 23.25a.75.75 0 0 0 .918.919l5.42-1.466A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.694 9.694 0 0 1-4.946-1.355l-.354-.212-3.658.989.989-3.658-.212-.354A9.694 9.694 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
             WhatsApp
           </a>
-          <a class="cta-btn-email" href="mailto:alex.ochoa@softsolution.at" data-umami-event="cta-email">
+          <a class="cta-btn-email" href="mailto:alex.ochoa@softsolution.at" onclick="if(window.umami) umami.track('cta-email', { slide: currentSlideName })">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
             alex.ochoa@softsolution.at
           </a>
@@ -4737,13 +4752,13 @@
     ['share-sub-wa','share-sub-email'].forEach(function(id){ var el=document.getElementById(id); if(el) el.classList.remove('on'); });
   }
 
-  window.shareOpen  = function () { document.getElementById('shareModal').classList.add('on'); hideSubs(); };
+  window.shareOpen  = function () { document.getElementById('shareModal').classList.add('on'); hideSubs(); if (window.umami) umami.track('share-modal-open', { slide: currentSlideName }); };
   window.shareClose = function () { document.getElementById('shareModal').classList.remove('on'); hideSubs(); if (window.umami) umami.track('share-modal-close', { slide: currentSlideName }); };
 
   window.shareToggleSub = function (id) {
     var wa = document.getElementById('share-sub-wa'), em = document.getElementById('share-sub-email');
-    if (id === 'wa') { wa.classList.toggle('on'); em.classList.remove('on'); }
-    else             { em.classList.toggle('on'); wa.classList.remove('on'); }
+    if (id === 'wa') { wa.classList.toggle('on'); em.classList.remove('on'); if (window.umami) umami.track('share-whatsapp', { slide: currentSlideName }); }
+    else             { em.classList.toggle('on'); wa.classList.remove('on'); if (window.umami) umami.track('share-email', { slide: currentSlideName }); }
   };
 
   window.shareCopyLink = function () {
