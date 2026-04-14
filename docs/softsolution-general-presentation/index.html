@@ -546,7 +546,7 @@
 </div>
 
 <!-- Share Button -->
-<button class="share-toggle" id="shareBtn" onclick="shareOpen()" aria-label="Share presentation" title="Share">
+<button class="share-toggle" id="shareBtn" onclick="shareOpen()" aria-label="Share presentation" title="Share" data-umami-event="share-modal-open">
   <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
     <circle cx="12.5" cy="2.5"  r="1.4"/>
     <circle cx="3.5"  cy="8"    r="1.4"/>
@@ -576,8 +576,8 @@
       <textarea id="share-msg" placeholder="Add a personal note..."></textarea>
     </div>
     <div class="share-actions">
-      <button class="share-btn-wa"    onclick="shareToggleSub('wa')">WhatsApp</button>
-      <button class="share-btn-email" onclick="shareToggleSub('email')">Email</button>
+      <button class="share-btn-wa"    onclick="shareToggleSub('wa')"    data-umami-event="share-whatsapp">WhatsApp</button>
+      <button class="share-btn-email" onclick="shareToggleSub('email')" data-umami-event="share-email">Email</button>
       <button class="share-btn-copy"  id="share-copy-btn" onclick="shareCopyLink()">Copy link</button>
     </div>
     <div class="share-sub" id="share-sub-wa">
@@ -1304,11 +1304,11 @@
             <thead>
               <tr>
                 <th class="ls4-check-col"></th>
-                <th class="ls4-prod-col"><span class="ls4-col-label">Osprey-25</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)">−</button></th>
-                <th class="ls4-prod-col ls4-highlight-col"><span class="ls4-col-label">LineScanner</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)">−</button></th>
-                <th class="ls4-prod-col ls4-highlight-col"><span class="ls4-col-label">White Haze</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)">−</button></th>
-                <th class="ls4-prod-col"><span class="ls4-col-label">BowScanner</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)">−</button></th>
-                <th class="ls4-prod-col"><span class="ls4-col-label">CulletScanner</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)">−</button></th>
+                <th class="ls4-prod-col"><span class="ls4-col-label">Osprey-25</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)" data-umami-event="matrix-column-toggle" data-umami-event-column="Osprey-25">−</button></th>
+                <th class="ls4-prod-col ls4-highlight-col"><span class="ls4-col-label">LineScanner</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)" data-umami-event="matrix-column-toggle" data-umami-event-column="LineScanner">−</button></th>
+                <th class="ls4-prod-col ls4-highlight-col"><span class="ls4-col-label">White Haze</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)" data-umami-event="matrix-column-toggle" data-umami-event-column="White Haze">−</button></th>
+                <th class="ls4-prod-col"><span class="ls4-col-label">BowScanner</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)" data-umami-event="matrix-column-toggle" data-umami-event-column="BowScanner">−</button></th>
+                <th class="ls4-prod-col"><span class="ls4-col-label">CulletScanner</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)" data-umami-event="matrix-column-toggle" data-umami-event-column="CulletScanner">−</button></th>
               </tr>
             </thead>
             <tbody>
@@ -1440,9 +1440,9 @@
             <thead>
               <tr>
                 <th class="ls4-check-col"></th>
-                <th class="ls4-prod-col ls4-col-orange"><span class="ls4-col-label">LSC-V</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)">−</button></th>
-                <th class="ls4-prod-col ls4-col-red"><span class="ls4-col-label">LSC-H</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)">−</button></th>
-                <th class="ls4-prod-col ls4-col-blue"><span class="ls4-col-label">Osprey-25</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)">−</button></th>
+                <th class="ls4-prod-col ls4-col-orange"><span class="ls4-col-label">LSC-V</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)" data-umami-event="matrix-column-toggle" data-umami-event-column="LSC-V">−</button></th>
+                <th class="ls4-prod-col ls4-col-red"><span class="ls4-col-label">LSC-H</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)" data-umami-event="matrix-column-toggle" data-umami-event-column="LSC-H">−</button></th>
+                <th class="ls4-prod-col ls4-col-blue"><span class="ls4-col-label">Osprey-25</span><button class="ls4-col-toggle" onclick="ls4ToggleCol(this,event)" data-umami-event="matrix-column-toggle" data-umami-event-column="Osprey-25">−</button></th>
               </tr>
             </thead>
             <tbody>
@@ -1542,43 +1542,43 @@
           <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Grinding Line.png')" data-umami-event="process-zoom: Grinding Line">
             <img src="../shared/assets/Render Grinding Line.png" alt="Grinding Line">
             <div class="ls4-proc-card-label">Grinding Line</div>
-            <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide">✕</button>
-            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down">▼</button></div>
+            <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide" data-umami-event="process-card-toggle" data-umami-event-card="Grinding Line">✕</button>
+            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up" data-umami-event="process-card-move" data-umami-event-direction="up" data-umami-event-card="Grinding Line">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down" data-umami-event="process-card-move" data-umami-event-direction="down" data-umami-event-card="Grinding Line">▼</button></div>
           </div>
 
           <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Tempering Line.png')" data-umami-event="process-zoom: Tempering Line">
             <img src="../shared/assets/Render Tempering Line.png" alt="Tempering Line">
             <div class="ls4-proc-card-label">Tempering Line</div>
-            <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide">✕</button>
-            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down">▼</button></div>
+            <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide" data-umami-event="process-card-toggle" data-umami-event-card="Tempering Line">✕</button>
+            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up" data-umami-event="process-card-move" data-umami-event-direction="up" data-umami-event-card="Tempering Line">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down" data-umami-event="process-card-move" data-umami-event-direction="down" data-umami-event-card="Tempering Line">▼</button></div>
           </div>
 
           <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Lamination Line.png')" data-umami-event="process-zoom: Lamination Line">
             <img src="../shared/assets/Render Lamination Line.png" alt="Lamination Line">
             <div class="ls4-proc-card-label">Lamination Line</div>
-            <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide">✕</button>
-            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down">▼</button></div>
+            <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide" data-umami-event="process-card-toggle" data-umami-event-card="Lamination Line">✕</button>
+            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up" data-umami-event="process-card-move" data-umami-event-direction="up" data-umami-event-card="Lamination Line">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down" data-umami-event="process-card-move" data-umami-event-direction="down" data-umami-event-card="Lamination Line">▼</button></div>
           </div>
 
           <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render IG LIne.png')" data-umami-event="process-zoom: IG Line">
             <img src="../shared/assets/Render IG LIne.png" alt="IG Line">
             <div class="ls4-proc-card-label">IG Line</div>
-            <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide">✕</button>
-            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down">▼</button></div>
+            <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide" data-umami-event="process-card-toggle" data-umami-event-card="IG Line">✕</button>
+            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up" data-umami-event="process-card-move" data-umami-event-direction="up" data-umami-event-card="IG Line">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down" data-umami-event="process-card-move" data-umami-event-direction="down" data-umami-event-card="IG Line">▼</button></div>
           </div>
 
           <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Coating line.png')" data-umami-event="process-zoom: Coating Line">
             <img src="../shared/assets/Render Coating line.png" alt="Coating Line">
             <div class="ls4-proc-card-label">Coating Line</div>
-            <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide">✕</button>
-            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down">▼</button></div>
+            <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide" data-umami-event="process-card-toggle" data-umami-event-card="Coating Line">✕</button>
+            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up" data-umami-event="process-card-move" data-umami-event-direction="up" data-umami-event-card="Coating Line">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down" data-umami-event="process-card-move" data-umami-event-direction="down" data-umami-event-card="Coating Line">▼</button></div>
           </div>
 
           <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Automotive Printing Line.png')" data-umami-event="process-zoom: Automotive Printing Line">
             <img src="../shared/assets/Render Automotive Printing Line.png" alt="Automotive Printing Line">
             <div class="ls4-proc-card-label">Automotive Printing Line</div>
-            <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide">✕</button>
-            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down">▼</button></div>
+            <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Hide" data-umami-event="process-card-toggle" data-umami-event-card="Automotive Printing Line">✕</button>
+            <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Move up" data-umami-event="process-card-move" data-umami-event-direction="up" data-umami-event-card="Automotive Printing Line">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Move down" data-umami-event="process-card-move" data-umami-event-direction="down" data-umami-event-card="Automotive Printing Line">▼</button></div>
           </div>
 
         </div>
@@ -2238,7 +2238,7 @@
         <div class="t5-vc-imgs" id="t5-vc-imgs">
 
           <div class="t5-vc-card" id="t5-vc-camhole">
-            <button class="t5-vc-hide" onclick="t5VcHide('camhole')" title="Hide">×</button>
+            <button class="t5-vc-hide" onclick="t5VcHide('camhole')" title="Hide" data-umami-event="diagram-hide-toggle" data-umami-event-diagram="Drillhole - Camera System">×</button>
             <div class="t5-diagram" style="flex:1;min-height:0;" onclick="openLb('../shared/assets/Picture of how a drillhole is seeing on a camera base system it has an angle.jpeg')" data-umami-event="image-zoom" data-umami-event-image="Drillhole - Camera System">
               <img src="../shared/assets/Picture of how a drillhole is seeing on a camera base system it has an angle.jpeg" alt="Drill hole — camera system">
               <div class="t5-img-hint">click to enlarge</div>
@@ -2247,7 +2247,7 @@
           </div>
 
           <div class="t5-vc-card" id="t5-vc-lshole">
-            <button class="t5-vc-hide" onclick="t5VcHide('lshole')" title="Hide">×</button>
+            <button class="t5-vc-hide" onclick="t5VcHide('lshole')" title="Hide" data-umami-event="diagram-hide-toggle" data-umami-event-diagram="IG Unit - Camera vs LineScanner">×</button>
             <div class="t5-diagram" style="flex:1;min-height:0;" onclick="openLb('../shared/assets/Comparison on image taken by Camera Above and LineScanner below of a Ig unit .jpg')" data-umami-event="image-zoom" data-umami-event-image="IG Unit - Camera vs LineScanner">
               <img src="../shared/assets/Comparison on image taken by Camera Above and LineScanner below of a Ig unit .jpg" alt="Camera vs LineScanner comparison — IG unit">
               <div class="t5-img-hint">click to enlarge</div>
@@ -3044,6 +3044,7 @@
 
       // Override arrow buttons to handle both default and defect modes
       prevBtn.addEventListener('click', function () {
+        umami.track('gallery-prev', { slide: 'surface-quality' });
         if (currentDefect === -1) {
           if (defaultImg > 0) { defaultImg--; updateDefaultNav(); }
         } else {
@@ -3051,6 +3052,7 @@
         }
       });
       nextBtn.addEventListener('click', function () {
+        umami.track('gallery-next', { slide: 'surface-quality' });
         if (currentDefect === -1) {
           if (defaultImg < DEFAULT_SLIDES.length - 1) { defaultImg++; updateDefaultNav(); }
         } else {
@@ -3290,8 +3292,8 @@
         });
       }
 
-      prevBtn.addEventListener('click', function () { if (current > 0) { current--; render(); } });
-      nextBtn.addEventListener('click', function () { if (current < IMAGES.length - 1) { current++; render(); } });
+      prevBtn.addEventListener('click', function () { if (current > 0) { current--; render(); if (window.umami) umami.track('gallery-prev', { slide: 'dimensional-control' }); } });
+      nextBtn.addEventListener('click', function () { if (current < IMAGES.length - 1) { current++; render(); if (window.umami) umami.track('gallery-next', { slide: 'dimensional-control' }); } });
       render();
 
       function lbOpen(imageSet, idx) {
@@ -3303,7 +3305,7 @@
           var ti = document.createElement('img');
           ti.src = img.src; ti.alt = '';
           t.appendChild(ti);
-          t.addEventListener('click', function () { lbIdx = i; lbRender(); });
+          t.addEventListener('click', function () { lbIdx = i; lbRender(); if (window.umami) umami.track('gallery-thumbnail', { slide: 'dimensional-control', index: i }); });
           lbThumbs.appendChild(t);
         });
         lb.classList.add('open');
@@ -3322,10 +3324,10 @@
 
       window.ls7LbOpen       = function (idx) { lbOpen(IMAGES, idx); };
       window.ls7OpenConveyor = function ()    { lbOpen(CONVEYOR_IMAGES, 0); };
-      window.ls7LbClose      = function ()    { lb.classList.remove('open'); };
+      window.ls7LbClose      = function ()    { lb.classList.remove('open'); if (window.umami) umami.track('lightbox-close', { slide: 'dimensional-control' }); };
       window.ls7LbNav        = function (d)   {
         var n = lbIdx + d;
-        if (n >= 0 && n < lbSet.length) { lbIdx = n; lbRender(); }
+        if (n >= 0 && n < lbSet.length) { lbIdx = n; lbRender(); if (window.umami) umami.track('lightbox-nav', { slide: 'dimensional-control', direction: d < 0 ? 'prev' : 'next' }); }
       };
 
       document.addEventListener('keydown', function (e) {
@@ -3448,8 +3450,8 @@
         prev.disabled = idx === 0;
         next.disabled = idx === total - 1;
       }
-      prev.onclick = function () { go(idx - 1); };
-      next.onclick = function () { go(idx + 1); };
+      prev.onclick = function () { go(idx - 1); umami.track('gallery-prev', { slide: 'screenprint-logo' }); };
+      next.onclick = function () { go(idx + 1); umami.track('gallery-next', { slide: 'screenprint-logo' }); };
       var lb     = document.getElementById('ls8aLb');
       var lbImg  = document.getElementById('ls8aLbImg');
       var lbCap  = document.getElementById('ls8aLbCap');
@@ -3463,9 +3465,9 @@
         lbPrev.disabled = lbIdx <= 0;
         lbNext.disabled = lbIdx >= IMGS.length - 1;
       }
-      window.ls8aLbClose = function () { lb.classList.remove('open'); };
-      window.ls8aLbNav   = function (d) { lbIdx = Math.max(0, Math.min(lbIdx + d, IMGS.length - 1)); lbRender(); };
-      SLIDES.forEach(function (s, i) { s.querySelector('img').addEventListener('click', function () { lbOpen(i); }); });
+      window.ls8aLbClose = function () { lb.classList.remove('open'); umami.track('lightbox-close', { slide: 'screenprint-logo' }); };
+      window.ls8aLbNav   = function (d) { lbIdx = Math.max(0, Math.min(lbIdx + d, IMGS.length - 1)); lbRender(); umami.track('lightbox-nav', { slide: 'screenprint-logo', direction: d > 0 ? 'next' : 'prev' }); };
+      SLIDES.forEach(function (s, i) { s.querySelector('img').addEventListener('click', function () { lbOpen(i); umami.track('image-zoom', { slide: 'screenprint-logo', image: IMGS[i].cap || i }); }); });
       document.addEventListener('keydown', function (e) {
         if (!lb.classList.contains('open')) return;
         if (e.key === 'ArrowLeft')  ls8aLbNav(-1);
@@ -3582,7 +3584,7 @@
         s.className = 'ls8b-slide' + (i === 0 ? ' active' : '');
         var imgEl = document.createElement('img');
         imgEl.src = img.src; imgEl.alt = img.caption || '';
-        imgEl.addEventListener('click', function () { lbOpen(i); });
+        imgEl.addEventListener('click', function () { lbOpen(i); if (window.umami) umami.track('image-zoom', { slide: 'position-marking', image: img.caption || i }); });
         s.appendChild(imgEl);
         if (img.caption) {
           var cap = document.createElement('div');
@@ -3595,7 +3597,7 @@
         t.className = 'ls8b-lb-thumb';
         var ti = document.createElement('img'); ti.src = img.src; ti.alt = '';
         t.appendChild(ti);
-        t.addEventListener('click', function () { lbIdx = i; lbRender(); });
+        t.addEventListener('click', function () { lbIdx = i; lbRender(); if (window.umami) umami.track('gallery-thumbnail', { slide: 'position-marking', index: i }); });
         lbThumbs.appendChild(t);
       });
 
@@ -3612,7 +3614,7 @@
       render();
 
       slide.querySelectorAll('.ls8b-tag').forEach(function (tag) {
-        tag.addEventListener('click', function () { current = parseInt(tag.dataset.img); render(); });
+        tag.addEventListener('click', function () { current = parseInt(tag.dataset.img); render(); if (window.umami) umami.track('gallery-filter', { slide: 'position-marking', tag: tag.textContent.trim() }); });
       });
 
       function lbOpen(i) { lbIdx = i; lb.classList.add('open'); lbRender(); }
@@ -3623,8 +3625,8 @@
         lbNext.disabled = lbIdx >= IMAGES.length - 1;
         lbThumbs.querySelectorAll('.ls8b-lb-thumb').forEach(function (t, i) { t.classList.toggle('active', i === lbIdx); });
       }
-      window.ls8bLbClose = function () { lb.classList.remove('open'); };
-      window.ls8bLbNav   = function (d) { var n = lbIdx + d; if (n >= 0 && n < IMAGES.length) { lbIdx = n; lbRender(); } };
+      window.ls8bLbClose = function () { lb.classList.remove('open'); if (window.umami) umami.track('lightbox-close', { slide: 'position-marking' }); };
+      window.ls8bLbNav   = function (d) { var n = lbIdx + d; if (n >= 0 && n < IMAGES.length) { lbIdx = n; lbRender(); if (window.umami) umami.track('lightbox-nav', { slide: 'position-marking', direction: d > 0 ? 'next' : 'prev' }); } };
       document.addEventListener('keydown', function (e) {
         if (!lb.classList.contains('open')) return;
         if (e.key === 'ArrowLeft')  ls8bLbNav(-1);
@@ -3868,7 +3870,7 @@
           slide.className = 'ls10-slide' + (i === 0 ? ' active' : '');
           var imgEl = document.createElement('img');
           imgEl.src = img.src; imgEl.alt = img.caption || '';
-          imgEl.addEventListener('click', function () { lbOpen(i); });
+          imgEl.addEventListener('click', function () { lbOpen(i); if (window.umami) umami.track('image-zoom', { slide: 'traceability', image: img.caption || i }); });
           slide.appendChild(imgEl);
           if (img.caption) {
             var cap = document.createElement('div');
@@ -3886,7 +3888,7 @@
           t.className = 'ls10-lb-thumb';
           var ti = document.createElement('img'); ti.src = img.src; ti.alt = '';
           t.appendChild(ti);
-          t.addEventListener('click', function () { lbIdx = i; lbRender(); });
+          t.addEventListener('click', function () { lbIdx = i; lbRender(); if (window.umami) umami.track('gallery-thumbnail', { slide: 'traceability', index: i }); });
           lbThumbs.appendChild(t);
         });
       }
@@ -3903,6 +3905,7 @@
 
       window.ls10Switch = function (tabKey) {
         if (tabKey === activeTab) return;
+        if (window.umami) umami.track('traceability-tab', { tab: tabKey });
         activeTab = tabKey; current = 0;
         document.querySelectorAll('.ls10-tab').forEach(function (btn) {
           btn.classList.toggle('active', btn.dataset.tab === tabKey);
@@ -3914,8 +3917,8 @@
         render();
       };
 
-      prevBtn.addEventListener('click', function () { if (current > 0) { current--; render(); } });
-      nextBtn.addEventListener('click', function () { if (current < TABS[activeTab].length - 1) { current++; render(); } });
+      prevBtn.addEventListener('click', function () { if (current > 0) { current--; render(); if (window.umami) umami.track('gallery-prev', { slide: 'traceability' }); } });
+      nextBtn.addEventListener('click', function () { if (current < TABS[activeTab].length - 1) { current++; render(); if (window.umami) umami.track('gallery-next', { slide: 'traceability' }); } });
 
       buildSlides(TABS.archive);
       buildThumbs(TABS.archive);
@@ -3933,10 +3936,10 @@
         });
       }
 
-      window.ls10LbClose = function () { lb.classList.remove('open'); };
+      window.ls10LbClose = function () { lb.classList.remove('open'); if (window.umami) umami.track('lightbox-close', { slide: 'traceability' }); };
       window.ls10LbNav   = function (d) {
         var n = lbIdx + d;
-        if (n >= 0 && n < TABS[activeTab].length) { lbIdx = n; lbRender(); }
+        if (n >= 0 && n < TABS[activeTab].length) { lbIdx = n; lbRender(); if (window.umami) umami.track('lightbox-nav', { slide: 'traceability', direction: d < 0 ? 'prev' : 'next' }); }
       };
 
       document.addEventListener('keydown', function (e) {
@@ -4170,7 +4173,7 @@
         slide.className = 'lssen-slide' + (i === 0 ? ' active' : '');
         var imgEl = document.createElement('img');
         imgEl.src = img.src; imgEl.alt = img.caption || '';
-        imgEl.addEventListener('click', function () { lbOpen(i); });
+        imgEl.addEventListener('click', function () { lbOpen(i); if (window.umami) umami.track('image-zoom', { slide: 'sensitivity-adjustment', image: img.caption || i }); });
         slide.appendChild(imgEl);
         if (img.caption) {
           var cap = document.createElement('div');
@@ -4187,7 +4190,7 @@
         t.className = 'lssen-lb-thumb';
         var ti = document.createElement('img'); ti.src = img.src; ti.alt = '';
         t.appendChild(ti);
-        t.addEventListener('click', function () { lbIdx = i; lbRender(); });
+        t.addEventListener('click', function () { lbIdx = i; lbRender(); if (window.umami) umami.track('gallery-thumbnail', { slide: 'sensitivity-adjustment', index: i }); });
         lbThumbs.appendChild(t);
       });
 
@@ -4200,8 +4203,8 @@
         });
       }
 
-      prevBtn.addEventListener('click', function () { if (current > 0) { current--; render(); } });
-      nextBtn.addEventListener('click', function () { if (current < IMAGES.length - 1) { current++; render(); } });
+      prevBtn.addEventListener('click', function () { if (current > 0) { current--; render(); if (window.umami) umami.track('gallery-prev', { slide: 'sensitivity-adjustment' }); } });
+      nextBtn.addEventListener('click', function () { if (current < IMAGES.length - 1) { current++; render(); if (window.umami) umami.track('gallery-next', { slide: 'sensitivity-adjustment' }); } });
       render();
 
       function lbOpen(idx) { lbIdx = idx; lb.classList.add('open'); lbRender(); }
@@ -4215,10 +4218,10 @@
         });
       }
 
-      window.lssenLbClose = function () { lb.classList.remove('open'); };
+      window.lssenLbClose = function () { lb.classList.remove('open'); if (window.umami) umami.track('lightbox-close', { slide: 'sensitivity-adjustment' }); };
       window.lssenLbNav   = function (d) {
         var n = lbIdx + d;
-        if (n >= 0 && n < IMAGES.length) { lbIdx = n; lbRender(); }
+        if (n >= 0 && n < IMAGES.length) { lbIdx = n; lbRender(); if (window.umami) umami.track('lightbox-nav', { slide: 'sensitivity-adjustment', direction: d < 0 ? 'prev' : 'next' }); }
       };
 
       document.addEventListener('keydown', function (e) {
@@ -4421,7 +4424,10 @@
           slide.className = 'ls11-slide' + (i === 0 ? ' active' : '');
           var imgEl = document.createElement('img');
           imgEl.src = img.src; imgEl.alt = img.caption || '';
-          imgEl.addEventListener('click', function () { lbOpen(i); });
+          imgEl.addEventListener('click', function () {
+            if (window.umami) umami.track('image-zoom', { slide: 'footprint', image: img.caption || i });
+            lbOpen(i);
+          });
           slide.appendChild(imgEl);
           if (img.caption) {
             var cap = document.createElement('div');
@@ -4439,7 +4445,10 @@
           t.className = 'ls11-lb-thumb';
           var ti = document.createElement('img'); ti.src = img.src; ti.alt = '';
           t.appendChild(ti);
-          t.addEventListener('click', function () { lbIdx = i; lbRender(); });
+          t.addEventListener('click', function () {
+            if (window.umami) umami.track('gallery-thumbnail', { slide: 'footprint', index: i });
+            lbIdx = i; lbRender();
+          });
           lbThumbs.appendChild(t);
         });
       }
@@ -4459,8 +4468,18 @@
         current = IMAGES.length - 1; render();
       };
 
-      prevBtn.addEventListener('click', function () { if (current > 0) { current--; render(); } });
-      nextBtn.addEventListener('click', function () { if (current < IMAGES.length - 1) { current++; render(); } });
+      prevBtn.addEventListener('click', function () {
+        if (current > 0) {
+          if (window.umami) umami.track('gallery-prev', { slide: 'footprint' });
+          current--; render();
+        }
+      });
+      nextBtn.addEventListener('click', function () {
+        if (current < IMAGES.length - 1) {
+          if (window.umami) umami.track('gallery-next', { slide: 'footprint' });
+          current++; render();
+        }
+      });
 
       buildSlides(); buildThumbs(); render();
 
@@ -4475,10 +4494,16 @@
         });
       }
 
-      window.ls11LbClose = function () { lb.classList.remove('open'); };
+      window.ls11LbClose = function () {
+        if (window.umami) umami.track('lightbox-close', { slide: 'footprint' });
+        lb.classList.remove('open');
+      };
       window.ls11LbNav   = function (d) {
         var n = lbIdx + d;
-        if (n >= 0 && n < IMAGES.length) { lbIdx = n; lbRender(); }
+        if (n >= 0 && n < IMAGES.length) {
+          if (window.umami) umami.track('lightbox-nav', { slide: 'footprint', direction: d === -1 ? 'prev' : 'next' });
+          lbIdx = n; lbRender();
+        }
       };
 
       document.addEventListener('keydown', function (e) {
@@ -4711,7 +4736,7 @@
   }
 
   window.shareOpen  = function () { document.getElementById('shareModal').classList.add('on'); hideSubs(); };
-  window.shareClose = function () { document.getElementById('shareModal').classList.remove('on'); hideSubs(); };
+  window.shareClose = function () { document.getElementById('shareModal').classList.remove('on'); hideSubs(); if (window.umami) umami.track('share-modal-close'); };
 
   window.shareToggleSub = function (id) {
     var wa = document.getElementById('share-sub-wa'), em = document.getElementById('share-sub-email');
@@ -4722,6 +4747,7 @@
   window.shareCopyLink = function () {
     var btn = document.getElementById('share-copy-btn');
     navigator.clipboard.writeText(buildUrl('copy')).then(function () {
+      if (window.umami) umami.track('share-copy-link');
       var orig = btn.textContent;
       btn.textContent = '✓ Copied!';
       setTimeout(function () { btn.textContent = orig; }, 2000);
