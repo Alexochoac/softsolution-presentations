@@ -632,7 +632,7 @@
     <!-- ── Always-visible: tagline + IQC ── -->
     <div class="ss-tagline anim-in">Inspeccionamos cada aspecto de calidad de tu vidrio garantizando el máximo rendimiento y la mejor calidad.</div>
     <div class="iqc-wrap">
-      <div class="iqc-toggle anim-in" onclick="toggleIQC(this)" data-umami-event="iqc-group-expand">
+      <div class="iqc-toggle anim-in" onclick="toggleIQC(this)">
         Parte del grupo <strong>IQC – Industrial QC Holding LLC</strong> <span class="iqc-arrow">▾</span>
       </div>
       <div class="iqc-panel" id="iqcPanel">
@@ -680,9 +680,9 @@
 
     <!-- ── Tab Bar — below IQC ── -->
     <div class="co-tabs">
-      <button class="co-tab active" onclick="coTab(this,'about')" data-umami-event="company-tab" data-umami-event-tab="About Us">Sobre Nosotros</button>
-      <button class="co-tab" onclick="coTab(this,'tech')" data-umami-event="company-tab" data-umami-event-tab="Technologies">Tecnologías</button>
-      <button class="co-tab" onclick="coTab(this,'network')" data-umami-event="company-tab" data-umami-event-tab="Global Network">Red Global</button>
+      <button class="co-tab active" onclick="coTab(this,'about')">Sobre Nosotros</button>
+      <button class="co-tab" onclick="coTab(this,'tech')">Tecnologías</button>
+      <button class="co-tab" onclick="coTab(this,'network')">Red Global</button>
     </div>
 
     <!-- ── Panels Wrapper ── -->
@@ -718,28 +718,28 @@
       <!-- ══ PANEL 2 · Tecnologías ══ -->
       <div class="co-panel" id="co-tech">
         <div class="tech-list">
-          <div class="tech-item anim-in" onclick="toggleTech(this)" data-umami-event="technology-expand" data-umami-event-tech="Parallel Light 90">
+          <div class="tech-item anim-in" onclick="toggleTech(this)">
             <div class="tech-hd">
               <div class="tech-num">1</div>
               <div class="tech-name">Sistema de Luz Paralela 90°</div>
             </div>
             <div class="tech-body">Tecnología de sensor con fuente de luz paralela a 90° para detectar defectos superficiales con alta precisión y velocidad en vidrios planos.</div>
           </div>
-          <div class="tech-item anim-in" onclick="toggleTech(this)" data-umami-event="technology-expand" data-umami-event-tech="Bright-field Dark-field">
+          <div class="tech-item anim-in" onclick="toggleTech(this)">
             <div class="tech-hd">
               <div class="tech-num">2</div>
               <div class="tech-name">Bright-field &amp; Dark-field</div>
             </div>
             <div class="tech-body">Tecnología de cámara con iluminación de campo claro y oscuro para detección integral de inclusiones, rayaduras, burbujas y recubrimientos.</div>
           </div>
-          <div class="tech-item anim-in" onclick="toggleTech(this)" data-umami-event="technology-expand" data-umami-event-tech="Reflection">
+          <div class="tech-item anim-in" onclick="toggleTech(this)">
             <div class="tech-hd">
               <div class="tech-num">3</div>
               <div class="tech-name">Tecnología de Reflexión</div>
             </div>
             <div class="tech-body">Tecnología de sensor y luz dispersa por reflexión para detectar defectos de borde y anomalías superficiales en vidrio plano y curvado con alta sensibilidad.</div>
           </div>
-          <div class="tech-item anim-in" onclick="toggleTech(this)" data-umami-event="technology-expand" data-umami-event-tech="Spectrometer">
+          <div class="tech-item anim-in" onclick="toggleTech(this)">
             <div class="tech-hd">
               <div class="tech-num">4</div>
               <div class="tech-name">Espectrómetro</div>
@@ -796,11 +796,11 @@
 
           <!-- Sub-tab bar -->
           <div class="map-subtabs">
-            <button class="map-stab active" onclick="mapSubTab(this,'offices')" data-umami-event="map-subtab" data-umami-event-tab="Offices">Oficinas</button>
-            <button class="map-stab" onclick="mapSubTab(this,'network')" data-umami-event="map-subtab" data-umami-event-tab="Agents & Distributors">Agentes &amp; Distribuidores</button>
+            <button class="map-stab active" onclick="mapSubTab(this,'offices')">Oficinas</button>
+            <button class="map-stab" onclick="mapSubTab(this,'network')">Agentes &amp; Distribuidores</button>
           </div>
 
-          <button class="map-tog-btn" id="mapTogBtn" onclick="toggleMapMode()" data-umami-event="map-color-toggle">&#9728; Colores originales</button>
+          <button class="map-tog-btn" id="mapTogBtn" onclick="toggleMapMode()">&#9728; Colores originales</button>
         </div>
 
         <div class="map-footer">
@@ -909,6 +909,7 @@
       window.toggleIQC = function(btn){
         btn.classList.toggle('open');
         document.getElementById('iqcPanel').classList.toggle('open');
+        if (window.umami) umami.track('iqc-group-expand', { slide: currentSlideName });
       };
       window.coTab = function(btn,id){
         var slide = btn.closest('.slide');
@@ -918,17 +919,23 @@
         var panel = document.getElementById('co-'+id);
         panel.classList.add('active');
         panel.querySelectorAll('.anim-in').forEach(function(el){el.style.animation='none';void el.offsetHeight;el.style.animation='';});
+        if (window.umami) umami.track('tab-click: ' + btn.textContent.trim(), { slide: currentSlideName });
       };
       window.toggleTech = function(item){
         var wasOpen = item.classList.contains('open');
         item.closest('.tech-list').querySelectorAll('.tech-item').forEach(function(i){i.classList.remove('open');});
-        if(!wasOpen) item.classList.add('open');
+        if(!wasOpen) {
+          item.classList.add('open');
+          var techName = item.dataset.techName || item.querySelector('.tech-title') && item.querySelector('.tech-title').textContent.trim() || '';
+          if (window.umami) umami.track('technology-expand: ' + techName, { slide: currentSlideName });
+        }
       };
       window.mapSubTab = function(btn,id){
         document.querySelectorAll('.map-stab').forEach(function(t){t.classList.remove('active');});
         document.querySelectorAll('.map-panel').forEach(function(p){p.classList.remove('active');});
         btn.classList.add('active');
         document.getElementById('mp-'+id).classList.add('active');
+        if (window.umami) umami.track('subtab-click: ' + btn.textContent.trim(), { slide: currentSlideName });
       };
       window.toggleMapMode = function(){
         var imgs = document.querySelectorAll('#mapWrap .map-img');
@@ -936,6 +943,7 @@
         var isDark = imgs.length && imgs[0].classList.contains('dark-filter');
         imgs.forEach(function(img){img.classList.toggle('dark-filter',!isDark);img.classList.toggle('light-filter',isDark);});
         btn.innerHTML = isDark ? '&#9790; Modo oscuro' : '&#9728; Colores originales';
+        if (window.umami) umami.track('map-color-toggle', { slide: currentSlideName });
       };
       function animateCount(el,from,to,duration,suffix){
         var start=null;
@@ -1286,8 +1294,8 @@
 
   <!-- ── Tab Bar ── -->
   <div class="ls4-tabs">
-    <button class="ls4-tab active" onclick="ls4Tab(this,'matrix')" data-umami-event="applications-tab" data-umami-event-tab="Capability Matrix">Matriz de Capacidades</button>
-    <button class="ls4-tab" onclick="ls4Tab(this,'process')" data-umami-event="applications-tab" data-umami-event-tab="Where In Your Process">Dónde en Tu Proceso</button>
+    <button class="ls4-tab active" onclick="ls4Tab(this,'matrix')">Matriz de Capacidades</button>
+    <button class="ls4-tab" onclick="ls4Tab(this,'process')">Dónde en Tu Proceso</button>
   </div>
 
   <!-- ── Panels Wrapper ── -->
@@ -1412,13 +1420,13 @@
 
         <!-- Scanner cards -->
         <div class="ls4-cards anim-in">
-          <div class="ls4-card ls4-card-v" onclick="openLb('../shared/assets/Vertical LineScanner.png')" data-umami-event="image-zoom" data-umami-event-image="Vertical LineScanner">
+          <div class="ls4-card ls4-card-v" onclick="openLb('../shared/assets/Vertical LineScanner.png'); if(window.umami) umami.track('image-zoom: Vertical LineScanner', { slide: currentSlideName })">
             <div class="ls4-card-img">
               <img src="../shared/assets/Vertical LineScanner.png" alt="LineScanner Vertical">
             </div>
             <div class="ls4-card-label">LineScanner Vertical</div>
           </div>
-          <div class="ls4-card ls4-card-wide" onclick="openLb('../shared/assets/Horizontal LineScanner.png')" data-umami-event="image-zoom" data-umami-event-image="Horizontal LineScanner">
+          <div class="ls4-card ls4-card-wide" onclick="openLb('../shared/assets/Horizontal LineScanner.png'); if(window.umami) umami.track('image-zoom: Horizontal LineScanner', { slide: currentSlideName })">
             <div class="ls4-card-img">
               <img src="../shared/assets/Horizontal LineScanner.png" alt="LineScanner Horizontal">
             </div>
@@ -1539,42 +1547,42 @@
         <!-- RIGHT: Tarjetas de renderizado por etapa -->
         <div class="ls4-proc-cards anim-in">
 
-          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Grinding Line.png')" data-umami-event="image-zoom" data-umami-event-image="Grinding Line">
+          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Grinding Line.png'); if(window.umami) umami.track('process-zoom: Grinding Line', { slide: currentSlideName })">
             <img src="../shared/assets/Render Grinding Line.png" alt="Esmerilado">
             <div class="ls4-proc-card-label">Esmerilado</div>
             <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Ocultar">✕</button>
             <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Subir">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Bajar">▼</button></div>
           </div>
 
-          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Tempering Line.png')" data-umami-event="image-zoom" data-umami-event-image="Tempering Line">
+          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Tempering Line.png'); if(window.umami) umami.track('process-zoom: Tempering Line', { slide: currentSlideName })">
             <img src="../shared/assets/Render Tempering Line.png" alt="Templado">
             <div class="ls4-proc-card-label">Templado</div>
             <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Ocultar">✕</button>
             <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Subir">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Bajar">▼</button></div>
           </div>
 
-          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Lamination Line.png')" data-umami-event="image-zoom" data-umami-event-image="Lamination Line">
+          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Lamination Line.png'); if(window.umami) umami.track('process-zoom: Lamination Line', { slide: currentSlideName })">
             <img src="../shared/assets/Render Lamination Line.png" alt="Laminado">
             <div class="ls4-proc-card-label">Laminado</div>
             <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Ocultar">✕</button>
             <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Subir">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Bajar">▼</button></div>
           </div>
 
-          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render IG LIne.png')" data-umami-event="image-zoom" data-umami-event-image="IG Line">
+          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render IG LIne.png'); if(window.umami) umami.track('process-zoom: IG Line', { slide: currentSlideName })">
             <img src="../shared/assets/Render IG LIne.png" alt="Línea IG">
             <div class="ls4-proc-card-label">Línea IG</div>
             <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Ocultar">✕</button>
             <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Subir">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Bajar">▼</button></div>
           </div>
 
-          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Coating line.png')" data-umami-event="image-zoom" data-umami-event-image="Coating Line">
+          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Coating line.png'); if(window.umami) umami.track('process-zoom: Coating Line', { slide: currentSlideName })">
             <img src="../shared/assets/Render Coating line.png" alt="Coating">
             <div class="ls4-proc-card-label">Coating</div>
             <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Ocultar">✕</button>
             <div class="ls4-card-move"><button onclick="ls4MoveCard(this,-1,event)" title="Subir">▲</button><button onclick="ls4MoveCard(this,1,event)" title="Bajar">▼</button></div>
           </div>
 
-          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Automotive Printing Line.png')" data-umami-event="image-zoom" data-umami-event-image="Automotive Printing Line">
+          <div class="ls4-proc-card" onclick="openLb('../shared/assets/Render Automotive Printing Line.png'); if(window.umami) umami.track('process-zoom: Automotive Printing Line', { slide: currentSlideName })">
             <img src="../shared/assets/Render Automotive Printing Line.png" alt="Impresión Automotriz">
             <div class="ls4-proc-card-label">Impresión Automotriz</div>
             <button class="ls4-card-toggle" onclick="ls4ToggleCard(this,event)" title="Ocultar">✕</button>
@@ -1961,6 +1969,7 @@
     var name = th.querySelector('.ls4-col-label').textContent.trim();
     col.classList.add('ls4-col-collapsed');
     ls4UpdateProcGrid(table);
+    if (window.umami) umami.track('matrix-column-toggle: ' + name, { slide: currentSlideName });
 
     var wrap = ls4GetWrap(table);
     var restoreArea = wrap ? wrap.querySelector('.ls4-col-restore') : null;
@@ -1985,6 +1994,8 @@
     var collapsed = card.classList.toggle('ls4-collapsed');
     btn.textContent = collapsed ? '+' : '✕';
     btn.title = collapsed ? 'Mostrar' : 'Ocultar';
+    var cardName = card.querySelector('.ls4-proc-card-label') ? card.querySelector('.ls4-proc-card-label').textContent.trim() : '';
+    if (window.umami) umami.track('process-card-toggle: ' + cardName, { slide: currentSlideName });
   };
 
   window.ls4MoveCard = function(btn, dir, e) {
@@ -1998,6 +2009,8 @@
     if (!target) return;
     if (dir < 0) container.insertBefore(card, target);
     else container.insertBefore(target, card);
+    var cardName = card.querySelector('.ls4-proc-card-label') ? card.querySelector('.ls4-proc-card-label').textContent.trim() : '';
+    if (window.umami) umami.track('process-card-move: ' + cardName, { direction: dir < 0 ? 'up' : 'down', slide: currentSlideName });
   };
 
   window.ls4Tab = function(btn, id) {
@@ -2006,6 +2019,7 @@
     slide.querySelectorAll('.ls4-panel').forEach(function(p) { p.classList.remove('active'); });
     btn.classList.add('active');
     document.getElementById('ls4-' + id).classList.add('active');
+    if (window.umami) umami.track('tab-click: ' + btn.textContent.trim(), { slide: currentSlideName });
   };
 
   setTimeout(function() {
@@ -2183,7 +2197,7 @@
         </div>
 
         <!-- Bottom: diagrama a ancho completo -->
-        <div class="t5-diagram t5-diagram-full anim-in" onclick="openLb('../shared/assets/Image Explaining the technology 1 Telecentric light 2 linear image sensor 3 glass 4 electronic module.png')" data-umami-event="image-zoom" data-umami-event-image="Technology Diagram - How It Works">
+        <div class="t5-diagram t5-diagram-full anim-in" onclick="openLb('../shared/assets/Image Explaining the technology 1 Telecentric light 2 linear image sensor 3 glass 4 electronic module.png'); if(window.umami) umami.track('image-zoom: Technology Diagram - How It Works', { slide: currentSlideName })">
           <img src="../shared/assets/Image Explaining the technology 1 Telecentric light 2 linear image sensor 3 glass 4 electronic module.png" alt="Diagrama de tecnología del escáner">
           <div class="t5-img-hint">clic para ampliar</div>
         </div>
@@ -2204,7 +2218,7 @@
         </div>
 
         <!-- Diagrama 16-bit a ancho completo -->
-        <div class="t5-diagram t5-diagram-full anim-in" onclick="openLb('../shared/assets/16 bit tech.jpg')" data-umami-event="image-zoom" data-umami-event-image="16-bit Technology Diagram">
+        <div class="t5-diagram t5-diagram-full anim-in" onclick="openLb('../shared/assets/16 bit tech.jpg'); if(window.umami) umami.track('image-zoom: 16-bit Technology Diagram', { slide: currentSlideName })">
           <img src="../shared/assets/16 bit tech.jpg" alt="Tecnología de 16 bits — rango dinámico extendido">
           <div class="t5-img-hint">clic para ampliar</div>
         </div>
@@ -2238,8 +2252,8 @@
         <div class="t5-vc-imgs" id="t5-vc-imgs">
 
           <div class="t5-vc-card" id="t5-vc-camhole">
-            <button class="t5-vc-hide" onclick="t5VcHide('camhole')" title="Ocultar">×</button>
-            <div class="t5-diagram" style="flex:1;min-height:0;" onclick="openLb('../shared/assets/Picture of how a drillhole is seeing on a camera base system it has an angle.jpeg')" data-umami-event="image-zoom" data-umami-event-image="Drillhole - Camera System">
+            <button class="t5-vc-hide" onclick="t5VcHide('camhole'); if(window.umami) umami.track('diagram-hide-toggle: Drillhole - Camera System', { slide: currentSlideName })" title="Ocultar">×</button>
+            <div class="t5-diagram" style="flex:1;min-height:0;" onclick="openLb('../shared/assets/Picture of how a drillhole is seeing on a camera base system it has an angle.jpeg'); if(window.umami) umami.track('image-zoom: Drillhole - Camera System', { slide: currentSlideName })">
               <img src="../shared/assets/Picture of how a drillhole is seeing on a camera base system it has an angle.jpeg" alt="Agujero de taladro — sistema de cámara">
               <div class="t5-img-hint">clic para ampliar</div>
             </div>
@@ -2247,8 +2261,8 @@
           </div>
 
           <div class="t5-vc-card" id="t5-vc-lshole">
-            <button class="t5-vc-hide" onclick="t5VcHide('lshole')" title="Ocultar">×</button>
-            <div class="t5-diagram" style="flex:1;min-height:0;" onclick="openLb('../shared/assets/Comparison on image taken by Camera Above and LineScanner below of a Ig unit .jpg')" data-umami-event="image-zoom" data-umami-event-image="IG Unit - Camera vs LineScanner">
+            <button class="t5-vc-hide" onclick="t5VcHide('lshole'); if(window.umami) umami.track('diagram-hide-toggle: IG Unit - Camera vs LineScanner', { slide: currentSlideName })" title="Ocultar">×</button>
+            <div class="t5-diagram" style="flex:1;min-height:0;" onclick="openLb('../shared/assets/Comparison on image taken by Camera Above and LineScanner below of a Ig unit .jpg'); if(window.umami) umami.track('image-zoom: IG Unit - Camera vs LineScanner', { slide: currentSlideName })">
               <img src="../shared/assets/Comparison on image taken by Camera Above and LineScanner below of a Ig unit .jpg" alt="Comparación Cámara vs LineScanner — unidad IG">
               <div class="t5-img-hint">clic para ampliar</div>
             </div>
@@ -2285,9 +2299,9 @@
 
   <!-- Tab bar — bottom -->
   <div class="t5-tabs">
-    <button class="t5-tab active" onclick="t5Tab(this,'howitworks')" data-umami-event="technology-tab" data-umami-event-tab="How It Works">Cómo Funciona</button>
-    <button class="t5-tab" onclick="t5Tab(this,'sixteenbit')" data-umami-event="technology-tab" data-umami-event-tab="16-bit Advantage">Ventaja 16-bit</button>
-    <button class="t5-tab" onclick="t5Tab(this,'vscamera')"  data-umami-event="technology-tab" data-umami-event-tab="vs Camera Systems">vs Sistemas de Cámara</button>
+    <button class="t5-tab active" onclick="t5Tab(this,'howitworks')">Cómo Funciona</button>
+    <button class="t5-tab" onclick="t5Tab(this,'sixteenbit')">Ventaja 16-bit</button>
+    <button class="t5-tab" onclick="t5Tab(this,'vscamera')">vs Sistemas de Cámara</button>
   </div>
 
   <style>
@@ -2681,6 +2695,7 @@
     slide.querySelectorAll('.t5-panel').forEach(function(p) { p.classList.remove('active'); });
     btn.classList.add('active');
     document.getElementById('t5-' + id).classList.add('active');
+    if (window.umami) umami.track('tab-click: ' + btn.textContent.trim(), { slide: currentSlideName });
   };
   </script>
 
@@ -2971,7 +2986,7 @@
 
         currentDefect = idx;
         currentImg    = 0;
-        if (window.umami) umami.track('defect-category-select', { category: DEFECTS[idx].name });
+        if (window.umami) umami.track('defect-select: ' + DEFECTS[idx].name, { slide: currentSlideName });
         selector.querySelectorAll('.s6-defect-btn').forEach(function (btn, i) {
           var active = i === idx;
           btn.classList.toggle('active', active);
@@ -3096,7 +3111,7 @@
           <div class="col-item">Tolerancias individuales por medida</div>
           <div class="col-item">Importación de modelos <strong>DXF</strong></div>
           <div class="col-item">Verificación en <strong>2 pasos</strong>: global + detalle</div>
-          <div class="col-item">Compatible con <strong class="ls7-trigger" onclick="ls7OpenConveyor()" data-umami-event="conveyor-lightbox-open">transportes de cinta ↗</strong></div>
+          <div class="col-item">Compatible con <strong class="ls7-trigger" onclick="ls7OpenConveyor(); if(window.umami) umami.track('conveyor-lightbox-open', { slide: currentSlideName })">transportes de cinta ↗</strong></div>
           <div class="col-item">Luz paralela para <strong>precisión máxima</strong></div>
         </div>
       </div>
@@ -3270,7 +3285,7 @@
         slide.className = 'ls7-slide' + (i === 0 ? ' active' : '');
         var imgEl = document.createElement('img');
         imgEl.src = img.src; imgEl.alt = img.caption || '';
-        imgEl.addEventListener('click', function () { lbOpen(IMAGES, i); if (window.umami) umami.track('image-zoom', { slide: 'dimensional-control', image: img.caption || i }); });
+        imgEl.addEventListener('click', function () { lbOpen(IMAGES, i); if (window.umami) umami.track('image-zoom: ' + (img.caption || ('Image ' + (i+1))), { slide: currentSlideName }); });
         slide.appendChild(imgEl);
         if (img.caption) {
           var cap = document.createElement('div');
@@ -3290,8 +3305,8 @@
         });
       }
 
-      prevBtn.addEventListener('click', function () { if (current > 0) { current--; render(); } });
-      nextBtn.addEventListener('click', function () { if (current < IMAGES.length - 1) { current++; render(); } });
+      prevBtn.addEventListener('click', function () { if (current > 0) { current--; render(); if (window.umami) umami.track('gallery-prev', { slide: currentSlideName }); } });
+      nextBtn.addEventListener('click', function () { if (current < IMAGES.length - 1) { current++; render(); if (window.umami) umami.track('gallery-next', { slide: currentSlideName }); } });
       render();
 
       function lbOpen(imageSet, idx) {
@@ -3303,7 +3318,7 @@
           var ti = document.createElement('img');
           ti.src = img.src; ti.alt = '';
           t.appendChild(ti);
-          t.addEventListener('click', function () { lbIdx = i; lbRender(); });
+          t.addEventListener('click', function () { lbIdx = i; lbRender(); if (window.umami) umami.track('gallery-thumbnail: ' + (i+1), { slide: currentSlideName }); });
           lbThumbs.appendChild(t);
         });
         lb.classList.add('open');
@@ -3322,10 +3337,10 @@
 
       window.ls7LbOpen       = function (idx) { lbOpen(IMAGES, idx); };
       window.ls7OpenConveyor = function ()    { lbOpen(CONVEYOR_IMAGES, 0); };
-      window.ls7LbClose      = function ()    { lb.classList.remove('open'); };
+      window.ls7LbClose      = function ()    { lb.classList.remove('open'); if (window.umami) umami.track('lightbox-close', { slide: currentSlideName }); };
       window.ls7LbNav        = function (d)   {
         var n = lbIdx + d;
-        if (n >= 0 && n < lbSet.length) { lbIdx = n; lbRender(); }
+        if (n >= 0 && n < lbSet.length) { lbIdx = n; lbRender(); if (window.umami) umami.track('lightbox-nav: ' + (d < 0 ? 'prev' : 'next'), { slide: currentSlideName }); }
       };
 
       document.addEventListener('keydown', function (e) {
@@ -3448,8 +3463,8 @@
         prev.disabled = idx === 0;
         next.disabled = idx === total - 1;
       }
-      prev.onclick = function () { go(idx - 1); };
-      next.onclick = function () { go(idx + 1); };
+      prev.onclick = function () { go(idx - 1); umami.track('gallery-prev', { slide: currentSlideName }); };
+      next.onclick = function () { go(idx + 1); umami.track('gallery-next', { slide: currentSlideName }); };
       var lb     = document.getElementById('ls8aLb');
       var lbImg  = document.getElementById('ls8aLbImg');
       var lbCap  = document.getElementById('ls8aLbCap');
@@ -3463,9 +3478,9 @@
         lbPrev.disabled = lbIdx <= 0;
         lbNext.disabled = lbIdx >= IMGS.length - 1;
       }
-      window.ls8aLbClose = function () { lb.classList.remove('open'); };
-      window.ls8aLbNav   = function (d) { lbIdx = Math.max(0, Math.min(lbIdx + d, IMGS.length - 1)); lbRender(); };
-      SLIDES.forEach(function (s, i) { s.querySelector('img').addEventListener('click', function () { lbOpen(i); }); });
+      window.ls8aLbClose = function () { lb.classList.remove('open'); umami.track('lightbox-close', { slide: currentSlideName }); };
+      window.ls8aLbNav   = function (d) { lbIdx = Math.max(0, Math.min(lbIdx + d, IMGS.length - 1)); lbRender(); umami.track('lightbox-nav: ' + (d > 0 ? 'next' : 'prev'), { slide: currentSlideName }); };
+      SLIDES.forEach(function (s, i) { s.querySelector('img').addEventListener('click', function () { lbOpen(i); umami.track('image-zoom: ' + (IMGS[i].cap || ('Image ' + (i+1))), { slide: currentSlideName }); }); });
       document.addEventListener('keydown', function (e) {
         if (!lb.classList.contains('open')) return;
         if (e.key === 'ArrowLeft')  ls8aLbNav(-1);
@@ -3485,9 +3500,9 @@
 
     <!-- Inline carousel -->
     <div class="ls8b-carousel anim-in">
-      <button class="ls8b-arrow ls8b-prev" id="ls8bPrev" data-umami-event="carousel-prev" data-umami-event-slide="serigrafia" disabled>&#8249;</button>
+      <button class="ls8b-arrow ls8b-prev" id="ls8bPrev" disabled>&#8249;</button>
       <div class="ls8b-viewport" id="ls8bViewport"></div>
-      <button class="ls8b-arrow ls8b-next" id="ls8bNext" data-umami-event="carousel-next" data-umami-event-slide="serigrafia">&#8250;</button>
+      <button class="ls8b-arrow ls8b-next" id="ls8bNext">&#8250;</button>
       <div class="ls8b-counter" id="ls8bCounter">1 / 5</div>
     </div>
 
@@ -3582,7 +3597,7 @@
         s.className = 'ls8b-slide' + (i === 0 ? ' active' : '');
         var imgEl = document.createElement('img');
         imgEl.src = img.src; imgEl.alt = img.caption || '';
-        imgEl.addEventListener('click', function () { lbOpen(i); });
+        imgEl.addEventListener('click', function () { lbOpen(i); if (window.umami) umami.track('image-zoom: ' + (img.caption || ('Image ' + (i+1))), { slide: currentSlideName }); });
         s.appendChild(imgEl);
         if (img.caption) {
           var cap = document.createElement('div');
@@ -3595,7 +3610,7 @@
         t.className = 'ls8b-lb-thumb';
         var ti = document.createElement('img'); ti.src = img.src; ti.alt = '';
         t.appendChild(ti);
-        t.addEventListener('click', function () { lbIdx = i; lbRender(); });
+        t.addEventListener('click', function () { lbIdx = i; lbRender(); if (window.umami) umami.track('gallery-thumbnail: ' + (i+1), { slide: currentSlideName }); });
         lbThumbs.appendChild(t);
       });
 
@@ -3607,8 +3622,8 @@
         slide.querySelectorAll('.ls8b-tag').forEach(function (tag) { tag.classList.toggle('active', parseInt(tag.dataset.img) === current); });
       }
 
-      prevBtn.addEventListener('click', function () { if (current > 0) { current--; render(); } });
-      nextBtn.addEventListener('click', function () { if (current < IMAGES.length - 1) { current++; render(); } });
+      prevBtn.addEventListener('click', function () { if (current > 0) { current--; render(); if (window.umami) umami.track('gallery-prev', { slide: currentSlideName }); } });
+      nextBtn.addEventListener('click', function () { if (current < IMAGES.length - 1) { current++; render(); if (window.umami) umami.track('gallery-next', { slide: currentSlideName }); } });
       render();
 
       slide.querySelectorAll('.ls8b-tag').forEach(function (tag) {
@@ -3623,8 +3638,8 @@
         lbNext.disabled = lbIdx >= IMAGES.length - 1;
         lbThumbs.querySelectorAll('.ls8b-lb-thumb').forEach(function (t, i) { t.classList.toggle('active', i === lbIdx); });
       }
-      window.ls8bLbClose = function () { lb.classList.remove('open'); };
-      window.ls8bLbNav   = function (d) { var n = lbIdx + d; if (n >= 0 && n < IMAGES.length) { lbIdx = n; lbRender(); } };
+      window.ls8bLbClose = function () { lb.classList.remove('open'); if (window.umami) umami.track('lightbox-close', { slide: currentSlideName }); };
+      window.ls8bLbNav   = function (d) { var n = lbIdx + d; if (n >= 0 && n < IMAGES.length) { lbIdx = n; lbRender(); if (window.umami) umami.track('lightbox-nav: ' + (d > 0 ? 'next' : 'prev'), { slide: currentSlideName }); } };
       document.addEventListener('keydown', function (e) {
         if (!lb.classList.contains('open')) return;
         if (e.key === 'ArrowLeft')  ls8bLbNav(-1);
@@ -3868,7 +3883,7 @@
           slide.className = 'ls10-slide' + (i === 0 ? ' active' : '');
           var imgEl = document.createElement('img');
           imgEl.src = img.src; imgEl.alt = img.caption || '';
-          imgEl.addEventListener('click', function () { lbOpen(i); });
+          imgEl.addEventListener('click', function () { lbOpen(i); if (window.umami) umami.track('image-zoom: ' + (img.caption || ('Image ' + (i+1))), { slide: currentSlideName }); });
           slide.appendChild(imgEl);
           if (img.caption) {
             var cap = document.createElement('div');
@@ -3886,7 +3901,7 @@
           t.className = 'ls10-lb-thumb';
           var ti = document.createElement('img'); ti.src = img.src; ti.alt = '';
           t.appendChild(ti);
-          t.addEventListener('click', function () { lbIdx = i; lbRender(); });
+          t.addEventListener('click', function () { lbIdx = i; lbRender(); if (window.umami) umami.track('gallery-thumbnail: ' + (i+1), { slide: currentSlideName }); });
           lbThumbs.appendChild(t);
         });
       }
@@ -3912,10 +3927,11 @@
         document.getElementById('ls10-cards-archive').style.display = tabKey === 'archive' ? 'grid' : 'none';
         document.getElementById('ls10-cards-console').style.display = tabKey === 'console' ? 'grid' : 'none';
         render();
+        if (window.umami) umami.track('traceability-tab', { tab: tabKey, slide: currentSlideName });
       };
 
-      prevBtn.addEventListener('click', function () { if (current > 0) { current--; render(); } });
-      nextBtn.addEventListener('click', function () { if (current < TABS[activeTab].length - 1) { current++; render(); } });
+      prevBtn.addEventListener('click', function () { if (current > 0) { current--; render(); if (window.umami) umami.track('gallery-prev', { slide: currentSlideName }); } });
+      nextBtn.addEventListener('click', function () { if (current < TABS[activeTab].length - 1) { current++; render(); if (window.umami) umami.track('gallery-next', { slide: currentSlideName }); } });
 
       buildSlides(TABS.archive);
       buildThumbs(TABS.archive);
@@ -3933,10 +3949,10 @@
         });
       }
 
-      window.ls10LbClose = function () { lb.classList.remove('open'); };
+      window.ls10LbClose = function () { lb.classList.remove('open'); if (window.umami) umami.track('lightbox-close', { slide: currentSlideName }); };
       window.ls10LbNav   = function (d) {
         var n = lbIdx + d;
-        if (n >= 0 && n < TABS[activeTab].length) { lbIdx = n; lbRender(); }
+        if (n >= 0 && n < TABS[activeTab].length) { lbIdx = n; lbRender(); if (window.umami) umami.track('lightbox-nav: ' + (d < 0 ? 'prev' : 'next'), { slide: currentSlideName }); }
       };
 
       document.addEventListener('keydown', function (e) {
@@ -4170,7 +4186,7 @@
         slide.className = 'lssen-slide' + (i === 0 ? ' active' : '');
         var imgEl = document.createElement('img');
         imgEl.src = img.src; imgEl.alt = img.caption || '';
-        imgEl.addEventListener('click', function () { lbOpen(i); });
+        imgEl.addEventListener('click', function () { lbOpen(i); if (window.umami) umami.track('image-zoom: ' + (img.caption || ('Image ' + (i+1))), { slide: currentSlideName }); });
         slide.appendChild(imgEl);
         if (img.caption) {
           var cap = document.createElement('div');
@@ -4187,7 +4203,7 @@
         t.className = 'lssen-lb-thumb';
         var ti = document.createElement('img'); ti.src = img.src; ti.alt = '';
         t.appendChild(ti);
-        t.addEventListener('click', function () { lbIdx = i; lbRender(); });
+        t.addEventListener('click', function () { lbIdx = i; lbRender(); if (window.umami) umami.track('gallery-thumbnail: ' + (i+1), { slide: currentSlideName }); });
         lbThumbs.appendChild(t);
       });
 
@@ -4200,8 +4216,8 @@
         });
       }
 
-      prevBtn.addEventListener('click', function () { if (current > 0) { current--; render(); } });
-      nextBtn.addEventListener('click', function () { if (current < IMAGES.length - 1) { current++; render(); } });
+      prevBtn.addEventListener('click', function () { if (current > 0) { current--; render(); if (window.umami) umami.track('gallery-prev', { slide: currentSlideName }); } });
+      nextBtn.addEventListener('click', function () { if (current < IMAGES.length - 1) { current++; render(); if (window.umami) umami.track('gallery-next', { slide: currentSlideName }); } });
       render();
 
       function lbOpen(idx) { lbIdx = idx; lb.classList.add('open'); lbRender(); }
@@ -4215,10 +4231,10 @@
         });
       }
 
-      window.lssenLbClose = function () { lb.classList.remove('open'); };
+      window.lssenLbClose = function () { lb.classList.remove('open'); if (window.umami) umami.track('lightbox-close', { slide: currentSlideName }); };
       window.lssenLbNav   = function (d) {
         var n = lbIdx + d;
-        if (n >= 0 && n < IMAGES.length) { lbIdx = n; lbRender(); }
+        if (n >= 0 && n < IMAGES.length) { lbIdx = n; lbRender(); if (window.umami) umami.track('lightbox-nav: ' + (d < 0 ? 'prev' : 'next'), { slide: currentSlideName }); }
       };
 
       document.addEventListener('keydown', function (e) {
@@ -4421,7 +4437,7 @@
           slide.className = 'ls11-slide' + (i === 0 ? ' active' : '');
           var imgEl = document.createElement('img');
           imgEl.src = img.src; imgEl.alt = img.caption || '';
-          imgEl.addEventListener('click', function () { lbOpen(i); });
+          imgEl.addEventListener('click', function () { lbOpen(i); if (window.umami) umami.track('image-zoom: ' + (img.caption || ('Image ' + (i+1))), { slide: currentSlideName }); });
           slide.appendChild(imgEl);
           if (img.caption) {
             var cap = document.createElement('div');
@@ -4439,7 +4455,7 @@
           t.className = 'ls11-lb-thumb';
           var ti = document.createElement('img'); ti.src = img.src; ti.alt = '';
           t.appendChild(ti);
-          t.addEventListener('click', function () { lbIdx = i; lbRender(); });
+          t.addEventListener('click', function () { lbIdx = i; lbRender(); if (window.umami) umami.track('gallery-thumbnail: ' + (i+1), { slide: currentSlideName }); });
           lbThumbs.appendChild(t);
         });
       }
@@ -4459,8 +4475,8 @@
         current = IMAGES.length - 1; render();
       };
 
-      prevBtn.addEventListener('click', function () { if (current > 0) { current--; render(); } });
-      nextBtn.addEventListener('click', function () { if (current < IMAGES.length - 1) { current++; render(); } });
+      prevBtn.addEventListener('click', function () { if (current > 0) { current--; render(); if (window.umami) umami.track('gallery-prev', { slide: currentSlideName }); } });
+      nextBtn.addEventListener('click', function () { if (current < IMAGES.length - 1) { current++; render(); if (window.umami) umami.track('gallery-next', { slide: currentSlideName }); } });
 
       buildSlides(); buildThumbs(); render();
 
@@ -4475,10 +4491,10 @@
         });
       }
 
-      window.ls11LbClose = function () { lb.classList.remove('open'); };
+      window.ls11LbClose = function () { lb.classList.remove('open'); if (window.umami) umami.track('lightbox-close', { slide: currentSlideName }); };
       window.ls11LbNav   = function (d) {
         var n = lbIdx + d;
-        if (n >= 0 && n < IMAGES.length) { lbIdx = n; lbRender(); }
+        if (n >= 0 && n < IMAGES.length) { lbIdx = n; lbRender(); if (window.umami) umami.track('lightbox-nav: ' + (d < 0 ? 'prev' : 'next'), { slide: currentSlideName }); }
       };
 
       document.addEventListener('keydown', function (e) {
@@ -4513,11 +4529,11 @@
           <span class="cta-contact-addr">Im Vogelsang 18 · 3340 Waidhofen · Austria</span>
         </div>
         <div class="cta-contact-btns">
-          <a class="cta-btn-wa" href="https://wa.me/436768804501" target="_blank" data-umami-event="cta-whatsapp">
+          <a class="cta-btn-wa" href="https://wa.me/436768804501" target="_blank" onclick="if(window.umami) umami.track('cta-whatsapp', { slide: currentSlideName })">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.117.554 4.103 1.523 5.83L.057 23.25a.75.75 0 0 0 .918.919l5.42-1.466A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.694 9.694 0 0 1-4.946-1.355l-.354-.212-3.658.989.989-3.658-.212-.354A9.694 9.694 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
             WhatsApp
           </a>
-          <a class="cta-btn-email" href="mailto:alex.ochoa@softsolution.at" data-umami-event="cta-email">
+          <a class="cta-btn-email" href="mailto:alex.ochoa@softsolution.at" onclick="if(window.umami) umami.track('cta-email', { slide: currentSlideName })">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
             alex.ochoa@softsolution.at
           </a>
@@ -4600,7 +4616,7 @@
   document.getElementById('themeToggle').addEventListener('click', () => {
     const dark = !document.body.classList.contains('dark');
     applyTheme(dark);
-    if (window.umami) umami.track('theme-toggle', { mode: dark ? 'dark' : 'light' });
+    if (window.umami) umami.track('theme-toggle', { mode: dark ? 'dark' : 'light', slide: currentSlideName });
   });
 
   // ── Slide Navigation ──
@@ -4631,6 +4647,7 @@
     'Technology', 'Surface Quality', 'Dimensional Control',
     'Screenprint & Logo', 'Traceability', 'Footprint', 'Next Steps'
   ];
+  let currentSlideName = SLIDE_NAMES[0] || 'Cover';
 
   function goTo(n) {
     if (n < 0 || n >= slides.length || n === current) return;
@@ -4639,9 +4656,10 @@
     slides[old].classList.add(n > old ? 'exit-left' : 'exit-right');
     setTimeout(() => slides[old].classList.remove('exit-left', 'exit-right'), 700);
     current = n;
+    currentSlideName = SLIDE_NAMES[n] || 'Slide ' + (n + 1);
     slides[current].classList.add('active');
     updateNav();
-    if (window.umami) umami.track('slide-view: ' + (SLIDE_NAMES[n] || 'Slide ' + (n + 1)), { slide: n + 1 });
+    if (window.umami) umami.track('slide-view: ' + currentSlideName, { slide: n + 1 });
     // Re-trigger entry animations
     slides[current].querySelectorAll('.anim-in').forEach(el => {
       el.style.animation = 'none';
@@ -4710,13 +4728,13 @@
     ['share-sub-wa','share-sub-email'].forEach(function(id){ var el=document.getElementById(id); if(el) el.classList.remove('on'); });
   }
 
-  window.shareOpen  = function () { document.getElementById('shareModal').classList.add('on'); hideSubs(); };
-  window.shareClose = function () { document.getElementById('shareModal').classList.remove('on'); hideSubs(); };
+  window.shareOpen  = function () { document.getElementById('shareModal').classList.add('on'); hideSubs(); if (window.umami) umami.track('share-modal-open', { slide: currentSlideName }); };
+  window.shareClose = function () { document.getElementById('shareModal').classList.remove('on'); hideSubs(); if (window.umami) umami.track('share-modal-close', { slide: currentSlideName }); };
 
   window.shareToggleSub = function (id) {
     var wa = document.getElementById('share-sub-wa'), em = document.getElementById('share-sub-email');
-    if (id === 'wa') { wa.classList.toggle('on'); em.classList.remove('on'); }
-    else             { em.classList.toggle('on'); wa.classList.remove('on'); }
+    if (id === 'wa') { wa.classList.toggle('on'); em.classList.remove('on'); if (window.umami) umami.track('share-whatsapp', { slide: currentSlideName }); }
+    else             { em.classList.toggle('on'); wa.classList.remove('on'); if (window.umami) umami.track('share-email', { slide: currentSlideName }); }
   };
 
   window.shareCopyLink = function () {
@@ -4725,6 +4743,7 @@
       var orig = btn.textContent;
       btn.textContent = '✓ Copiado!';
       setTimeout(function () { btn.textContent = orig; }, 2000);
+      if (window.umami) umami.track('share-copy-link', { slide: currentSlideName });
     });
   };
 
