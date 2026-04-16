@@ -19,6 +19,9 @@
 - [x] Carousel auto-advance (pause on hover, configurable interval, saved to file)
 - [x] Add image / add text buttons in carousel
 - [x] Umami event naming convention defined and implemented
+- [x] Full Umami analytics overhaul — all 5 presentations, slide context on every event
+- [x] Created UMAMI_TRACKING_Directory.md reference doc
+- [x] Removed old GrupoNavas-Spain folder
 - [x] Create Grupo Navas Spain presentation
 - [x] Fix openLb() path bug in all 3 presentations
 - [x] Build slide validator (scripts/validate.js) with watch mode

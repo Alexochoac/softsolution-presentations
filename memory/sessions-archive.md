@@ -1,5 +1,14 @@
 # Sessions Archive
 
+## 2026-03-26 — Grupo Navas Spain presentation + lightbox fix
+
+- Created `docs/grupo-navas-spain/` by duplicating `starglass-spain`
+- Updated branding: logo, alt text, company name, contact (Cristian Martin, Jefe de Planta), BASE_URL
+- Fixed `openLb()` path bug across all 3 presentations
+- Committed and pushed all changes
+
+---
+
 ## 2026-03-25 — slide-01 gallery carousel (CSS-only)
 - Added gallery button to cover slide that opens a centered floating popup carousel
 - 3 images: Tempering Line, IG Line, Automotive Printing Line

@@ -1,5 +1,25 @@
 # Sessions
 
+## 2026-04-15 — Umami analytics overhaul across all 5 presentations
+
+- Audited all Umami event names — found generic names like `slide-view`, `slide5-tab` gave no context in dashboard
+- Renamed all tab events to topic-based names: `company-tab`, `applications-tab`, `technology-tab`
+- Changed `slide-view` to fire as `slide-view: {slide name}` so each slide gets its own Umami row
+- Changed `render-card-zoom` to `process-zoom: {card name}` pattern
+- Added `currentSlideName` global variable — updated in `goTo()` on every navigation
+- Converted ALL `data-umami-event` HTML attributes to JS `umami.track()` calls so every event carries `{ slide: currentSlideName }` as a property — enables filtering all events by slide in Umami
+- Added missing tracking to slides 4–12: gallery prev/next, image zooms, thumbnails, lightbox nav/close, share modal, matrix toggles, process card buttons
+- Applied all changes to all 5 presentations sequentially
+- Created `docs/shared/UMAMI_TRACKING_Directory.md` — reference doc mapping every event to its JS function
+- Removed old `docs/GrupoNavas-Spain/` folder (was replaced by `docs/grupo-navas-spain/` lowercase)
+- All changes committed and pushed to GitHub Pages
+
+**Pending:**
+- Apply same tracking audit to any new presentations created in future
+- Consider adding `presentation: 'Customer Name'` property to distinguish events across presentations in Umami
+
+---
+
 ## 2026-03-27 — Local builder web app foundation
 
 - Designed new architecture: `builder/` folder with self-contained slides, centralized `style.css`, config-driven customer defaults, lazy-loading shell
@@ -35,14 +55,3 @@
 - Replace Phrase 1/2/3 placeholder text slides in gallery with real content
 - Text slide font sizes in gallery may need adjustment
 
----
-
-## 2026-03-26 — Grupo Navas Spain presentation + lightbox fix
-
-- Created `docs/grupo-navas-spain/` by duplicating `starglass-spain`
-- Updated branding: logo, alt text, company name, contact (Cristian Martin, Jefe de Planta), BASE_URL
-- Fixed `openLb()` path bug across all 3 presentations
-- Committed and pushed all changes
-
-**Pending:**
-- Replace Phrase 1/2/3 placeholder text slides in gallery with real content
