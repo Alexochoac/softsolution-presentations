@@ -5,6 +5,8 @@
 - [ ] Build customer config UI (name, logo, language, per-slide defaults)
 
 ## Backlog
+- [ ] Implement new Umami tracking structure (event=slide, component+label properties) in LineScanner presentation
+- [ ] Update existing umami.track() calls across all 5 presentations to match new structure
 - [ ] Build customer list page in builder
 - [ ] Build "publish to GitHub" flow from builder
 - [ ] Strip `data-builder-only` elements during customer presentation build
