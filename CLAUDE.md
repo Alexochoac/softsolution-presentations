@@ -23,6 +23,5 @@ for Softsolution & LiteSentry products, targeted at glass industry customers.
 - One slide library, many customer outputs
 - Customer config drives all visual and content differences
 - Do not hardcode customer-specific values inside slides
-
 ## Notes
 - Migrating from: `C:\Users\Alex\Alex-Projects\active\presentation-builder\softsolution\`

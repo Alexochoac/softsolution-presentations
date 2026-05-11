@@ -580,7 +580,7 @@
     }
     function _startTimer() {
       _stopTimer();
-      _timer = setInterval(function () { _go(_idx + 1); }, 3000);
+      _timer = setInterval(function () { _go(_idx + 1); }, 9000);
     }
     function _stopTimer() {
       if (_timer) { clearInterval(_timer); _timer = null; }
@@ -598,8 +598,10 @@
   })))
   .then(parts => {
     // createContextualFragment executes <script> tags inside injected HTML
-    const frag = document.createRange().createContextualFragment(parts.map(fixPaths).join('\n'));
-    container.appendChild(frag);
+    parts.forEach(p => {
+      const frag = document.createRange().createContextualFragment(fixPaths(p));
+      container.appendChild(frag);
+    });
     initSlide01Gallery();
     initPresentation();
     if (window.PE) {
