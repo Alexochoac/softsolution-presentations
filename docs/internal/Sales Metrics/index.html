@@ -618,7 +618,8 @@ function getTimeContext() {
 function getReached(p, owner) {
   const r = p.reached;
   if (Array.isArray(r)) return r;
-  return r[owner] || r['all'] || new Array(12).fill(0);
+  if (owner === 'all') return r['all'] || new Array(12).fill(0);
+  return r[owner] || new Array(12).fill(0);
 }
 
 function getBudget(p, owner) {
