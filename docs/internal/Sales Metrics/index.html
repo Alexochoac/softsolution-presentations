@@ -468,7 +468,7 @@
 </div>
 
 <!-- Budget Modal -->
-<div id="budgetBackdrop" class="modal-backdrop" style="display:none;align-items:flex-start;padding:40px 20px;overflow-y:auto;">
+<div id="budgetBackdrop" class="modal-backdrop" style="align-items:flex-start;padding:40px 20px;overflow-y:auto;">
   <div class="modal-card" style="width:100%;max-width:1100px;padding:32px;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
       <div>
@@ -959,12 +959,11 @@ function openBudgetModal() {
   document.getElementById('budgetSaveBtn').style.display = 'none';
   document.getElementById('budgetSaveStatus').textContent = '';
   renderBudgetTable(false);
-  var bd = document.getElementById('budgetBackdrop');
-  bd.style.display = 'flex';
+  document.getElementById('budgetBackdrop').classList.add('open');
 }
 
 function closeBudgetModal() {
-  document.getElementById('budgetBackdrop').style.display = 'none';
+  document.getElementById('budgetBackdrop').classList.remove('open');
   budgetEditMode = false;
 }
 
