@@ -646,7 +646,9 @@ function getSummedBudget(p, owners) {
     var b = getBudget(p, ok);
     b.forEach(function(v, i) { result[i] += (v || 0); });
   });
-  return result;
+  // If per-person budgets aren't configured yet, fall back to team budget
+  var total = result.reduce(function(a, v) { return a + v; }, 0);
+  return total > 0 ? result : p.budget;
 }
 
 function normalizeReached(reached, monthIdx) {
