@@ -650,7 +650,7 @@ function getSummedBudget(p, owners) {
   if (total > 0) return result;
   // Per-person budgets not configured: proportional share of team budget
   var fraction = owners.length / OWNER_ORDER.length;
-  return p.budget.map(function(v) { return Math.round(v * fraction * 10) / 10; });
+  return p.budget.map(function(v) { return Math.round(v * fraction); });
 }
 
 function normalizeReached(reached, monthIdx) {
@@ -752,15 +752,17 @@ function computeInsights(products, kpis, ctx, owners, months) {
 }
 
 // ── Rendering ─────────────────────────────────────────────────────────
+function fmt(n) { return parseFloat((+n).toFixed(2)); }
+
 const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 function renderKPIs(kpis, ctx) {
-  document.getElementById('kpi-budget').textContent    = kpis.totalBudget;
-  document.getElementById('kpi-reached').textContent   = kpis.totalReached;
+  document.getElementById('kpi-budget').textContent    = fmt(kpis.totalBudget);
+  document.getElementById('kpi-reached').textContent   = fmt(kpis.totalReached);
   document.getElementById('kpi-reached-sub').textContent = `as of ${MONTH_NAMES[ctx.monthIdx]} ${ctx.now.getDate()}, ${ctx.now.getFullYear()}`;
-  document.getElementById('kpi-rate').textContent      = (kpis.achieveRate * 100).toFixed(1) + '%';
+  document.getElementById('kpi-rate').textContent      = fmt(kpis.achieveRate * 100) + '%';
   document.getElementById('kpi-rate-sub').textContent  = `${Math.round(ctx.yearPct * 100)}% of year elapsed`;
-  document.getElementById('kpi-remaining').textContent = kpis.remaining;
+  document.getElementById('kpi-remaining').textContent = fmt(kpis.remaining);
   document.getElementById('kpi-remaining-sub').textContent = `in ~${ctx.monthsRemaining} month${ctx.monthsRemaining !== 1 ? 's' : ''} remaining`;
 }
 
@@ -935,9 +937,9 @@ function renderProgress(products, ctx, owners, months) {
     var uid          = 'pfill-' + p.label.replace(/\s+/g, '-');
 
     var div = document.createElement('div');
-    div.innerHTML = '<div class="progress-header"><span class="progress-name">' + p.label + '</span><span class="progress-stats">' + totalReached + ' of ' + totalBudget + '</span></div><div class="progress-track"><div class="progress-fill" id="' + uid + '" style="width:0%;background:linear-gradient(90deg,' + p.color + ',' + p.color + 'bb);"></div></div><div class="progress-meta"><span class="progress-pct" style="color:' + p.color + ';">' + pct.toFixed(1) + '%</span><span class="pace-pill ' + paceClass + '">' + paceLabel + '</span></div>';
+    div.innerHTML = '<div class="progress-header"><span class="progress-name">' + p.label + '</span><span class="progress-stats">' + fmt(totalReached) + ' of ' + fmt(totalBudget) + '</span></div><div class="progress-track"><div class="progress-fill" id="' + uid + '" style="width:0%;background:linear-gradient(90deg,' + p.color + ',' + p.color + 'bb);"></div></div><div class="progress-meta"><span class="progress-pct" style="color:' + p.color + ';">' + fmt(pct) + '%</span><span class="pace-pill ' + paceClass + '">' + paceLabel + '</span></div>';
     section.appendChild(div);
-    progressFills.push({ uid: uid, pct: pct.toFixed(1) });
+    progressFills.push({ uid: uid, pct: fmt(pct) });
   });
 }
 
