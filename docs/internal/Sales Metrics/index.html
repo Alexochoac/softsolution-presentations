@@ -853,7 +853,7 @@ function buildOwnerCheckboxList() {
   var list = document.getElementById('ownerCheckboxList');
   if (!list) return;
   list.innerHTML = '';
-  var ownerEntries = Object.entries(appOwners).filter(function(e) { return e[0] !== 'all'; });
+  var ownerEntries = OWNER_ORDER.filter(function(k) { return appOwners[k]; }).map(function(k) { return [k, appOwners[k]]; });
   ownerEntries.forEach(function(entry) {
     var key = entry[0], name = entry[1];
     var item = document.createElement('div');
