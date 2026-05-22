@@ -240,6 +240,23 @@
   .modal-body { font-size:16px; color:#666; line-height:1.8; }
   .modal-body strong { color:#999; }
 
+  /* ── Budget Modal ── */
+  #budgetBackdrop { position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(12px);z-index:1000;justify-content:center; }
+  #budgetBackdrop .modal-card { background:rgba(18,18,18,.98);border:1px solid rgba(255,255,255,.08);border-radius:20px;animation:modalIn .3s ease; }
+  .budget-table { width:100%;border-collapse:collapse;font-size:12px; }
+  .budget-table th { color:#444;font-weight:700;font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:6px 8px;text-align:center;border-bottom:1px solid rgba(255,255,255,.06); }
+  .budget-table th.col-name { text-align:left;width:160px; }
+  .budget-table td { padding:5px 8px;text-align:center;color:#888;border-bottom:1px solid rgba(255,255,255,.04); }
+  .budget-table td.col-name { text-align:left;color:#ccc; }
+  .budget-table td.col-total { font-weight:700;color:#F5A623; }
+  .budget-table tr.product-header td { background:rgba(245,166,35,.06);color:#F5A623;font-weight:700;font-size:11px;padding:8px;letter-spacing:.05em;text-transform:uppercase; }
+  .budget-table tr.team-total td { background:rgba(255,255,255,.03);color:#F5A623;font-weight:700; }
+  .budget-table input.budget-cell { width:36px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:4px;color:#fff;font-size:12px;text-align:center;padding:3px 0;outline:none; }
+  .budget-table input.budget-cell:focus { border-color:rgba(245,166,35,.5);background:rgba(245,166,35,.08); }
+  .budget-table td.editable-name input { width:140px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:4px;color:#fff;font-size:12px;padding:3px 6px;outline:none; }
+  .budget-btn { font-size:11px; font-weight:700; letter-spacing:.05em; padding:6px 16px; border-radius:100px; cursor:pointer; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.10); color:#666; transition:all .25s ease; }
+  .budget-btn:hover { background:rgba(255,255,255,.10); color:#aaa; border-color:rgba(255,255,255,.2); }
+
   /* ── Mobile Responsive ── */
   @media (max-width: 768px) {
     body { height: 100dvh; }
@@ -362,7 +379,10 @@
       <h1>Sales Metrics 2026</h1>
       <p>Budget vs. Reached &nbsp;·&nbsp; All Products &nbsp;·&nbsp; All Regions</p>
     </div>
-    <div class="last-updated" id="last-updated">Loading…</div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button class="budget-btn" onclick="openBudgetModal()">Budget</button>
+      <div class="last-updated" id="last-updated">Loading…</div>
+    </div>
   </div>
 
   <!-- Owner Filter -->
@@ -445,6 +465,25 @@
   <div class="nav-dot active" data-slide="0"></div>
   <div class="nav-dot" data-slide="1"></div>
   <div class="nav-dot" data-slide="2"></div>
+</div>
+
+<!-- Budget Modal -->
+<div id="budgetBackdrop" class="modal-backdrop" style="display:none;align-items:flex-start;padding:40px 20px;overflow-y:auto;">
+  <div class="modal-card" style="width:100%;max-width:1100px;padding:32px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+      <div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:.1em;color:#444;text-transform:uppercase;margin-bottom:6px;">BUDGET TABLE</div>
+        <div style="font-size:22px;font-weight:700;color:#fff;">2026 Budget by Team Member</div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <button id="budgetEditBtn" class="budget-btn" onclick="toggleBudgetEdit()">Edit</button>
+        <button id="budgetSaveBtn" class="budget-btn" style="display:none;background:rgba(245,166,35,.15);border-color:rgba(245,166,35,.4);color:#F5A623;" onclick="saveBudget()">Save Changes</button>
+        <button class="budget-btn" onclick="closeBudgetModal()">Close</button>
+      </div>
+    </div>
+    <div id="budgetTableWrap" style="overflow-x:auto;"></div>
+    <div id="budgetSaveStatus" style="margin-top:16px;font-size:13px;color:#666;text-align:right;"></div>
+  </div>
 </div>
 
 <div class="modal-backdrop" id="modalBackdrop">
@@ -537,6 +576,13 @@ function getReached(p, owner) {
   return r[owner] || r['all'] || new Array(12).fill(0);
 }
 
+function getBudget(p, owner) {
+  if (owner === 'all' || !p.budgetByOwner || !p.budgetByOwner[owner]) {
+    return p.budget;
+  }
+  return p.budgetByOwner[owner];
+}
+
 function normalizeReached(reached, monthIdx) {
   return reached.map((v, i) => i > monthIdx ? null : (v || 0));
 }
@@ -554,10 +600,10 @@ function computeKPIs(products, ctx, owner, range) {
   const hasData      = effectiveEnd >= start;
   let totalBudget = 0, totalReached = 0, expectedByNow = 0;
   Object.values(products).forEach(p => {
-    totalBudget  += p.budget.slice(start, end + 1).reduce((a, b) => a + b, 0);
+    totalBudget  += getBudget(p, owner).slice(start, end + 1).reduce((a, b) => a + b, 0);
     if (hasData) {
       totalReached  += getReached(p, owner).slice(start, effectiveEnd + 1).reduce((a, x) => a + (x || 0), 0);
-      expectedByNow += p.budget.slice(start, effectiveEnd + 1).reduce((a, b) => a + b, 0);
+      expectedByNow += getBudget(p, owner).slice(start, effectiveEnd + 1).reduce((a, b) => a + b, 0);
     }
   });
   return {
@@ -579,20 +625,20 @@ function computeInsights(products, kpis, ctx, owner) {
   const ahead        = shortfall <= 0;
 
   const biggest = entries.reduce((best, [, p]) => {
-    const b = p.budget.reduce((a, x) => a + x, 0);
+    const b = getBudget(p, owner).reduce((a, x) => a + x, 0);
     return (!best || b > best.budget) ? { label: p.label, budget: b } : best;
   }, null);
   const biggestPct = Math.round(biggest.budget / kpis.totalBudget * 100);
 
   const atRisk = entries.reduce((worst, [, p]) => {
-    const b    = p.budget.reduce((a, x) => a + x, 0);
+    const b    = getBudget(p, owner).reduce((a, x) => a + x, 0);
     const r    = getReached(p, owner).reduce((a, x) => a + (x || 0), 0);
     const rate = b > 0 ? r / b : 1;
     return (!worst || rate < worst.rate) ? { label: p.label, rate, reached: r, budget: b } : worst;
   }, null);
 
   const easyWin = entries.reduce((best, [, p]) => {
-    const b      = p.budget.reduce((a, x) => a + x, 0);
+    const b      = getBudget(p, owner).reduce((a, x) => a + x, 0);
     const r      = getReached(p, owner).reduce((a, x) => a + (x || 0), 0);
     const needed = Math.ceil(Math.max(0, b - r) / Math.max(ctx.monthsRemaining, 1));
     return (!best || needed < best.needed) ? { label: p.label, needed, budget: b } : best;
@@ -728,7 +774,7 @@ function renderProgress(products, ctx, owner, range) {
   const rangePct     = hasData ? (effectiveEnd - start + 1) / (end - start + 1) * 100 : 0;
 
   Object.values(products).forEach(p => {
-    const totalBudget  = p.budget.slice(start, end + 1).reduce((a, b) => a + b, 0);
+    const totalBudget  = getBudget(p, owner).slice(start, end + 1).reduce((a, b) => a + b, 0);
     const totalReached = hasData ? getReached(p, owner).slice(start, effectiveEnd + 1).reduce((a, x) => a + (x || 0), 0) : 0;
     const pct          = totalBudget > 0 ? (totalReached / totalBudget * 100) : 0;
     const paceClass    = pct >= rangePct ? 'pace-on-track' : pct < rangePct * 0.6 ? 'pace-critical' : 'pace-behind';
@@ -793,7 +839,7 @@ function buildBarChart(products, ctx, owner, range) {
   const effectiveEnd = Math.min(end, ctx.monthIdx);
   const hasData      = effectiveEnd >= start;
   const labels   = Object.values(products).map(p => p.label);
-  const budgets  = Object.values(products).map(p => p.budget.slice(start, end + 1).reduce((a, b) => a + b, 0));
+  const budgets  = Object.values(products).map(p => getBudget(p, owner).slice(start, end + 1).reduce((a, b) => a + b, 0));
   const reacheds = Object.values(products).map(p =>
     hasData ? getReached(p, owner).slice(start, effectiveEnd + 1).reduce((a, x) => a + (x || 0), 0) : 0
   );
@@ -830,7 +876,7 @@ function buildLineChart(p, ctx, owner, range) {
     data: {
       labels: MONTH_NAMES.slice(start, end + 1),
       datasets: [
-        { label: 'Monthly Budget',    data: p.budget.slice(start, end + 1), borderColor: p.color,        borderWidth: 2,   borderDash: [6,4], pointBackgroundColor: p.color,        pointRadius: 3, tension: .3, fill: false },
+        { label: 'Monthly Budget',    data: getBudget(p, owner).slice(start, end + 1), borderColor: p.color,        borderWidth: 2,   borderDash: [6,4], pointBackgroundColor: p.color,        pointRadius: 3, tension: .3, fill: false },
         { label: 'Reached',           data: reached,                        borderColor: '#4ade80',      borderWidth: 2.5,                   pointBackgroundColor: '#4ade80',      pointRadius: 4, tension: .3, fill: false, spanGaps: false },
         { label: 'Projection (pace)', data: projection,                     borderColor: p.color + '88', borderWidth: 2,   borderDash: [3,5], pointBackgroundColor: p.color + '88', pointRadius: 3, tension: .3, fill: false, spanGaps: false }
       ]
@@ -901,6 +947,155 @@ function closeModal() { modalBackdrop.classList.remove('open'); }
 modalClose.addEventListener('click', closeModal);
 modalBackdrop.addEventListener('click', e => { if (e.target === modalBackdrop) closeModal(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ── Budget Modal ──────────────────────────────────────────────────────
+var budgetEditMode = false;
+var BUDGET_WEBHOOK = 'https://n8n.wbtm.io/webhook/sales-metrics-budget';
+var OWNER_ORDER = ['90583398','90583466','98277992','daniel_obregon','107285591','alex_ochoa','1813254685'];
+
+function openBudgetModal() {
+  budgetEditMode = false;
+  document.getElementById('budgetEditBtn').style.display = '';
+  document.getElementById('budgetSaveBtn').style.display = 'none';
+  document.getElementById('budgetSaveStatus').textContent = '';
+  renderBudgetTable(false);
+  var bd = document.getElementById('budgetBackdrop');
+  bd.style.display = 'flex';
+}
+
+function closeBudgetModal() {
+  document.getElementById('budgetBackdrop').style.display = 'none';
+  budgetEditMode = false;
+}
+
+function toggleBudgetEdit() {
+  var pwd = prompt('Enter password to edit budget:');
+  if (pwd !== 'SOSO2026') { alert('Incorrect password.'); return; }
+  budgetEditMode = true;
+  document.getElementById('budgetEditBtn').style.display = 'none';
+  document.getElementById('budgetSaveBtn').style.display = '';
+  renderBudgetTable(true);
+}
+
+function renderBudgetTable(editable) {
+  var wrap = document.getElementById('budgetTableWrap');
+  var productKeys = Object.keys(appProducts);
+  var ownerKeys = OWNER_ORDER.filter(function(k) { return appOwners[k]; });
+  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  var html = '<table class="budget-table"><thead><tr>';
+  html += '<th class="col-name">Member</th>';
+  months.forEach(function(m) { html += '<th>' + m + '</th>'; });
+  html += '<th>Total</th></tr></thead><tbody>';
+
+  productKeys.forEach(function(pk) {
+    var p = appProducts[pk];
+    html += '<tr class="product-header"><td colspan="14" style="padding-left:12px;">' + p.label + '</td></tr>';
+
+    ownerKeys.forEach(function(ok) {
+      var name = appOwners[ok] || ok;
+      var vals = (p.budgetByOwner && p.budgetByOwner[ok]) ? p.budgetByOwner[ok] : new Array(12).fill(0);
+      var total = vals.reduce(function(a, b) { return a + b; }, 0);
+      html += '<tr>';
+      if (editable) {
+        html += '<td class="col-name editable-name"><input value="' + name + '" data-owner="' + ok + '" class="owner-name-input" style="width:140px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:4px;color:#fff;font-size:12px;padding:3px 6px;outline:none;"/></td>';
+      } else {
+        html += '<td class="col-name">' + name + '</td>';
+      }
+      vals.forEach(function(v, mi) {
+        if (editable) {
+          html += '<td><input class="budget-cell" type="number" min="0" value="' + v + '" data-product="' + pk + '" data-owner="' + ok + '" data-month="' + mi + '" oninput="updateBudgetTotal(\'' + pk + '\')"/></td>';
+        } else {
+          html += '<td>' + (v || 0) + '</td>';
+        }
+      });
+      html += '<td class="col-total" id="rowtotal-' + pk + '-' + ok + '">' + total + '</td>';
+      html += '</tr>';
+    });
+
+    var teamBudget = p.budget || new Array(12).fill(0);
+    var teamTotal = teamBudget.reduce(function(a, b) { return a + b; }, 0);
+    html += '<tr class="team-total"><td class="col-name">Team Total</td>';
+    teamBudget.forEach(function(v, mi) { html += '<td id="coltotal-' + pk + '-' + mi + '">' + v + '</td>'; });
+    html += '<td class="col-total" id="teamtotal-' + pk + '">' + teamTotal + '</td></tr>';
+  });
+
+  html += '</tbody></table>';
+  wrap.innerHTML = html;
+}
+
+function updateBudgetTotal(pk) {
+  var months = 12;
+  var ownerKeys = OWNER_ORDER.filter(function(k) { return appOwners[k]; });
+  var colTotals = new Array(months).fill(0);
+
+  ownerKeys.forEach(function(ok) {
+    var rowTotal = 0;
+    for (var mi = 0; mi < months; mi++) {
+      var input = document.querySelector('input.budget-cell[data-product="' + pk + '"][data-owner="' + ok + '"][data-month="' + mi + '"]');
+      var v = input ? (parseInt(input.value) || 0) : 0;
+      colTotals[mi] += v;
+      rowTotal += v;
+    }
+    var rowTotalEl = document.getElementById('rowtotal-' + pk + '-' + ok);
+    if (rowTotalEl) rowTotalEl.textContent = rowTotal;
+  });
+
+  for (var mi = 0; mi < months; mi++) {
+    var el = document.getElementById('coltotal-' + pk + '-' + mi);
+    if (el) el.textContent = colTotals[mi];
+  }
+  var teamEl = document.getElementById('teamtotal-' + pk);
+  if (teamEl) teamEl.textContent = colTotals.reduce(function(a, b) { return a + b; }, 0);
+}
+
+async function saveBudget() {
+  var statusEl = document.getElementById('budgetSaveStatus');
+  statusEl.textContent = 'Saving...';
+  statusEl.style.color = '#666';
+
+  var ownerKeys = OWNER_ORDER.filter(function(k) { return appOwners[k]; });
+  var productKeys = Object.keys(appProducts);
+  var budgetPayload = {};
+  var ownersPayload = {};
+
+  ownerKeys.forEach(function(ok) {
+    var nameInput = document.querySelector('input.owner-name-input[data-owner="' + ok + '"]');
+    ownersPayload[ok] = nameInput ? nameInput.value.trim() : (appOwners[ok] || ok);
+  });
+  ownersPayload['all'] = 'All Team';
+
+  productKeys.forEach(function(pk) {
+    budgetPayload[pk] = {};
+    var colTotals = new Array(12).fill(0);
+    ownerKeys.forEach(function(ok) {
+      var vals = [];
+      for (var mi = 0; mi < 12; mi++) {
+        var input = document.querySelector('input.budget-cell[data-product="' + pk + '"][data-owner="' + ok + '"][data-month="' + mi + '"]');
+        var v = input ? (parseInt(input.value) || 0) : 0;
+        vals.push(v);
+        colTotals[mi] += v;
+      }
+      budgetPayload[pk][ok] = vals;
+    });
+    budgetPayload[pk]['_total'] = colTotals;
+  });
+
+  try {
+    var res = await fetch(BUDGET_WEBHOOK, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: 'SOSO2026', budget: budgetPayload, owners: ownersPayload })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    statusEl.textContent = 'Saved successfully. Reload in ~30s to see updated data.';
+    statusEl.style.color = '#4ade80';
+    setTimeout(function() { window.location.reload(); }, 5000);
+  } catch (e) {
+    statusEl.textContent = 'Save failed: ' + e.message;
+    statusEl.style.color = '#f87171';
+  }
+}
 
 // ── Init ──────────────────────────────────────────────────────────────
 window.addEventListener('load', async () => {
