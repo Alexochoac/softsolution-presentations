@@ -1,0 +1,59 @@
+{
+  "year": 2026,
+  "lastUpdated": "2026-05-20T00:00:00Z",
+  "hubspot": {
+    "propertyName": "inspection_system__multiple_checkbox_",
+    "productMap": {
+      "linescanner": ["linescanner"],
+      "osprey": ["osprey25", "osprey"],
+      "bowscanner": ["bowscanner"],
+      "culletscanner": ["culletscanner"],
+      "virtualdigitizing": ["virtualdigitizing"]
+    }
+  },
+  "owners": {
+    "all": "All Team"
+  },
+  "products": {
+    "linescanner": {
+      "label": "LineScanner",
+      "color": "#F5A623",
+      "budget": [6, 6, 7, 7, 7, 7, 7, 6, 6, 6, 7, 7],
+      "reached": {
+        "all": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      }
+    },
+    "osprey": {
+      "label": "Osprey25",
+      "color": "#f87171",
+      "budget": [2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 2, 2],
+      "reached": {
+        "all": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      }
+    },
+    "bowscanner": {
+      "label": "BowScanner",
+      "color": "#fbbf24",
+      "budget": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      "reached": {
+        "all": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      }
+    },
+    "culletscanner": {
+      "label": "CulletScanner",
+      "color": "#34d399",
+      "budget": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      "reached": {
+        "all": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      }
+    },
+    "virtualdigitizing": {
+      "label": "VirtualDigitizing",
+      "color": "#818cf8",
+      "budget": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      "reached": {
+        "all": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      }
+    }
+  }
+}
