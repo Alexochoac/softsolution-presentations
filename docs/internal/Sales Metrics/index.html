@@ -371,6 +371,12 @@
     <div id="owner-pills"></div>
   </div>
 
+  <!-- Period Filter -->
+  <div class="owner-filter" style="margin-bottom:20px;">
+    <span class="owner-filter-label">Period</span>
+    <div id="period-pills"></div>
+  </div>
+
   <!-- KPIs -->
   <div class="section-label">Overview</div>
   <div class="divider"></div>
@@ -506,6 +512,7 @@ let insightData   = [];
 let appProducts   = {};
 let appOwners     = {};
 let activeOwner   = 'all';
+let activePeriod  = [0, 11];
 
 // ── Data Loading ──────────────────────────────────────────────────────
 async function loadData() {
@@ -541,18 +548,24 @@ function computeProjection(reached, monthIdx, dayOfYear) {
   return reached.map((_, i) => i <= monthIdx ? null : monthlyPace);
 }
 
-function computeKPIs(products, ctx, owner) {
-  let totalBudget = 0, totalReached = 0;
+function computeKPIs(products, ctx, owner, range) {
+  const [start, end] = range || [0, 11];
+  const effectiveEnd = Math.min(end, ctx.monthIdx);
+  const hasData      = effectiveEnd >= start;
+  let totalBudget = 0, totalReached = 0, expectedByNow = 0;
   Object.values(products).forEach(p => {
-    totalBudget  += p.budget.reduce((a, b) => a + b, 0);
-    totalReached += getReached(p, owner).slice(0, ctx.monthIdx + 1).reduce((a, x) => a + (x || 0), 0);
+    totalBudget  += p.budget.slice(start, end + 1).reduce((a, b) => a + b, 0);
+    if (hasData) {
+      totalReached  += getReached(p, owner).slice(start, effectiveEnd + 1).reduce((a, x) => a + (x || 0), 0);
+      expectedByNow += p.budget.slice(start, effectiveEnd + 1).reduce((a, b) => a + b, 0);
+    }
   });
   return {
     totalBudget,
     totalReached,
-    achieveRate:    totalBudget > 0 ? totalReached / totalBudget : 0,
-    remaining:      totalBudget - totalReached,
-    expectedByNow:  Math.round(totalBudget * ctx.yearPct)
+    achieveRate:   totalBudget > 0 ? totalReached / totalBudget : 0,
+    remaining:     totalBudget - totalReached,
+    expectedByNow
   };
 }
 
@@ -655,29 +668,71 @@ function renderOwnerFilter(owners) {
   });
 }
 
+const PERIOD_OPTIONS = [
+  { label: 'Full Year', range: [0, 11] },
+  { label: 'Q1', range: [0, 2] },
+  { label: 'Q2', range: [3, 5] },
+  { label: 'Q3', range: [6, 8] },
+  { label: 'Q4', range: [9, 11] },
+  { label: 'Jan', range: [0, 0] }, { label: 'Feb', range: [1, 1] }, { label: 'Mar', range: [2, 2] },
+  { label: 'Apr', range: [3, 3] }, { label: 'May', range: [4, 4] }, { label: 'Jun', range: [5, 5] },
+  { label: 'Jul', range: [6, 6] }, { label: 'Aug', range: [7, 7] }, { label: 'Sep', range: [8, 8] },
+  { label: 'Oct', range: [9, 9] }, { label: 'Nov', range: [10, 10] }, { label: 'Dec', range: [11, 11] }
+];
+
+function renderPeriodFilter() {
+  const container = document.getElementById('period-pills');
+  container.style.display = 'flex';
+  container.style.gap = '7px';
+  container.style.flexWrap = 'wrap';
+  container.innerHTML = '';
+  PERIOD_OPTIONS.forEach((opt, i) => {
+    if (i === 5) {
+      const sep = document.createElement('div');
+      sep.style.cssText = 'width:1px;background:rgba(255,255,255,.08);margin:0 4px;';
+      container.appendChild(sep);
+    }
+    const pill = document.createElement('div');
+    const isActive = opt.range[0] === activePeriod[0] && opt.range[1] === activePeriod[1];
+    pill.className = 'owner-pill' + (isActive ? ' active' : '');
+    pill.textContent = opt.label;
+    pill.addEventListener('click', () => {
+      if (activePeriod[0] === opt.range[0] && activePeriod[1] === opt.range[1]) return;
+      activePeriod = opt.range;
+      container.querySelectorAll('.owner-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      refreshDashboard();
+    });
+    container.appendChild(pill);
+  });
+}
+
 function refreshDashboard() {
   const ctx      = getTimeContext();
-  const kpis     = computeKPIs(appProducts, ctx, activeOwner);
+  const kpis     = computeKPIs(appProducts, ctx, activeOwner, activePeriod);
   const insights = computeInsights(appProducts, kpis, ctx, activeOwner);
   renderKPIs(kpis, ctx);
-  renderProgress(appProducts, ctx, activeOwner);
-  renderChartTabs(appProducts, ctx, activeOwner);
+  renderProgress(appProducts, ctx, activeOwner, activePeriod);
+  renderChartTabs(appProducts, ctx, activeOwner, activePeriod);
   renderInsightCards(insights);
   triggerDashboardAnimations();
 }
 
-function renderProgress(products, ctx, owner) {
+function renderProgress(products, ctx, owner, range) {
   const section = document.getElementById('progress-section');
   section.innerHTML = '';
   progressFills = [];
-  const yearPctNow = ctx.yearPct * 100;
+  const [start, end] = range || [0, 11];
+  const effectiveEnd = Math.min(end, ctx.monthIdx);
+  const hasData      = effectiveEnd >= start;
+  const rangePct     = hasData ? (effectiveEnd - start + 1) / (end - start + 1) * 100 : 0;
 
   Object.values(products).forEach(p => {
-    const totalBudget  = p.budget.reduce((a, b) => a + b, 0);
-    const totalReached = getReached(p, owner).slice(0, ctx.monthIdx + 1).reduce((a, x) => a + (x || 0), 0);
+    const totalBudget  = p.budget.slice(start, end + 1).reduce((a, b) => a + b, 0);
+    const totalReached = hasData ? getReached(p, owner).slice(start, effectiveEnd + 1).reduce((a, x) => a + (x || 0), 0) : 0;
     const pct          = totalBudget > 0 ? (totalReached / totalBudget * 100) : 0;
-    const paceClass    = pct >= yearPctNow ? 'pace-on-track' : pct < yearPctNow * 0.6 ? 'pace-critical' : 'pace-behind';
-    const paceLabel    = pct >= yearPctNow ? 'On track' : pct < yearPctNow * 0.6 ? 'Critically behind' : 'Behind pace';
+    const paceClass    = pct >= rangePct ? 'pace-on-track' : pct < rangePct * 0.6 ? 'pace-critical' : 'pace-behind';
+    const paceLabel    = pct >= rangePct ? 'On track' : pct < rangePct * 0.6 ? 'Critically behind' : 'Behind pace';
     const uid          = 'pfill-' + p.label.replace(/\s+/g, '-');
 
     const div = document.createElement('div');
@@ -733,11 +788,14 @@ function triggerDashboardAnimations() {
 }
 
 // ── Charts ────────────────────────────────────────────────────────────
-function buildBarChart(products, ctx, owner) {
+function buildBarChart(products, ctx, owner, range) {
+  const [start, end] = range || [0, 11];
+  const effectiveEnd = Math.min(end, ctx.monthIdx);
+  const hasData      = effectiveEnd >= start;
   const labels   = Object.values(products).map(p => p.label);
-  const budgets  = Object.values(products).map(p => p.budget.reduce((a, b) => a + b, 0));
+  const budgets  = Object.values(products).map(p => p.budget.slice(start, end + 1).reduce((a, b) => a + b, 0));
   const reacheds = Object.values(products).map(p =>
-    getReached(p, owner).slice(0, ctx.monthIdx + 1).reduce((a, x) => a + (x || 0), 0)
+    hasData ? getReached(p, owner).slice(start, effectiveEnd + 1).reduce((a, x) => a + (x || 0), 0) : 0
   );
   return {
     type: 'bar',
@@ -762,18 +820,19 @@ function buildBarChart(products, ctx, owner) {
   };
 }
 
-function buildLineChart(p, ctx, owner) {
+function buildLineChart(p, ctx, owner, range) {
+  const [start, end] = range || [0, 11];
   const raw        = getReached(p, owner);
-  const reached    = normalizeReached(raw, ctx.monthIdx);
-  const projection = computeProjection(raw, ctx.monthIdx, ctx.dayOfYear);
+  const reached    = normalizeReached(raw, ctx.monthIdx).slice(start, end + 1);
+  const projection = computeProjection(raw, ctx.monthIdx, ctx.dayOfYear).slice(start, end + 1);
   return {
     type: 'line',
     data: {
-      labels: MONTH_NAMES,
+      labels: MONTH_NAMES.slice(start, end + 1),
       datasets: [
-        { label: 'Monthly Budget',    data: p.budget,    borderColor: p.color,        borderWidth: 2,   borderDash: [6,4], pointBackgroundColor: p.color,        pointRadius: 3, tension: .3, fill: false },
-        { label: 'Reached',           data: reached,     borderColor: '#4ade80',      borderWidth: 2.5,               pointBackgroundColor: '#4ade80',      pointRadius: 4, tension: .3, fill: false, spanGaps: false },
-        { label: 'Projection (pace)', data: projection,  borderColor: p.color + '88', borderWidth: 2,   borderDash: [3,5], pointBackgroundColor: p.color + '88', pointRadius: 3, tension: .3, fill: false, spanGaps: false }
+        { label: 'Monthly Budget',    data: p.budget.slice(start, end + 1), borderColor: p.color,        borderWidth: 2,   borderDash: [6,4], pointBackgroundColor: p.color,        pointRadius: 3, tension: .3, fill: false },
+        { label: 'Reached',           data: reached,                        borderColor: '#4ade80',      borderWidth: 2.5,                   pointBackgroundColor: '#4ade80',      pointRadius: 4, tension: .3, fill: false, spanGaps: false },
+        { label: 'Projection (pace)', data: projection,                     borderColor: p.color + '88', borderWidth: 2,   borderDash: [3,5], pointBackgroundColor: p.color + '88', pointRadius: 3, tension: .3, fill: false, spanGaps: false }
       ]
     },
     options: {
@@ -790,18 +849,18 @@ function buildLineChart(p, ctx, owner) {
   };
 }
 
-function renderChart(view, ctx, owner) {
+function renderChart(view, ctx, owner, range) {
   const canvas = document.getElementById('mainChart');
   if (chartInstance) chartInstance.destroy();
   chartInstance = new Chart(canvas.getContext('2d'),
-    view === 'all' ? buildBarChart(appProducts, ctx, owner) : buildLineChart(appProducts[view], ctx, owner)
+    view === 'all' ? buildBarChart(appProducts, ctx, owner, range) : buildLineChart(appProducts[view], ctx, owner, range)
   );
   document.getElementById('chartHint').textContent = view === 'all'
     ? 'Click a product tab to see monthly trend & projection'
     : 'Dashed = budget target · Green = actual · Dotted = projection at current pace';
 }
 
-function renderChartTabs(products, ctx, owner) {
+function renderChartTabs(products, ctx, owner, range) {
   const container = document.getElementById('chart-tabs');
   container.innerHTML = '';
 
@@ -815,14 +874,14 @@ function renderChartTabs(products, ctx, owner) {
     tab.addEventListener('click', () => {
       container.querySelectorAll('.chart-tab').forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
-      renderChart(view, ctx, owner);
+      renderChart(view, ctx, owner, range);
     });
     container.appendChild(tab);
   };
 
   makeTab('All Products', 'all', true);
   Object.entries(products).forEach(([key, p]) => makeTab(p.label, key, false));
-  renderChart('all', ctx, owner);
+  renderChart('all', ctx, owner, range);
 }
 
 // ── Modal ─────────────────────────────────────────────────────────────
@@ -856,14 +915,15 @@ window.addEventListener('load', async () => {
   document.getElementById('hero-subtitle').textContent = `Budget vs. Reached · All Products · Last updated ${dateStr}`;
 
   renderOwnerFilter(appOwners);
+  renderPeriodFilter();
 
   const ctx      = getTimeContext();
-  const kpis     = computeKPIs(products, ctx, activeOwner);
+  const kpis     = computeKPIs(products, ctx, activeOwner, activePeriod);
   const insights = computeInsights(products, kpis, ctx, activeOwner);
 
   renderKPIs(kpis, ctx);
-  renderProgress(products, ctx, activeOwner);
-  renderChartTabs(products, ctx, activeOwner);
+  renderProgress(products, ctx, activeOwner, activePeriod);
+  renderChartTabs(products, ctx, activeOwner, activePeriod);
   renderInsightCards(insights);
 
   if (current === 1) triggerDashboardAnimations();
