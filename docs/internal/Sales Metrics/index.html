@@ -157,12 +157,27 @@
     padding: 7px 15px; border-radius: 100px; white-space: nowrap;
   }
 
-  /* ── Owner Filter ── */
-  .owner-filter { display:flex; align-items:center; gap:10px; margin-bottom:28px; flex-wrap:wrap; }
-  .owner-filter-label { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#444; white-space:nowrap; }
+  /* ── Owner Filter (pill base, kept for backward compat) ── */
   .owner-pill { font-size:11px; font-weight:700; letter-spacing:.04em; padding:5px 14px; border-radius:100px; cursor:pointer; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); color:#555; transition:all .25s ease; user-select:none; }
   .owner-pill:hover { background:rgba(245,166,35,.08); border-color:rgba(245,166,35,.25); color:#F5A623; }
   .owner-pill.active { background:rgba(245,166,35,.15); border-color:rgba(245,166,35,.4); color:#F5A623; }
+
+  /* ── Filters Row ── */
+  .filters-row { display:flex; align-items:center; gap:16px; margin-bottom:24px; flex-wrap:wrap; }
+  .filter-group { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .filter-dropdown-wrap { position:relative; }
+  .filter-dropdown-btn { font-size:11px; font-weight:700; letter-spacing:.04em; padding:5px 12px; border-radius:100px; cursor:pointer; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); color:#555; transition:all .25s ease; display:flex; align-items:center; gap:5px; }
+  .filter-dropdown-btn:hover, .filter-dropdown-btn.open { background:rgba(245,166,35,.08); border-color:rgba(245,166,35,.25); color:#F5A623; }
+  .filter-dropdown-btn .dropdown-arrow { font-size:9px; opacity:.6; }
+  .filter-dropdown-panel { position:absolute; top:calc(100% + 6px); left:0; background:#111; border:1px solid rgba(255,255,255,.10); border-radius:12px; padding:10px; z-index:200; min-width:160px; box-shadow:0 8px 32px rgba(0,0,0,.6); }
+  .filter-checkbox-item { display:flex; align-items:center; gap:8px; padding:5px 4px; cursor:pointer; border-radius:6px; transition:background .15s; }
+  .filter-checkbox-item:hover { background:rgba(255,255,255,.05); }
+  .filter-checkbox-item input[type="checkbox"] { accent-color:#F5A623; width:13px; height:13px; cursor:pointer; }
+  .filter-checkbox-item label { font-size:12px; color:#aaa; cursor:pointer; white-space:nowrap; }
+  .filter-checkbox-item.checked label { color:#F5A623; }
+  .date-input { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); border-radius:8px; color:#666; font-size:11px; padding:4px 8px; outline:none; width:118px; cursor:pointer; }
+  .date-input:focus { border-color:rgba(245,166,35,.4); color:#aaa; }
+  .date-input::-webkit-calendar-picker-indicator { filter:invert(0.4); cursor:pointer; }
 
   /* ── Section Labels ── */
   .section-label { font-size:11px; font-weight:700; letter-spacing:.13em; text-transform:uppercase; color:#F5A623; margin-bottom:12px; }
@@ -385,16 +400,46 @@
     </div>
   </div>
 
-  <!-- Owner Filter -->
-  <div class="owner-filter">
-    <span class="owner-filter-label">Filter by</span>
-    <div id="owner-pills"></div>
-  </div>
+  <!-- Filters Row -->
+  <div class="filters-row">
 
-  <!-- Period Filter -->
-  <div class="owner-filter" style="margin-bottom:20px;">
-    <span class="owner-filter-label">Period</span>
-    <div id="period-pills"></div>
+    <!-- Owner: All Team button + multi-select dropdown -->
+    <div class="filter-group">
+      <button class="owner-pill active" id="allTeamBtn" onclick="selectAllTeam()">All Team</button>
+      <div class="filter-dropdown-wrap">
+        <button class="filter-dropdown-btn" id="ownerDropdownBtn" onclick="toggleOwnerDropdown()">
+          Team Members <span id="ownerCount"></span> <span class="dropdown-arrow">&#9660;</span>
+        </button>
+        <div class="filter-dropdown-panel" id="ownerDropdownPanel" style="display:none;">
+          <div id="ownerCheckboxList"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Period: Quick buttons + Month dropdown + Date range -->
+    <div class="filter-group" style="gap:8px;">
+      <button class="owner-pill active" id="periodFullYear" onclick="setPeriodPreset([0,1,2,3,4,5,6,7,8,9,10,11])">Full Year</button>
+      <button class="owner-pill" id="periodQ1" onclick="setPeriodPreset([0,1,2])">Q1</button>
+      <button class="owner-pill" id="periodQ2" onclick="setPeriodPreset([3,4,5])">Q2</button>
+      <button class="owner-pill" id="periodQ3" onclick="setPeriodPreset([6,7,8])">Q3</button>
+      <button class="owner-pill" id="periodQ4" onclick="setPeriodPreset([9,10,11])">Q4</button>
+
+      <div class="filter-dropdown-wrap">
+        <button class="filter-dropdown-btn" id="monthDropdownBtn" onclick="toggleMonthDropdown()">
+          Months <span id="monthCount"></span> <span class="dropdown-arrow">&#9660;</span>
+        </button>
+        <div class="filter-dropdown-panel" id="monthDropdownPanel" style="display:none;">
+          <div id="monthCheckboxList"></div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:6px;">
+        <input type="date" id="dateStart" class="date-input" onchange="applyDateRange()">
+        <span style="color:#444;font-size:11px;">&#8212;</span>
+        <input type="date" id="dateEnd" class="date-input" onchange="applyDateRange()">
+      </div>
+    </div>
+
   </div>
 
   <!-- KPIs -->
@@ -550,8 +595,8 @@ let progressFills = [];
 let insightData   = [];
 let appProducts   = {};
 let appOwners     = {};
-let activeOwner   = 'all';
-let activePeriod  = [0, 11];
+let activeOwners  = ['all'];   // array; 'all' means aggregate all team
+let activeMonths  = [0,1,2,3,4,5,6,7,8,9,10,11];  // selected month indices
 
 // ── Data Loading ──────────────────────────────────────────────────────
 async function loadData() {
@@ -583,6 +628,26 @@ function getBudget(p, owner) {
   return p.budgetByOwner[owner];
 }
 
+function getSummedReached(p, owners) {
+  if (!owners || owners.includes('all') || owners.length === 0) return getReached(p, 'all');
+  var result = new Array(12).fill(0);
+  owners.forEach(function(ok) {
+    var r = getReached(p, ok);
+    r.forEach(function(v, i) { result[i] += (v || 0); });
+  });
+  return result;
+}
+
+function getSummedBudget(p, owners) {
+  if (!owners || owners.includes('all') || owners.length === 0) return getBudget(p, 'all');
+  var result = new Array(12).fill(0);
+  owners.forEach(function(ok) {
+    var b = getBudget(p, ok);
+    b.forEach(function(v, i) { result[i] += (v || 0); });
+  });
+  return result;
+}
+
 function normalizeReached(reached, monthIdx) {
   return reached.map((v, i) => i > monthIdx ? null : (v || 0));
 }
@@ -594,54 +659,55 @@ function computeProjection(reached, monthIdx, dayOfYear) {
   return reached.map((_, i) => i <= monthIdx ? null : monthlyPace);
 }
 
-function computeKPIs(products, ctx, owner, range) {
-  const [start, end] = range || [0, 11];
-  const effectiveEnd = Math.min(end, ctx.monthIdx);
-  const hasData      = effectiveEnd >= start;
-  let totalBudget = 0, totalReached = 0, expectedByNow = 0;
-  Object.values(products).forEach(p => {
-    totalBudget  += getBudget(p, owner).slice(start, end + 1).reduce((a, b) => a + b, 0);
-    if (hasData) {
-      totalReached  += getReached(p, owner).slice(start, effectiveEnd + 1).reduce((a, x) => a + (x || 0), 0);
-      expectedByNow += getBudget(p, owner).slice(start, effectiveEnd + 1).reduce((a, b) => a + b, 0);
-    }
+function computeKPIs(products, ctx, owners, months) {
+  var activeM = months || [0,1,2,3,4,5,6,7,8,9,10,11];
+  var totalBudget = 0, totalReached = 0, expectedByNow = 0;
+  Object.values(products).forEach(function(p) {
+    var bArr = getSummedBudget(p, owners);
+    var rArr = getSummedReached(p, owners);
+    totalBudget += bArr.reduce(function(a, v, i) { return activeM.includes(i) ? a + v : a; }, 0);
+    totalReached += rArr.reduce(function(a, v, i) { return (activeM.includes(i) && i <= ctx.monthIdx) ? a + (v || 0) : a; }, 0);
+    expectedByNow += bArr.reduce(function(a, v, i) { return (activeM.includes(i) && i <= ctx.monthIdx) ? a + v : a; }, 0);
   });
   return {
-    totalBudget,
-    totalReached,
+    totalBudget: totalBudget,
+    totalReached: totalReached,
     achieveRate:   totalBudget > 0 ? totalReached / totalBudget : 0,
     remaining:     totalBudget - totalReached,
-    expectedByNow
+    expectedByNow: expectedByNow
   };
 }
 
-function computeInsights(products, kpis, ctx, owner) {
-  const entries      = Object.entries(products);
-  const monthlyPace  = ctx.monthIdx >= 0 ? kpis.totalReached / (ctx.monthIdx + 1) : 0;
-  const projYearEnd  = Math.round(monthlyPace * 12);
-  const projGapPct   = kpis.totalBudget > 0 ? Math.round(Math.max(0, 1 - projYearEnd / kpis.totalBudget) * 100) : 0;
-  const shortfall    = kpis.expectedByNow - kpis.totalReached;
-  const shortfallPct = kpis.expectedByNow > 0 ? Math.round(Math.abs(shortfall) / kpis.expectedByNow * 100) : 0;
-  const ahead        = shortfall <= 0;
+function computeInsights(products, kpis, ctx, owners, months) {
+  var entries      = Object.entries(products);
+  var monthlyPace  = ctx.monthIdx >= 0 ? kpis.totalReached / (ctx.monthIdx + 1) : 0;
+  var projYearEnd  = Math.round(monthlyPace * 12);
+  var projGapPct   = kpis.totalBudget > 0 ? Math.round(Math.max(0, 1 - projYearEnd / kpis.totalBudget) * 100) : 0;
+  var shortfall    = kpis.expectedByNow - kpis.totalReached;
+  var shortfallPct = kpis.expectedByNow > 0 ? Math.round(Math.abs(shortfall) / kpis.expectedByNow * 100) : 0;
+  var ahead        = shortfall <= 0;
 
-  const biggest = entries.reduce((best, [, p]) => {
-    const b = getBudget(p, owner).reduce((a, x) => a + x, 0);
+  var biggest = entries.reduce(function(best, entry) {
+    var p = entry[1];
+    var b = getSummedBudget(p, owners).reduce(function(a, x) { return a + x; }, 0);
     return (!best || b > best.budget) ? { label: p.label, budget: b } : best;
   }, null);
-  const biggestPct = Math.round(biggest.budget / kpis.totalBudget * 100);
+  var biggestPct = Math.round(biggest.budget / kpis.totalBudget * 100);
 
-  const atRisk = entries.reduce((worst, [, p]) => {
-    const b    = getBudget(p, owner).reduce((a, x) => a + x, 0);
-    const r    = getReached(p, owner).reduce((a, x) => a + (x || 0), 0);
-    const rate = b > 0 ? r / b : 1;
-    return (!worst || rate < worst.rate) ? { label: p.label, rate, reached: r, budget: b } : worst;
+  var atRisk = entries.reduce(function(worst, entry) {
+    var p    = entry[1];
+    var b    = getSummedBudget(p, owners).reduce(function(a, x) { return a + x; }, 0);
+    var r    = getSummedReached(p, owners).reduce(function(a, x) { return a + (x || 0); }, 0);
+    var rate = b > 0 ? r / b : 1;
+    return (!worst || rate < worst.rate) ? { label: p.label, rate: rate, reached: r, budget: b } : worst;
   }, null);
 
-  const easyWin = entries.reduce((best, [, p]) => {
-    const b      = getBudget(p, owner).reduce((a, x) => a + x, 0);
-    const r      = getReached(p, owner).reduce((a, x) => a + (x || 0), 0);
-    const needed = Math.ceil(Math.max(0, b - r) / Math.max(ctx.monthsRemaining, 1));
-    return (!best || needed < best.needed) ? { label: p.label, needed, budget: b } : best;
+  var easyWin = entries.reduce(function(best, entry) {
+    var p      = entry[1];
+    var b      = getSummedBudget(p, owners).reduce(function(a, x) { return a + x; }, 0);
+    var r      = getSummedReached(p, owners).reduce(function(a, x) { return a + (x || 0); }, 0);
+    var needed = Math.ceil(Math.max(0, b - r) / Math.max(ctx.monthsRemaining, 1));
+    return (!best || needed < best.needed) ? { label: p.label, needed: needed, budget: b } : best;
   }, null);
 
   const nextQ = 'Q' + (Math.ceil((ctx.monthIdx + 1) / 3) + 1);
@@ -693,110 +759,180 @@ function renderKPIs(kpis, ctx) {
   document.getElementById('kpi-remaining-sub').textContent = `in ~${ctx.monthsRemaining} month${ctx.monthsRemaining !== 1 ? 's' : ''} remaining`;
 }
 
-function renderOwnerFilter(owners) {
-  const container = document.getElementById('owner-pills');
-  container.style.display = 'flex';
-  container.style.gap = '7px';
-  container.style.flexWrap = 'wrap';
-  container.innerHTML = '';
-  Object.entries(owners).forEach(([key, name]) => {
-    const pill = document.createElement('div');
-    pill.className = 'owner-pill' + (key === activeOwner ? ' active' : '');
-    pill.textContent = name;
-    pill.addEventListener('click', () => {
-      if (activeOwner === key) return;
-      activeOwner = key;
-      container.querySelectorAll('.owner-pill').forEach(p => p.classList.remove('active'));
-      pill.classList.add('active');
-      refreshDashboard();
-    });
-    container.appendChild(pill);
+const MONTH_NAMES_FULL = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+function selectAllTeam() {
+  activeOwners = ['all'];
+  document.getElementById('allTeamBtn').classList.add('active');
+  document.getElementById('ownerDropdownBtn').classList.remove('open');
+  document.getElementById('ownerDropdownPanel').style.display = 'none';
+  updateOwnerUI();
+  refreshDashboard();
+}
+
+function toggleOwnerDropdown() {
+  var panel = document.getElementById('ownerDropdownPanel');
+  var btn   = document.getElementById('ownerDropdownBtn');
+  var open  = panel.style.display !== 'none';
+  panel.style.display = open ? 'none' : 'block';
+  btn.classList.toggle('open', !open);
+}
+
+function toggleMonthDropdown() {
+  var panel = document.getElementById('monthDropdownPanel');
+  var btn   = document.getElementById('monthDropdownBtn');
+  var open  = panel.style.display !== 'none';
+  panel.style.display = open ? 'none' : 'block';
+  btn.classList.toggle('open', !open);
+}
+
+function updateOwnerUI() {
+  var isAll = activeOwners.includes('all');
+  document.getElementById('allTeamBtn').classList.toggle('active', isAll);
+  var count = isAll ? '' : '(' + activeOwners.length + ')';
+  document.getElementById('ownerCount').textContent = count;
+  var btn = document.getElementById('ownerDropdownBtn');
+  btn.classList.toggle('open', !isAll && activeOwners.length > 0);
+  document.querySelectorAll('.owner-cb').forEach(function(cb) {
+    cb.checked = activeOwners.includes(cb.value);
+    cb.closest('.filter-checkbox-item').classList.toggle('checked', cb.checked);
   });
 }
 
-const PERIOD_OPTIONS = [
-  { label: 'Full Year', range: [0, 11] },
-  { label: 'Q1', range: [0, 2] },
-  { label: 'Q2', range: [3, 5] },
-  { label: 'Q3', range: [6, 8] },
-  { label: 'Q4', range: [9, 11] },
-  { label: 'Jan', range: [0, 0] }, { label: 'Feb', range: [1, 1] }, { label: 'Mar', range: [2, 2] },
-  { label: 'Apr', range: [3, 3] }, { label: 'May', range: [4, 4] }, { label: 'Jun', range: [5, 5] },
-  { label: 'Jul', range: [6, 6] }, { label: 'Aug', range: [7, 7] }, { label: 'Sep', range: [8, 8] },
-  { label: 'Oct', range: [9, 9] }, { label: 'Nov', range: [10, 10] }, { label: 'Dec', range: [11, 11] }
-];
-
-function renderPeriodFilter() {
-  const container = document.getElementById('period-pills');
-  container.style.display = 'flex';
-  container.style.gap = '7px';
-  container.style.flexWrap = 'wrap';
-  container.innerHTML = '';
-  PERIOD_OPTIONS.forEach((opt, i) => {
-    if (i === 5) {
-      const sep = document.createElement('div');
-      sep.style.cssText = 'width:1px;background:rgba(255,255,255,.08);margin:0 4px;';
-      container.appendChild(sep);
-    }
-    const pill = document.createElement('div');
-    const isActive = opt.range[0] === activePeriod[0] && opt.range[1] === activePeriod[1];
-    pill.className = 'owner-pill' + (isActive ? ' active' : '');
-    pill.textContent = opt.label;
-    pill.addEventListener('click', () => {
-      if (activePeriod[0] === opt.range[0] && activePeriod[1] === opt.range[1]) return;
-      activePeriod = opt.range;
-      container.querySelectorAll('.owner-pill').forEach(p => p.classList.remove('active'));
-      pill.classList.add('active');
-      refreshDashboard();
-    });
-    container.appendChild(pill);
+function updateMonthUI() {
+  var allSelected = activeMonths.length === 12;
+  document.getElementById('monthCount').textContent = allSelected ? '' : '(' + activeMonths.length + ')';
+  document.querySelectorAll('.month-cb').forEach(function(cb) {
+    var mi = parseInt(cb.value);
+    cb.checked = activeMonths.includes(mi);
+    cb.closest('.filter-checkbox-item').classList.toggle('checked', cb.checked);
+  });
+  var presets = [
+    { id: 'periodFullYear', months: [0,1,2,3,4,5,6,7,8,9,10,11] },
+    { id: 'periodQ1', months: [0,1,2] },
+    { id: 'periodQ2', months: [3,4,5] },
+    { id: 'periodQ3', months: [6,7,8] },
+    { id: 'periodQ4', months: [9,10,11] }
+  ];
+  presets.forEach(function(p) {
+    var el = document.getElementById(p.id);
+    if (!el) return;
+    var match = p.months.length === activeMonths.length && p.months.every(function(m) { return activeMonths.includes(m); });
+    el.classList.toggle('active', match);
   });
 }
+
+function setPeriodPreset(months) {
+  activeMonths = months.slice();
+  var ds = document.getElementById('dateStart');
+  var de = document.getElementById('dateEnd');
+  if (ds) ds.value = '';
+  if (de) de.value = '';
+  updateMonthUI();
+  refreshDashboard();
+}
+
+function applyDateRange() {
+  var startVal = document.getElementById('dateStart').value;
+  var endVal   = document.getElementById('dateEnd').value;
+  if (!startVal || !endVal) return;
+  var startMonth = new Date(startVal).getMonth();
+  var endMonth   = new Date(endVal).getMonth();
+  if (endMonth < startMonth) endMonth = startMonth;
+  var months = [];
+  for (var i = startMonth; i <= endMonth; i++) months.push(i);
+  activeMonths = months;
+  updateMonthUI();
+  refreshDashboard();
+}
+
+function buildOwnerCheckboxList() {
+  var list = document.getElementById('ownerCheckboxList');
+  if (!list) return;
+  list.innerHTML = '';
+  var ownerEntries = Object.entries(appOwners).filter(function(e) { return e[0] !== 'all'; });
+  ownerEntries.forEach(function(entry) {
+    var key = entry[0], name = entry[1];
+    var item = document.createElement('div');
+    item.className = 'filter-checkbox-item';
+    var id = 'ocb-' + key;
+    item.innerHTML = '<input type="checkbox" class="owner-cb" id="' + id + '" value="' + key + '"><label for="' + id + '">' + name + '</label>';
+    item.querySelector('input').addEventListener('change', function() {
+      var checked = Array.from(document.querySelectorAll('.owner-cb:checked')).map(function(c) { return c.value; });
+      if (checked.length === 0) {
+        activeOwners = ['all'];
+      } else {
+        activeOwners = checked;
+        document.getElementById('allTeamBtn').classList.remove('active');
+      }
+      updateOwnerUI();
+      refreshDashboard();
+    });
+    list.appendChild(item);
+  });
+}
+
+function buildMonthCheckboxList() {
+  var list = document.getElementById('monthCheckboxList');
+  if (!list) return;
+  list.innerHTML = '';
+  MONTH_NAMES_FULL.forEach(function(name, mi) {
+    var item = document.createElement('div');
+    item.className = 'filter-checkbox-item checked';
+    var id = 'mcb-' + mi;
+    item.innerHTML = '<input type="checkbox" class="month-cb" id="' + id + '" value="' + mi + '" checked><label for="' + id + '">' + name + '</label>';
+    item.querySelector('input').addEventListener('change', function() {
+      var checked = Array.from(document.querySelectorAll('.month-cb:checked')).map(function(c) { return parseInt(c.value); });
+      if (checked.length === 0) checked = [0,1,2,3,4,5,6,7,8,9,10,11];
+      activeMonths = checked.sort(function(a,b){return a-b;});
+      updateMonthUI();
+      refreshDashboard();
+    });
+    list.appendChild(item);
+  });
+}
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.filter-dropdown-wrap')) {
+    document.querySelectorAll('.filter-dropdown-panel').forEach(function(p) { p.style.display = 'none'; });
+    document.querySelectorAll('.filter-dropdown-btn').forEach(function(b) { b.classList.remove('open'); });
+  }
+});
 
 function refreshDashboard() {
-  const ctx      = getTimeContext();
-  const kpis     = computeKPIs(appProducts, ctx, activeOwner, activePeriod);
-  const insights = computeInsights(appProducts, kpis, ctx, activeOwner);
+  var ctx      = getTimeContext();
+  var kpis     = computeKPIs(appProducts, ctx, activeOwners, activeMonths);
+  var insights = computeInsights(appProducts, kpis, ctx, activeOwners, activeMonths);
   renderKPIs(kpis, ctx);
-  renderProgress(appProducts, ctx, activeOwner, activePeriod);
-  renderChartTabs(appProducts, ctx, activeOwner, activePeriod);
+  renderProgress(appProducts, ctx, activeOwners, activeMonths);
+  renderChartTabs(appProducts, ctx, activeOwners, activeMonths);
   renderInsightCards(insights);
   triggerDashboardAnimations();
 }
 
-function renderProgress(products, ctx, owner, range) {
-  const section = document.getElementById('progress-section');
+function renderProgress(products, ctx, owners, months) {
+  var section = document.getElementById('progress-section');
   section.innerHTML = '';
   progressFills = [];
-  const [start, end] = range || [0, 11];
-  const effectiveEnd = Math.min(end, ctx.monthIdx);
-  const hasData      = effectiveEnd >= start;
-  const rangePct     = hasData ? (effectiveEnd - start + 1) / (end - start + 1) * 100 : 0;
+  var activeM    = months || [0,1,2,3,4,5,6,7,8,9,10,11];
+  var totalMonths = activeM.length;
+  var pastMonths  = activeM.filter(function(i) { return i <= ctx.monthIdx; }).length;
+  var rangePct    = totalMonths > 0 ? (pastMonths / totalMonths * 100) : 0;
 
-  Object.values(products).forEach(p => {
-    const totalBudget  = getBudget(p, owner).slice(start, end + 1).reduce((a, b) => a + b, 0);
-    const totalReached = hasData ? getReached(p, owner).slice(start, effectiveEnd + 1).reduce((a, x) => a + (x || 0), 0) : 0;
-    const pct          = totalBudget > 0 ? (totalReached / totalBudget * 100) : 0;
-    const paceClass    = pct >= rangePct ? 'pace-on-track' : pct < rangePct * 0.6 ? 'pace-critical' : 'pace-behind';
-    const paceLabel    = pct >= rangePct ? 'On track' : pct < rangePct * 0.6 ? 'Critically behind' : 'Behind pace';
-    const uid          = 'pfill-' + p.label.replace(/\s+/g, '-');
+  Object.values(products).forEach(function(p) {
+    var bArr = getSummedBudget(p, owners);
+    var rArr = getSummedReached(p, owners);
+    var totalBudget  = bArr.reduce(function(a, v, i) { return activeM.includes(i) ? a + v : a; }, 0);
+    var totalReached = rArr.reduce(function(a, v, i) { return (activeM.includes(i) && i <= ctx.monthIdx) ? a + (v || 0) : a; }, 0);
+    var pct          = totalBudget > 0 ? (totalReached / totalBudget * 100) : 0;
+    var paceClass    = pct >= rangePct ? 'pace-on-track' : pct < rangePct * 0.6 ? 'pace-critical' : 'pace-behind';
+    var paceLabel    = pct >= rangePct ? 'On track' : pct < rangePct * 0.6 ? 'Critically behind' : 'Behind pace';
+    var uid          = 'pfill-' + p.label.replace(/\s+/g, '-');
 
-    const div = document.createElement('div');
-    div.innerHTML = `
-      <div class="progress-header">
-        <span class="progress-name">${p.label}</span>
-        <span class="progress-stats">${totalReached} of ${totalBudget}</span>
-      </div>
-      <div class="progress-track">
-        <div class="progress-fill" id="${uid}" style="width:0%;background:linear-gradient(90deg,${p.color},${p.color}bb);"></div>
-      </div>
-      <div class="progress-meta">
-        <span class="progress-pct" style="color:${p.color};">${pct.toFixed(1)}%</span>
-        <span class="pace-pill ${paceClass}">${paceLabel}</span>
-      </div>
-    `;
+    var div = document.createElement('div');
+    div.innerHTML = '<div class="progress-header"><span class="progress-name">' + p.label + '</span><span class="progress-stats">' + totalReached + ' of ' + totalBudget + '</span></div><div class="progress-track"><div class="progress-fill" id="' + uid + '" style="width:0%;background:linear-gradient(90deg,' + p.color + ',' + p.color + 'bb);"></div></div><div class="progress-meta"><span class="progress-pct" style="color:' + p.color + ';">' + pct.toFixed(1) + '%</span><span class="pace-pill ' + paceClass + '">' + paceLabel + '</span></div>';
     section.appendChild(div);
-    progressFills.push({ uid, pct: pct.toFixed(1) });
+    progressFills.push({ uid: uid, pct: pct.toFixed(1) });
   });
 }
 
@@ -834,19 +970,19 @@ function triggerDashboardAnimations() {
 }
 
 // ── Charts ────────────────────────────────────────────────────────────
-function buildBarChart(products, ctx, owner, range) {
-  const [start, end] = range || [0, 11];
-  const effectiveEnd = Math.min(end, ctx.monthIdx);
-  const hasData      = effectiveEnd >= start;
-  const labels   = Object.values(products).map(p => p.label);
-  const budgets  = Object.values(products).map(p => getBudget(p, owner).slice(start, end + 1).reduce((a, b) => a + b, 0));
-  const reacheds = Object.values(products).map(p =>
-    hasData ? getReached(p, owner).slice(start, effectiveEnd + 1).reduce((a, x) => a + (x || 0), 0) : 0
-  );
+function buildBarChart(products, ctx, owners, months) {
+  var activeM    = months || [0,1,2,3,4,5,6,7,8,9,10,11];
+  var labels   = Object.values(products).map(function(p) { return p.label; });
+  var budgets  = Object.values(products).map(function(p) {
+    return getSummedBudget(p, owners).reduce(function(a, v, i) { return activeM.includes(i) ? a + v : a; }, 0);
+  });
+  var reacheds = Object.values(products).map(function(p) {
+    return getSummedReached(p, owners).reduce(function(a, v, i) { return (activeM.includes(i) && i <= ctx.monthIdx) ? a + (v || 0) : a; }, 0);
+  });
   return {
     type: 'bar',
     data: {
-      labels,
+      labels: labels,
       datasets: [
         { label: 'Budget',  data: budgets,  backgroundColor: 'rgba(245,166,35,.15)', borderColor: 'rgba(245,166,35,.6)', borderWidth: 2, borderRadius: 5 },
         { label: 'Reached', data: reacheds, backgroundColor: 'rgba(74,222,128,.3)',  borderColor: 'rgba(74,222,128,.8)', borderWidth: 2, borderRadius: 5 }
@@ -866,19 +1002,20 @@ function buildBarChart(products, ctx, owner, range) {
   };
 }
 
-function buildLineChart(p, ctx, owner, range) {
-  const [start, end] = range || [0, 11];
-  const raw        = getReached(p, owner);
-  const reached    = normalizeReached(raw, ctx.monthIdx).slice(start, end + 1);
-  const projection = computeProjection(raw, ctx.monthIdx, ctx.dayOfYear).slice(start, end + 1);
+function buildLineChart(p, ctx, owners, months) {
+  var activeM    = months || [0,1,2,3,4,5,6,7,8,9,10,11];
+  var labels     = MONTH_NAMES.filter(function(_, i) { return activeM.includes(i); });
+  var budgetData = getSummedBudget(p, owners).filter(function(_, i) { return activeM.includes(i); });
+  var reachedData = normalizeReached(getSummedReached(p, owners), ctx.monthIdx).filter(function(_, i) { return activeM.includes(i); });
+  var projData   = computeProjection(getSummedReached(p, owners), ctx.monthIdx, ctx.dayOfYear).filter(function(_, i) { return activeM.includes(i); });
   return {
     type: 'line',
     data: {
-      labels: MONTH_NAMES.slice(start, end + 1),
+      labels: labels,
       datasets: [
-        { label: 'Monthly Budget',    data: getBudget(p, owner).slice(start, end + 1), borderColor: p.color,        borderWidth: 2,   borderDash: [6,4], pointBackgroundColor: p.color,        pointRadius: 3, tension: .3, fill: false },
-        { label: 'Reached',           data: reached,                        borderColor: '#4ade80',      borderWidth: 2.5,                   pointBackgroundColor: '#4ade80',      pointRadius: 4, tension: .3, fill: false, spanGaps: false },
-        { label: 'Projection (pace)', data: projection,                     borderColor: p.color + '88', borderWidth: 2,   borderDash: [3,5], pointBackgroundColor: p.color + '88', pointRadius: 3, tension: .3, fill: false, spanGaps: false }
+        { label: 'Monthly Budget',    data: budgetData,  borderColor: p.color,        borderWidth: 2,   borderDash: [6,4], pointBackgroundColor: p.color,        pointRadius: 3, tension: .3, fill: false },
+        { label: 'Reached',           data: reachedData, borderColor: '#4ade80',      borderWidth: 2.5,                   pointBackgroundColor: '#4ade80',      pointRadius: 4, tension: .3, fill: false, spanGaps: false },
+        { label: 'Projection (pace)', data: projData,    borderColor: p.color + '88', borderWidth: 2,   borderDash: [3,5], pointBackgroundColor: p.color + '88', pointRadius: 3, tension: .3, fill: false, spanGaps: false }
       ]
     },
     options: {
@@ -895,39 +1032,39 @@ function buildLineChart(p, ctx, owner, range) {
   };
 }
 
-function renderChart(view, ctx, owner, range) {
-  const canvas = document.getElementById('mainChart');
+function renderChart(view, ctx, owners, months) {
+  var canvas = document.getElementById('mainChart');
   if (chartInstance) chartInstance.destroy();
   chartInstance = new Chart(canvas.getContext('2d'),
-    view === 'all' ? buildBarChart(appProducts, ctx, owner, range) : buildLineChart(appProducts[view], ctx, owner, range)
+    view === 'all' ? buildBarChart(appProducts, ctx, owners, months) : buildLineChart(appProducts[view], ctx, owners, months)
   );
   document.getElementById('chartHint').textContent = view === 'all'
     ? 'Click a product tab to see monthly trend & projection'
     : 'Dashed = budget target · Green = actual · Dotted = projection at current pace';
 }
 
-function renderChartTabs(products, ctx, owner, range) {
-  const container = document.getElementById('chart-tabs');
+function renderChartTabs(products, ctx, owners, months) {
+  var container = document.getElementById('chart-tabs');
   container.innerHTML = '';
 
-  const makeTab = (label, view, isActive) => {
-    const tab = document.createElement('div');
+  function makeTab(label, view, isActive) {
+    var tab = document.createElement('div');
     tab.className = 'chart-tab' + (isActive ? ' active' : '');
     tab.dataset.view = view;
     tab.setAttribute('data-umami-event', 'chart-tab-clicked');
     tab.setAttribute('data-umami-event-tab', view);
     tab.textContent = label;
-    tab.addEventListener('click', () => {
-      container.querySelectorAll('.chart-tab').forEach(t => t.classList.remove('active'));
+    tab.addEventListener('click', function() {
+      container.querySelectorAll('.chart-tab').forEach(function(t) { t.classList.remove('active'); });
       tab.classList.add('active');
-      renderChart(view, ctx, owner, range);
+      renderChart(view, ctx, owners, months);
     });
     container.appendChild(tab);
-  };
+  }
 
   makeTab('All Products', 'all', true);
-  Object.entries(products).forEach(([key, p]) => makeTab(p.label, key, false));
-  renderChart('all', ctx, owner, range);
+  Object.entries(products).forEach(function(entry) { makeTab(entry[1].label, entry[0], false); });
+  renderChart('all', ctx, owners, months);
 }
 
 // ── Modal ─────────────────────────────────────────────────────────────
@@ -1108,16 +1245,18 @@ window.addEventListener('load', async () => {
   document.getElementById('last-updated').textContent  = `Last updated: ${dateStr}`;
   document.getElementById('hero-subtitle').textContent = `Budget vs. Reached · All Products · Last updated ${dateStr}`;
 
-  renderOwnerFilter(appOwners);
-  renderPeriodFilter();
+  buildOwnerCheckboxList();
+  buildMonthCheckboxList();
+  updateOwnerUI();
+  updateMonthUI();
 
-  const ctx      = getTimeContext();
-  const kpis     = computeKPIs(products, ctx, activeOwner, activePeriod);
-  const insights = computeInsights(products, kpis, ctx, activeOwner);
+  var ctx      = getTimeContext();
+  var kpis     = computeKPIs(products, ctx, activeOwners, activeMonths);
+  var insights = computeInsights(products, kpis, ctx, activeOwners, activeMonths);
 
   renderKPIs(kpis, ctx);
-  renderProgress(products, ctx, activeOwner, activePeriod);
-  renderChartTabs(products, ctx, activeOwner, activePeriod);
+  renderProgress(products, ctx, activeOwners, activeMonths);
+  renderChartTabs(products, ctx, activeOwners, activeMonths);
   renderInsightCards(insights);
 
   if (current === 1) triggerDashboardAnimations();
