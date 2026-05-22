@@ -646,9 +646,11 @@ function getSummedBudget(p, owners) {
     var b = getBudget(p, ok);
     b.forEach(function(v, i) { result[i] += (v || 0); });
   });
-  // If per-person budgets aren't configured yet, fall back to team budget
   var total = result.reduce(function(a, v) { return a + v; }, 0);
-  return total > 0 ? result : p.budget;
+  if (total > 0) return result;
+  // Per-person budgets not configured: proportional share of team budget
+  var fraction = owners.length / OWNER_ORDER.length;
+  return p.budget.map(function(v) { return Math.round(v * fraction * 10) / 10; });
 }
 
 function normalizeReached(reached, monthIdx) {
