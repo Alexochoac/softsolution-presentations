@@ -3,7 +3,7 @@
 **Location:** `docs/internal/Sales Metrics/`
 **Live URL:** `https://alexochoac.github.io/softsolution-presentations/internal/Sales%20Metrics/`
 **Password:** `SOSO2026`
-**Last documented:** 2026-05-22
+**Last documented:** 2026-05-26
 
 ---
 
@@ -345,3 +345,70 @@ Chart.js `v4.4.0` loaded from CDN:
 Charts used:
 - **All Products** — grouped bar chart (Budget vs. Reached per product)
 - **Per-product** — line chart (monthly budget target, actual reached, pace projection)
+
+---
+
+## Custom Breakdown Tooltip
+
+Both the All Products bar chart and the per-product line charts use a custom HTML tooltip (not the default Chart.js one).
+
+**Why custom:** The native tooltip can't scroll. When the team + OEM breakdown is long, the custom tooltip adds a scrollbar.
+
+### How It Works
+
+A single `<div id="chart-tooltip-custom">` is created once on `document.body` and reused across all charts. It is positioned with `position:absolute` and repositioned on every hover via `placeTooltip()`.
+
+```js
+function getOrCreateTooltipEl() {
+  var el = document.getElementById('chart-tooltip-custom');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'chart-tooltip-custom';
+    el.addEventListener('mouseenter', function() { el._hovered = true; });
+    el.addEventListener('mouseleave', function() { el._hovered = false; el.style.opacity = '0'; });
+    document.body.appendChild(el);
+  }
+  return el;
+}
+```
+
+**Scrollbar hover fix:** The tooltip uses `pointer-events:auto` so the mouse can interact with it. When Chart.js fires the hide signal (opacity → 0), the external callback checks `el._hovered` — if the mouse is over the tooltip, it stays visible. It hides when the mouse leaves the tooltip.
+
+### Tooltip Content
+
+Each chart passes `datasetIndex` to detect which dataset is hovered (0 = Budget, 1 = Reached), then calls `tooltipOwnerRows()` which loops `TEAM_ORDER` and `OEM_ORDER` and lists every owner with a non-zero value, grouped under **Team** and **OEM** sections.
+
+```js
+function tooltipOwnerRows(p, monthIdx, isYTD, activeM, curMonthIdx, mode)
+```
+
+- `isYTD = true` → sums across all active months (used by bar chart)
+- `isYTD = false` → reads a single month index (used by line chart)
+
+### CSS
+
+```css
+#chart-tooltip-custom {
+  position:absolute; pointer-events:auto;
+  background:rgba(10,10,10,.96); border:1px solid rgba(255,255,255,.1);
+  border-radius:8px; padding:10px 12px; font-size:11px; line-height:1.55;
+  z-index:9999; min-width:170px; max-width:240px;
+  max-height:250px; overflow-y:auto;
+  transition:opacity .1s ease; color:#f1f5f9;
+}
+```
+
+The `max-height` + `overflow-y:auto` combination enables the scrollbar.
+
+---
+
+## Budget Save Status Message
+
+The save feedback message (`Saving...` / `Saved successfully...` / `Save failed:...`) is displayed **below the Save Changes button**, not below the table.
+
+The element `#budgetSaveStatus` sits inside the same flex column as the button row, aligned to the right. It renders with `min-height:16px` so the layout does not shift when it appears.
+
+The save flow:
+1. Click **Save Changes** → status shows `Saving...` in gray
+2. On success → status shows `Saved successfully. Reload in ~30s to see updated data.` in green; page auto-reloads after 5 seconds
+3. On failure → status shows `Save failed: <error>` in red
