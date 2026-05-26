@@ -400,6 +400,17 @@ function tooltipOwnerRows(p, monthIdx, isYTD, activeM, curMonthIdx, mode)
 
 The `max-height` + `overflow-y:auto` combination enables the scrollbar.
 
+### Scrollbar Interaction Fix
+
+The tooltip uses `pointer-events:none` so it never blocks mouse events on the chart canvas underneath. Without this, moving the mouse from the tooltip toward a different bar would be sluggish because the tooltip div would intercept the mouse events.
+
+Scrolling and hover-persistence are handled via two document-level listeners attached once in `getOrCreateTooltipEl`:
+
+- **`mousemove`** — checks if the cursor is within the tooltip bounds; if so, cancels the pending hide timer so the tooltip stays visible
+- **`wheel`** — checks if the cursor is within the tooltip bounds; if so, calls `e.preventDefault()` and scrolls `t.scrollTop` manually
+
+A `_ttHideTimer` (300ms) delays hiding after Chart.js signals the tooltip should close. This gives the user time to move the cursor over the tooltip. When a new bar is hovered, the new show event cancels the timer immediately — no visible lag between bars.
+
 ---
 
 ## Budget Save Status Message
