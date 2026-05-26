@@ -1065,27 +1065,33 @@ function getOrCreateTooltipEl() {
   return el;
 }
 
-function tooltipOwnerRows(p, monthIdx, isYTD, activeM, curMonthIdx) {
+function tooltipOwnerRows(p, monthIdx, isYTD, activeM, curMonthIdx, mode) {
+  var isBudget = mode === 'budget';
+  var cls = isBudget ? 'tt-b' : 'tt-r';
   var teamHtml = '', oemHtml = '';
+
   TEAM_ORDER.forEach(function(ok) {
     if (!appOwners[ok]) return;
-    var rArr = getReached(p, ok), bArr = getBudget(p, ok), r, b;
-    if (isYTD) {
-      r = rArr.reduce(function(a,v,i){ return activeM.includes(i)&&i<=curMonthIdx?a+(v||0):a; }, 0);
-      b = bArr.reduce(function(a,v,i){ return activeM.includes(i)?a+v:a; }, 0);
-    } else { r = rArr[monthIdx]||0; b = bArr[monthIdx]||0; }
-    if (r>0||b>0) teamHtml += '<div class="tt-row"><span class="tt-name">'+(appOwners[ok]||ok)+'</span><span><span class="tt-r">'+fmt(r)+'</span>'+(b>0?' <span class="tt-sep">/</span> <span class="tt-b">'+fmt(b)+'</span>':'')+'</span></div>';
+    var arr = isBudget ? getBudget(p, ok) : getReached(p, ok);
+    var val = isYTD
+      ? arr.reduce(function(a,v,i){ return activeM.includes(i)&&(isBudget||i<=curMonthIdx)?a+(v||0):a; }, 0)
+      : (arr[monthIdx]||0);
+    if (val>0) teamHtml += '<div class="tt-row"><span class="tt-name">'+(appOwners[ok]||ok)+'</span><span class="'+cls+'">'+fmt(val)+'</span></div>';
   });
+
   OEM_ORDER.forEach(function(ok) {
     if (!appOwners[ok]) return;
-    var rArr = getReached(p, ok);
-    var r = isYTD ? rArr.reduce(function(a,v,i){ return activeM.includes(i)&&i<=curMonthIdx?a+(v||0):a; },0) : (rArr[monthIdx]||0);
-    if (r>0) oemHtml += '<div class="tt-row"><span class="tt-name">'+(appOwners[ok]||ok)+'</span><span class="tt-r">'+fmt(r)+'</span></div>';
+    var arr = isBudget ? getBudget(p, ok) : getReached(p, ok);
+    var val = isYTD
+      ? arr.reduce(function(a,v,i){ return activeM.includes(i)&&(isBudget||i<=curMonthIdx)?a+(v||0):a; }, 0)
+      : (arr[monthIdx]||0);
+    if (val>0) oemHtml += '<div class="tt-row"><span class="tt-name">'+(appOwners[ok]||ok)+'</span><span class="'+cls+'">'+fmt(val)+'</span></div>';
   });
+
   var html = '';
   if (teamHtml) html += '<div class="tt-sec">Team</div>'+teamHtml;
   if (oemHtml)  html += '<div class="tt-sec">OEM</div>'+oemHtml;
-  return html || '<div class="tt-name" style="padding:3px 0;">No individual data</div>';
+  return html || '<div class="tt-name" style="padding:3px 0;">No data</div>';
 }
 
 function placeTooltip(el, context) {
@@ -1123,10 +1129,16 @@ function buildBarChart(products, ctx, owners, months) {
         tooltip: { enabled: false, external: function(context) {
           var tooltip = context.tooltip, el = getOrCreateTooltipEl();
           if (tooltip.opacity === 0) { el.style.opacity = '0'; return; }
-          var di = tooltip.dataPoints[0].dataIndex;
-          var pk = Object.keys(products)[di], p2 = products[pk];
-          var total = getSummedReached(p2, owners).reduce(function(a,v,i){ return activeM.includes(i)&&i<=ctx.monthIdx?a+(v||0):a; },0);
-          el.innerHTML = '<div class="tt-header">'+p2.label+' &nbsp;<span class="tt-r">'+fmt(total)+'</span> YTD</div>'+tooltipOwnerRows(p2,null,true,activeM,ctx.monthIdx);
+          var di   = tooltip.dataPoints[0].dataIndex;
+          var dsi  = tooltip.dataPoints[0].datasetIndex;
+          var mode = dsi === 0 ? 'budget' : 'reached';
+          var pk   = Object.keys(products)[di], p2 = products[pk];
+          var total = mode === 'budget'
+            ? getSummedBudget(p2, owners).reduce(function(a,v,i){ return activeM.includes(i)?a+v:a; },0)
+            : getSummedReached(p2, owners).reduce(function(a,v,i){ return activeM.includes(i)&&i<=ctx.monthIdx?a+(v||0):a; },0);
+          var label = mode === 'budget' ? 'Budget' : 'Reached';
+          var cls   = mode === 'budget' ? 'tt-b' : 'tt-r';
+          el.innerHTML = '<div class="tt-header">'+p2.label+' · '+label+' &nbsp;<span class="'+cls+'">'+fmt(total)+'</span></div>'+tooltipOwnerRows(p2,null,true,activeM,ctx.monthIdx,mode);
           el.style.opacity = '1'; placeTooltip(el, context);
         } }
       },
@@ -1161,10 +1173,16 @@ function buildLineChart(p, ctx, owners, months) {
         tooltip: { enabled: false, external: function(context) {
           var tooltip = context.tooltip, el = getOrCreateTooltipEl();
           if (tooltip.opacity === 0) { el.style.opacity = '0'; return; }
-          var di = tooltip.dataPoints[0].dataIndex;
-          var mi = activeM[di];
-          var total = getSummedReached(p, owners)[mi] || 0;
-          el.innerHTML = '<div class="tt-header">'+MONTH_NAMES_FULL[mi]+' &nbsp;<span class="tt-r">'+fmt(total)+'</span></div>'+tooltipOwnerRows(p,mi,false,activeM,ctx.monthIdx);
+          var di   = tooltip.dataPoints[0].dataIndex;
+          var dsi  = tooltip.dataPoints[0].datasetIndex;
+          var mode = dsi === 0 ? 'budget' : 'reached';
+          var mi   = activeM[di];
+          var total = mode === 'budget'
+            ? (getSummedBudget(p, owners)[mi] || 0)
+            : (getSummedReached(p, owners)[mi] || 0);
+          var label = mode === 'budget' ? 'Budget' : 'Reached';
+          var cls   = mode === 'budget' ? 'tt-b' : 'tt-r';
+          el.innerHTML = '<div class="tt-header">'+MONTH_NAMES_FULL[mi]+' · '+label+' &nbsp;<span class="'+cls+'">'+fmt(total)+'</span></div>'+tooltipOwnerRows(p,mi,false,activeM,ctx.monthIdx,mode);
           el.style.opacity = '1'; placeTooltip(el, context);
         } }
       },
