@@ -284,6 +284,17 @@
   /* ── Filter Section Labels ── */
   .filter-section-label { font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#444; padding:6px 4px 4px; }
   .filter-section-divider { border:none; border-top:1px solid rgba(255,255,255,.06); margin:6px 0 4px; }
+  #chart-tooltip-custom { position:absolute; pointer-events:none; background:rgba(10,10,10,.96); border:1px solid rgba(255,255,255,.1); border-radius:8px; padding:10px 12px; font-size:11px; line-height:1.55; z-index:9999; min-width:170px; max-width:240px; max-height:250px; overflow-y:auto; transition:opacity .1s ease; color:#f1f5f9; }
+  #chart-tooltip-custom::-webkit-scrollbar { width:4px; }
+  #chart-tooltip-custom::-webkit-scrollbar-track { background:rgba(255,255,255,.04); border-radius:2px; }
+  #chart-tooltip-custom::-webkit-scrollbar-thumb { background:rgba(255,255,255,.18); border-radius:2px; }
+  .tt-header { font-weight:700; font-size:12px; margin-bottom:7px; padding-bottom:7px; border-bottom:1px solid rgba(255,255,255,.1); }
+  .tt-sec { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#555; margin:6px 0 3px; }
+  .tt-row { display:flex; justify-content:space-between; gap:10px; padding:1px 0; }
+  .tt-name { color:#888; flex:1; }
+  .tt-r { color:#4ade80; }
+  .tt-sep { color:#444; }
+  .tt-b { color:#aaa; }
 
   /* ── Mobile Responsive ── */
   @media (max-width: 768px) {
@@ -1047,6 +1058,45 @@ function triggerDashboardAnimations() {
   }, 200);
 }
 
+// ── Tooltip helpers ───────────────────────────────────────────────────
+function getOrCreateTooltipEl() {
+  var el = document.getElementById('chart-tooltip-custom');
+  if (!el) { el = document.createElement('div'); el.id = 'chart-tooltip-custom'; document.body.appendChild(el); }
+  return el;
+}
+
+function tooltipOwnerRows(p, monthIdx, isYTD, activeM, curMonthIdx) {
+  var teamHtml = '', oemHtml = '';
+  TEAM_ORDER.forEach(function(ok) {
+    if (!appOwners[ok]) return;
+    var rArr = getReached(p, ok), bArr = getBudget(p, ok), r, b;
+    if (isYTD) {
+      r = rArr.reduce(function(a,v,i){ return activeM.includes(i)&&i<=curMonthIdx?a+(v||0):a; }, 0);
+      b = bArr.reduce(function(a,v,i){ return activeM.includes(i)?a+v:a; }, 0);
+    } else { r = rArr[monthIdx]||0; b = bArr[monthIdx]||0; }
+    if (r>0||b>0) teamHtml += '<div class="tt-row"><span class="tt-name">'+(appOwners[ok]||ok)+'</span><span><span class="tt-r">'+fmt(r)+'</span>'+(b>0?' <span class="tt-sep">/</span> <span class="tt-b">'+fmt(b)+'</span>':'')+'</span></div>';
+  });
+  OEM_ORDER.forEach(function(ok) {
+    if (!appOwners[ok]) return;
+    var rArr = getReached(p, ok);
+    var r = isYTD ? rArr.reduce(function(a,v,i){ return activeM.includes(i)&&i<=curMonthIdx?a+(v||0):a; },0) : (rArr[monthIdx]||0);
+    if (r>0) oemHtml += '<div class="tt-row"><span class="tt-name">'+(appOwners[ok]||ok)+'</span><span class="tt-r">'+fmt(r)+'</span></div>';
+  });
+  var html = '';
+  if (teamHtml) html += '<div class="tt-sec">Team</div>'+teamHtml;
+  if (oemHtml)  html += '<div class="tt-sec">OEM</div>'+oemHtml;
+  return html || '<div class="tt-name" style="padding:3px 0;">No individual data</div>';
+}
+
+function placeTooltip(el, context) {
+  var rect = context.chart.canvas.getBoundingClientRect();
+  var x = rect.left + window.scrollX + context.tooltip.caretX + 14;
+  var y = rect.top  + window.scrollY + context.tooltip.caretY - 14;
+  if (x + 260 > window.innerWidth + window.scrollX) x = rect.left + window.scrollX + context.tooltip.caretX - 260;
+  el.style.left = x + 'px';
+  el.style.top  = y + 'px';
+}
+
 // ── Charts ────────────────────────────────────────────────────────────
 function buildBarChart(products, ctx, owners, months) {
   var activeM    = months || [0,1,2,3,4,5,6,7,8,9,10,11];
@@ -1070,7 +1120,15 @@ function buildBarChart(products, ctx, owners, months) {
       responsive: true, maintainAspectRatio: false,
       plugins: {
         legend:  { labels: { color: '#666', font: { size: 11, weight: '600' }, padding: 16, usePointStyle: true, pointStyleWidth: 8 } },
-        tooltip: { backgroundColor: 'rgba(10,10,10,.95)', titleColor: '#f1f5f9', bodyColor: '#888', borderColor: 'rgba(245,166,35,.2)', borderWidth: 1, padding: 10 }
+        tooltip: { enabled: false, external: function(context) {
+          var tooltip = context.tooltip, el = getOrCreateTooltipEl();
+          if (tooltip.opacity === 0) { el.style.opacity = '0'; return; }
+          var di = tooltip.dataPoints[0].dataIndex;
+          var pk = Object.keys(products)[di], p2 = products[pk];
+          var total = getSummedReached(p2, owners).reduce(function(a,v,i){ return activeM.includes(i)&&i<=ctx.monthIdx?a+(v||0):a; },0);
+          el.innerHTML = '<div class="tt-header">'+p2.label+' &nbsp;<span class="tt-r">'+fmt(total)+'</span> YTD</div>'+tooltipOwnerRows(p2,null,true,activeM,ctx.monthIdx);
+          el.style.opacity = '1'; placeTooltip(el, context);
+        } }
       },
       scales: {
         x: { ticks: { color: '#666', font: { size: 12, weight: '600' } }, grid: { color: 'rgba(255,255,255,.04)' }, border: { color: 'rgba(255,255,255,.06)' } },
@@ -1100,7 +1158,15 @@ function buildLineChart(p, ctx, owners, months) {
       responsive: true, maintainAspectRatio: false,
       plugins: {
         legend:  { labels: { color: '#666', font: { size: 11, weight: '600' }, padding: 14, usePointStyle: true, pointStyleWidth: 8 } },
-        tooltip: { backgroundColor: 'rgba(10,10,10,.95)', titleColor: '#f1f5f9', bodyColor: '#888', borderColor: p.color + '44', borderWidth: 1, padding: 10 }
+        tooltip: { enabled: false, external: function(context) {
+          var tooltip = context.tooltip, el = getOrCreateTooltipEl();
+          if (tooltip.opacity === 0) { el.style.opacity = '0'; return; }
+          var di = tooltip.dataPoints[0].dataIndex;
+          var mi = activeM[di];
+          var total = getSummedReached(p, owners)[mi] || 0;
+          el.innerHTML = '<div class="tt-header">'+MONTH_NAMES_FULL[mi]+' &nbsp;<span class="tt-r">'+fmt(total)+'</span></div>'+tooltipOwnerRows(p,mi,false,activeM,ctx.monthIdx);
+          el.style.opacity = '1'; placeTooltip(el, context);
+        } }
       },
       scales: {
         x: { ticks: { color: '#555', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,.04)' }, border: { color: 'rgba(255,255,255,.06)' } },
