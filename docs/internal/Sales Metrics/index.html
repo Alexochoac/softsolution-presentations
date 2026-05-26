@@ -272,6 +272,19 @@
   .budget-btn { font-size:11px; font-weight:700; letter-spacing:.05em; padding:6px 16px; border-radius:100px; cursor:pointer; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.10); color:#666; transition:all .25s ease; }
   .budget-btn:hover { background:rgba(255,255,255,.10); color:#aaa; border-color:rgba(255,255,255,.2); }
 
+  /* ── OEM Section in Budget Table ── */
+  .budget-table tr.oem-toggle-row td { background:rgba(74,222,128,.04); color:#4ade80; cursor:pointer; font-weight:700; font-size:11px; }
+  .budget-table tr.oem-toggle-row:hover td { background:rgba(74,222,128,.09); }
+  .budget-table tr.oem-sub-row td { color:#555; font-size:11px; }
+  .budget-table tr.oem-sub-row td.col-name { padding-left:28px; }
+  .budget-table tr.oem-sub-row input.budget-cell { background:rgba(74,222,128,.05); border-color:rgba(74,222,128,.2); }
+  .budget-table tr.oem-sub-row input.budget-cell:focus { border-color:rgba(74,222,128,.5); background:rgba(74,222,128,.08); }
+  .oem-arrow { display:inline-block; margin-right:6px; transition:transform .2s ease; font-size:9px; }
+
+  /* ── Filter Section Labels ── */
+  .filter-section-label { font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#444; padding:6px 4px 4px; }
+  .filter-section-divider { border:none; border-top:1px solid rgba(255,255,255,.06); margin:6px 0 4px; }
+
   /* ── Mobile Responsive ── */
   @media (max-width: 768px) {
     body { height: 100dvh; }
@@ -408,7 +421,7 @@
       <button class="owner-pill active" id="allTeamBtn" onclick="selectAllTeam()">All Team</button>
       <div class="filter-dropdown-wrap">
         <button class="filter-dropdown-btn" id="ownerDropdownBtn" onclick="toggleOwnerDropdown()">
-          Team Members <span id="ownerCount"></span> <span class="dropdown-arrow">&#9660;</span>
+          Members / OEM <span id="ownerCount"></span> <span class="dropdown-arrow">&#9660;</span>
         </button>
         <div class="filter-dropdown-panel" id="ownerDropdownPanel" style="display:none;">
           <div id="ownerCheckboxList"></div>
@@ -796,10 +809,29 @@ function updateOwnerUI() {
   document.getElementById('ownerCount').textContent = count;
   var btn = document.getElementById('ownerDropdownBtn');
   btn.classList.toggle('open', !isAll && activeOwners.length > 0);
+
   document.querySelectorAll('.owner-cb').forEach(function(cb) {
     cb.checked = activeOwners.includes(cb.value);
     cb.closest('.filter-checkbox-item').classList.toggle('checked', cb.checked);
   });
+
+  // Sync "All Team Members" select-all checkbox
+  var teamAllCb = document.getElementById('ocb-all-team');
+  if (teamAllCb) {
+    var teamKeys = TEAM_ORDER.filter(function(k) { return appOwners[k]; });
+    var allTeamOn = teamKeys.length > 0 && teamKeys.every(function(k) { return activeOwners.includes(k); });
+    teamAllCb.checked = allTeamOn;
+    teamAllCb.closest('.filter-checkbox-item').classList.toggle('checked', allTeamOn);
+  }
+
+  // Sync "All OEM Partners" select-all checkbox
+  var oemAllCb = document.getElementById('ocb-all-oem');
+  if (oemAllCb) {
+    var oemKeys = OEM_ORDER.filter(function(k) { return appOwners[k]; });
+    var allOemOn = oemKeys.length > 0 && oemKeys.every(function(k) { return activeOwners.includes(k); });
+    oemAllCb.checked = allOemOn;
+    oemAllCb.closest('.filter-checkbox-item').classList.toggle('checked', allOemOn);
+  }
 }
 
 function updateMonthUI() {
@@ -853,25 +885,68 @@ function buildOwnerCheckboxList() {
   var list = document.getElementById('ownerCheckboxList');
   if (!list) return;
   list.innerHTML = '';
-  var ownerEntries = OWNER_ORDER.filter(function(k) { return appOwners[k]; }).map(function(k) { return [k, appOwners[k]]; });
-  ownerEntries.forEach(function(entry) {
-    var key = entry[0], name = entry[1];
+
+  function makeCheckboxItem(key, name, bold) {
     var item = document.createElement('div');
     item.className = 'filter-checkbox-item';
     var id = 'ocb-' + key;
-    item.innerHTML = '<input type="checkbox" class="owner-cb" id="' + id + '" value="' + key + '"><label for="' + id + '">' + name + '</label>';
+    var labelStyle = bold ? ' style="font-weight:700;"' : '';
+    item.innerHTML = '<input type="checkbox" class="owner-cb" id="' + id + '" value="' + key + '"><label for="' + id + '"' + labelStyle + '>' + name + '</label>';
     item.querySelector('input').addEventListener('change', function() {
       var checked = Array.from(document.querySelectorAll('.owner-cb:checked')).map(function(c) { return c.value; });
-      if (checked.length === 0) {
-        activeOwners = ['all'];
-      } else {
-        activeOwners = checked;
+      activeOwners = checked.length === 0 ? ['all'] : checked;
+      if (checked.length > 0) document.getElementById('allTeamBtn').classList.remove('active');
+      updateOwnerUI();
+      refreshDashboard();
+    });
+    return item;
+  }
+
+  function makeSelectAllItem(id, label, getKeys) {
+    var item = document.createElement('div');
+    item.className = 'filter-checkbox-item';
+    item.innerHTML = '<input type="checkbox" id="' + id + '"><label for="' + id + '" style="font-weight:700;">' + label + '</label>';
+    item.querySelector('input').addEventListener('change', function() {
+      var sectionKeys = getKeys();
+      var otherActive = activeOwners.filter(function(k) { return k !== 'all' && !sectionKeys.includes(k); });
+      if (this.checked) {
+        activeOwners = otherActive.concat(sectionKeys);
         document.getElementById('allTeamBtn').classList.remove('active');
+      } else {
+        activeOwners = otherActive.length > 0 ? otherActive : ['all'];
       }
       updateOwnerUI();
       refreshDashboard();
     });
-    list.appendChild(item);
+    return item;
+  }
+
+  var teamLabel = document.createElement('div');
+  teamLabel.className = 'filter-section-label';
+  teamLabel.textContent = 'Team Members';
+  list.appendChild(teamLabel);
+
+  list.appendChild(makeSelectAllItem('ocb-all-team', 'All Team Members', function() {
+    return TEAM_ORDER.filter(function(k) { return appOwners[k]; });
+  }));
+  TEAM_ORDER.filter(function(k) { return appOwners[k]; }).forEach(function(k) {
+    list.appendChild(makeCheckboxItem(k, appOwners[k], false));
+  });
+
+  var divider = document.createElement('hr');
+  divider.className = 'filter-section-divider';
+  list.appendChild(divider);
+
+  var oemLabel = document.createElement('div');
+  oemLabel.className = 'filter-section-label';
+  oemLabel.textContent = 'OEM Partners';
+  list.appendChild(oemLabel);
+
+  list.appendChild(makeSelectAllItem('ocb-all-oem', 'All OEM Partners', function() {
+    return OEM_ORDER.filter(function(k) { return appOwners[k]; });
+  }));
+  OEM_ORDER.filter(function(k) { return appOwners[k]; }).forEach(function(k) {
+    list.appendChild(makeCheckboxItem(k, appOwners[k], false));
   });
 }
 
@@ -1091,7 +1166,8 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
 // ── Budget Modal ──────────────────────────────────────────────────────
 var budgetEditMode = false;
 var BUDGET_WEBHOOK = 'https://n8n.wbtm.io/webhook/sales-metrics-budget';
-var OWNER_ORDER = ['1813254685','90583466','36636696','87123134','98277992','90583398','107285591'];
+var TEAM_ORDER = ['1813254685','90583466','36636696','87123134','98277992','90583398','107285591'];
+var OEM_ORDER  = ['aw_albat_wirsam','benteler_germany','cms_brembana','erdman_automation','fenetech','forel','glaston','lisec_austria','stone_and_glass','tecglass','use_electronics','oem_others'];
 
 function openBudgetModal() {
   budgetEditMode = false;
@@ -1119,8 +1195,9 @@ function toggleBudgetEdit() {
 function renderBudgetTable(editable) {
   var wrap = document.getElementById('budgetTableWrap');
   var productKeys = Object.keys(appProducts);
-  var ownerKeys = OWNER_ORDER.filter(function(k) { return appOwners[k]; });
-  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var teamKeys = TEAM_ORDER.filter(function(k) { return appOwners[k]; });
+  var oemKeys  = OEM_ORDER.filter(function(k) { return appOwners[k]; });
+  var months   = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
   var html = '<table class="budget-table"><thead><tr>';
   html += '<th class="col-name">Member</th>';
@@ -1131,7 +1208,8 @@ function renderBudgetTable(editable) {
     var p = appProducts[pk];
     html += '<tr class="product-header"><td colspan="14" style="padding-left:12px;">' + p.label + '</td></tr>';
 
-    ownerKeys.forEach(function(ok) {
+    // Team member rows
+    teamKeys.forEach(function(ok) {
       var name = appOwners[ok] || ok;
       var vals = (p.budgetByOwner && p.budgetByOwner[ok]) ? p.budgetByOwner[ok] : new Array(12).fill(0);
       var total = vals.reduce(function(a, b) { return a + b; }, 0);
@@ -1152,40 +1230,108 @@ function renderBudgetTable(editable) {
       html += '</tr>';
     });
 
-    var teamBudget = p.budget || new Array(12).fill(0);
-    var teamTotal = teamBudget.reduce(function(a, b) { return a + b; }, 0);
-    html += '<tr class="team-total"><td class="col-name">Team Total</td>';
-    teamBudget.forEach(function(v, mi) { html += '<td id="coltotal-' + pk + '-' + mi + '">' + v + '</td>'; });
-    html += '<td class="col-total" id="teamtotal-' + pk + '">' + teamTotal + '</td></tr>';
+    // OEM Partners toggle row (aggregate, collapsible)
+    var oemAgg = new Array(12).fill(0);
+    oemKeys.forEach(function(ok) {
+      var vals = (p.budgetByOwner && p.budgetByOwner[ok]) ? p.budgetByOwner[ok] : new Array(12).fill(0);
+      vals.forEach(function(v, i) { oemAgg[i] += (v || 0); });
+    });
+    var oemAggTotal = oemAgg.reduce(function(a, b) { return a + b; }, 0);
+    html += '<tr class="oem-toggle-row" onclick="toggleOemRows(\'' + pk + '\')">';
+    html += '<td class="col-name"><span class="oem-arrow" id="oem-arrow-' + pk + '">&#9654;</span>OEM Partners</td>';
+    oemAgg.forEach(function(v, mi) { html += '<td id="oemcol-' + pk + '-' + mi + '">' + v + '</td>'; });
+    html += '<td class="col-total" id="oemrowtotal-' + pk + '">' + oemAggTotal + '</td>';
+    html += '</tr>';
+
+    // OEM company sub-rows (hidden by default)
+    oemKeys.forEach(function(ok) {
+      var name = appOwners[ok] || ok;
+      var vals = (p.budgetByOwner && p.budgetByOwner[ok]) ? p.budgetByOwner[ok] : new Array(12).fill(0);
+      var total = vals.reduce(function(a, b) { return a + b; }, 0);
+      html += '<tr class="oem-sub-row" id="oem-sub-' + pk + '-' + ok + '" style="display:none;">';
+      html += '<td class="col-name">' + name + '</td>';
+      vals.forEach(function(v, mi) {
+        if (editable) {
+          html += '<td><input class="budget-cell" type="number" min="0" value="' + v + '" data-product="' + pk + '" data-owner="' + ok + '" data-month="' + mi + '" oninput="updateBudgetTotal(\'' + pk + '\')"/></td>';
+        } else {
+          html += '<td>' + (v || 0) + '</td>';
+        }
+      });
+      html += '<td class="col-total" id="rowtotal-' + pk + '-' + ok + '">' + total + '</td>';
+      html += '</tr>';
+    });
+
+    // Overall Total row (team + OEM)
+    var grandBudget = p.budget || new Array(12).fill(0);
+    var grandTotal  = grandBudget.reduce(function(a, b) { return a + b; }, 0);
+    html += '<tr class="team-total"><td class="col-name">Overall Total</td>';
+    grandBudget.forEach(function(v, mi) { html += '<td id="coltotal-' + pk + '-' + mi + '">' + v + '</td>'; });
+    html += '<td class="col-total" id="teamtotal-' + pk + '">' + grandTotal + '</td></tr>';
   });
 
   html += '</tbody></table>';
   wrap.innerHTML = html;
 }
 
-function updateBudgetTotal(pk) {
-  var months = 12;
-  var ownerKeys = OWNER_ORDER.filter(function(k) { return appOwners[k]; });
-  var colTotals = new Array(months).fill(0);
+function toggleOemRows(pk) {
+  var arrow   = document.getElementById('oem-arrow-' + pk);
+  var open    = arrow.style.transform === 'rotate(90deg)';
+  var oemKeys = OEM_ORDER.filter(function(k) { return appOwners[k]; });
+  oemKeys.forEach(function(ok) {
+    var row = document.getElementById('oem-sub-' + pk + '-' + ok);
+    if (row) row.style.display = open ? 'none' : 'table-row';
+  });
+  arrow.style.transform = open ? '' : 'rotate(90deg)';
+}
 
-  ownerKeys.forEach(function(ok) {
+function updateBudgetTotal(pk) {
+  var M        = 12;
+  var teamKeys = TEAM_ORDER.filter(function(k) { return appOwners[k]; });
+  var oemKeys  = OEM_ORDER.filter(function(k) { return appOwners[k]; });
+  var teamCols = new Array(M).fill(0);
+  var oemCols  = new Array(M).fill(0);
+
+  teamKeys.forEach(function(ok) {
     var rowTotal = 0;
-    for (var mi = 0; mi < months; mi++) {
-      var input = document.querySelector('input.budget-cell[data-product="' + pk + '"][data-owner="' + ok + '"][data-month="' + mi + '"]');
-      var v = input ? (parseInt(input.value) || 0) : 0;
-      colTotals[mi] += v;
+    for (var i = 0; i < M; i++) {
+      var inp = document.querySelector('input.budget-cell[data-product="' + pk + '"][data-owner="' + ok + '"][data-month="' + i + '"]');
+      var v = inp ? (parseInt(inp.value) || 0) : 0;
+      teamCols[i] += v;
       rowTotal += v;
     }
-    var rowTotalEl = document.getElementById('rowtotal-' + pk + '-' + ok);
-    if (rowTotalEl) rowTotalEl.textContent = rowTotal;
+    var rowEl = document.getElementById('rowtotal-' + pk + '-' + ok);
+    if (rowEl) rowEl.textContent = rowTotal;
   });
 
-  for (var mi = 0; mi < months; mi++) {
-    var el = document.getElementById('coltotal-' + pk + '-' + mi);
-    if (el) el.textContent = colTotals[mi];
+  oemKeys.forEach(function(ok) {
+    var rowTotal = 0;
+    for (var i = 0; i < M; i++) {
+      var inp = document.querySelector('input.budget-cell[data-product="' + pk + '"][data-owner="' + ok + '"][data-month="' + i + '"]');
+      var v = inp ? (parseInt(inp.value) || 0) : 0;
+      oemCols[i] += v;
+      rowTotal += v;
+    }
+    var rowEl = document.getElementById('rowtotal-' + pk + '-' + ok);
+    if (rowEl) rowEl.textContent = rowTotal;
+  });
+
+  // Update OEM Partners aggregate row
+  var oemTotal = 0;
+  for (var i = 0; i < M; i++) {
+    var oemEl = document.getElementById('oemcol-' + pk + '-' + i);
+    if (oemEl) oemEl.textContent = oemCols[i];
+    oemTotal += oemCols[i];
   }
-  var teamEl = document.getElementById('teamtotal-' + pk);
-  if (teamEl) teamEl.textContent = colTotals.reduce(function(a, b) { return a + b; }, 0);
+  var oemRowEl = document.getElementById('oemrowtotal-' + pk);
+  if (oemRowEl) oemRowEl.textContent = oemTotal;
+
+  // Update Overall Total row (team + OEM)
+  for (var i = 0; i < M; i++) {
+    var colEl = document.getElementById('coltotal-' + pk + '-' + i);
+    if (colEl) colEl.textContent = teamCols[i] + oemCols[i];
+  }
+  var grandEl = document.getElementById('teamtotal-' + pk);
+  if (grandEl) grandEl.textContent = teamCols.reduce(function(a, b) { return a + b; }, 0) + oemCols.reduce(function(a, b) { return a + b; }, 0);
 }
 
 async function saveBudget() {
@@ -1193,27 +1339,33 @@ async function saveBudget() {
   statusEl.textContent = 'Saving...';
   statusEl.style.color = '#666';
 
-  var ownerKeys = OWNER_ORDER.filter(function(k) { return appOwners[k]; });
+  var teamKeys    = TEAM_ORDER.filter(function(k) { return appOwners[k]; });
+  var oemKeys     = OEM_ORDER.filter(function(k) { return appOwners[k]; });
+  var allOwnerKeys = teamKeys.concat(oemKeys);
   var productKeys = Object.keys(appProducts);
   var budgetPayload = {};
   var ownersPayload = {};
 
-  ownerKeys.forEach(function(ok) {
+  // Team members have editable name fields; OEM names come from appOwners
+  teamKeys.forEach(function(ok) {
     var nameInput = document.querySelector('input.owner-name-input[data-owner="' + ok + '"]');
     ownersPayload[ok] = nameInput ? nameInput.value.trim() : (appOwners[ok] || ok);
+  });
+  oemKeys.forEach(function(ok) {
+    ownersPayload[ok] = appOwners[ok] || ok;
   });
   ownersPayload['all'] = 'All Team';
 
   productKeys.forEach(function(pk) {
     budgetPayload[pk] = {};
     var colTotals = new Array(12).fill(0);
-    ownerKeys.forEach(function(ok) {
+    allOwnerKeys.forEach(function(ok) {
       var vals = [];
-      for (var mi = 0; mi < 12; mi++) {
-        var input = document.querySelector('input.budget-cell[data-product="' + pk + '"][data-owner="' + ok + '"][data-month="' + mi + '"]');
+      for (var i = 0; i < 12; i++) {
+        var input = document.querySelector('input.budget-cell[data-product="' + pk + '"][data-owner="' + ok + '"][data-month="' + i + '"]');
         var v = input ? (parseInt(input.value) || 0) : 0;
         vals.push(v);
-        colTotals[mi] += v;
+        colTotals[i] += v;
       }
       budgetPayload[pk][ok] = vals;
     });
