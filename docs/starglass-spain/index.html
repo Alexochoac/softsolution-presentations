@@ -92,7 +92,7 @@
   .slide.hero {
     display:flex; flex-direction:row;
     justify-content:space-between; align-items:flex-end;
-    padding:0 80px 80px 80px;
+    padding:0 clamp(20px,6vw,80px) 80px clamp(20px,6vw,80px);
     overflow:hidden;
     background:#070B1A;
   }
@@ -143,7 +143,7 @@
   .slide.content {
     display:flex; flex-direction:column;
     justify-content:center; align-items:center;
-    padding:60px 80px 80px;
+    padding:60px clamp(20px,6vw,80px) 80px;
     background:var(--bg);
   }
   .slide-logo { position:absolute; top:18px; left:28px; z-index:5; height:56px; width:auto; opacity:.9; transition:opacity .3s; background:#fff; border-radius:12px; padding:8px 18px; box-sizing:content-box; }
@@ -623,7 +623,7 @@
   </div>
 
   <!-- SLIDE 2 · QUIÉNES SOMOS -->
-  <div class="slide content co2" style="justify-content:flex-start; align-items:center; padding:52px 80px 0;">
+  <div class="slide content co2" style="justify-content:flex-start; align-items:center; padding:52px clamp(20px,6vw,80px) 0;">
     <img class="slide-logo" src="assets/logo-starglass.jpg" alt="Starglass">
 
     <div class="section-label">Nuestra Empresa</div>
@@ -974,7 +974,7 @@
   </div>
 
   <!-- SLIDE 3 · POR QUÉ LA INSPECCIÓN TIENE SENTIDO -->
-<div class="slide content why3" style="justify-content:flex-start; align-items:center; padding:52px 80px 0;">
+<div class="slide content why3" style="justify-content:flex-start; align-items:center; padding:52px clamp(20px,6vw,80px) 0;">
   <img class="slide-logo" src="assets/logo-starglass.jpg" alt="Starglass">
 
   <div class="section-label">El Argumento para la Inspección</div>
@@ -1286,7 +1286,7 @@
 </div>
 
   <!-- SLIDE 4 · EL PRODUCTO — VISIÓN GENERAL DEL LINESCANNER -->
-<div class="slide content ls4" style="justify-content:flex-start; align-items:center; padding:52px 80px 0;">
+<div class="slide content ls4" style="justify-content:flex-start; align-items:center; padding:52px clamp(20px,6vw,80px) 0;">
   <img class="slide-logo" src="assets/logo-starglass.jpg" alt="Starglass">
 
   <div class="section-label">El Producto</div>
@@ -2176,7 +2176,7 @@
 </div>
 
   <!-- SLIDE 5 · LA TECNOLOGÍA — VISIÓN GENERAL -->
-<div class="slide content t5" style="justify-content:flex-start; align-items:center; padding:52px 80px 0;">
+<div class="slide content t5" style="justify-content:flex-start; align-items:center; padding:52px clamp(20px,6vw,80px) 0;">
   <img class="slide-logo" src="assets/logo-starglass.jpg" alt="Starglass">
 
   <div class="section-label">La Tecnología</div>
@@ -2702,7 +2702,7 @@
 </div>
 
   <!-- SLIDE 6 · CALIDAD SUPERFICIAL -->
-  <div class="slide content s6" style="justify-content:flex-start; align-items:center; padding:52px 80px 0;">
+  <div class="slide content s6" style="justify-content:flex-start; align-items:center; padding:52px clamp(20px,6vw,80px) 0;">
     <img class="slide-logo" src="assets/logo-starglass.jpg" alt="Starglass">
 
     <div class="section-label">Calidad Superficial</div>
@@ -3079,7 +3079,7 @@
   </div>
 
   <!-- SLIDE 7 · CONTROL DIMENSIONAL -->
-  <div class="slide content ls7" style="justify-content:flex-start; align-items:center; padding:52px 80px 0;">
+  <div class="slide content ls7" style="justify-content:flex-start; align-items:center; padding:52px clamp(20px,6vw,80px) 0;">
     <img class="slide-logo" src="assets/logo-starglass.jpg" alt="Starglass">
 
     <div class="section-label">Control Dimensional</div>
@@ -3354,7 +3354,7 @@
   </div>
 
   <!-- SLIDE 8A · SERIGRAFÍA — QUÉ CONTROLA EL LINESCANNER (slide-08-screenprinting) -->
-  <div class="slide content ls8a" style="justify-content:flex-start; align-items:center; padding:52px 80px 0;">
+  <div class="slide content ls8a" style="justify-content:flex-start; align-items:center; padding:52px clamp(20px,6vw,80px) 0;">
     <img class="slide-logo" src="assets/logo-starglass.jpg" alt="Starglass">
 
     <div class="section-label">Serigrafía</div>
@@ -3492,7 +3492,7 @@
   </div>
 
   <!-- SLIDE 8B · SERIGRAFÍA — POSICIÓN Y CALIDAD (slide-09-logo-check) -->
-  <div class="slide content ls8b" style="justify-content:flex-start; align-items:center; padding:52px 80px 0;">
+  <div class="slide content ls8b" style="justify-content:flex-start; align-items:center; padding:52px clamp(20px,6vw,80px) 0;">
     <img class="slide-logo" src="assets/logo-starglass.jpg" alt="Starglass">
 
     <div class="section-label">Serigrafía &amp; Logotipo</div>
@@ -3651,7 +3651,7 @@
   </div>
 
   <!-- SLIDE 8 · BASE DE DATOS -->
-  <div class="slide content ls10" style="justify-content:flex-start; align-items:center; padding:52px 80px 0;">
+  <div class="slide content ls10" style="justify-content:flex-start; align-items:center; padding:52px clamp(20px,6vw,80px) 0;">
     <img class="slide-logo" src="assets/logo-starglass.jpg" alt="Starglass">
 
     <div class="section-label">Trazabilidad &amp; Gestión</div>
@@ -3967,7 +3967,7 @@
   </div>
 
   <!-- SLIDE 9 · AJUSTE DE SENSIBILIDAD -->
-  <div class="slide content lssen" style="justify-content:flex-start; align-items:center; padding:52px 80px 0;">
+  <div class="slide content lssen" style="justify-content:flex-start; align-items:center; padding:52px clamp(20px,6vw,80px) 0;">
     <img class="slide-logo" src="assets/logo-starglass.jpg" alt="Starglass">
 
     <div class="section-label">Ajuste de Sensibilidad</div>
@@ -4249,7 +4249,7 @@
   </div>
 
   <!-- SLIDE 10 · INSTALACIÓN / FOOTPRINT -->
-  <div class="slide content ls11" style="justify-content:flex-start; align-items:center; padding:52px 80px 0;">
+  <div class="slide content ls11" style="justify-content:flex-start; align-items:center; padding:52px clamp(20px,6vw,80px) 0;">
     <img class="slide-logo" src="assets/logo-starglass.jpg" alt="Starglass">
 
     <div class="section-label">Instalación</div>
@@ -4509,7 +4509,7 @@
   </div>
 
   <!-- SLIDE 12 · PRÓXIMOS PASOS -->
-  <div class="slide content" style="position:relative; justify-content:flex-start; padding:60px 80px 0;">
+  <div class="slide content" style="justify-content:flex-start; padding:60px clamp(20px,6vw,80px) 0;">
     <img src="../shared/assets/image112.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.06;pointer-events:none;z-index:0;">
     <img class="slide-logo" src="assets/logo-starglass.jpg" alt="Starglass">
     <div class="section-label">Próximos Pasos</div>
