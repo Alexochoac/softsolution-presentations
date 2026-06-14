@@ -1491,7 +1491,7 @@ async function saveBudget() {
       body: JSON.stringify({ password: 'SOSO2026', budget: budgetPayload, owners: ownersPayload })
     });
     if (!res.ok) throw new Error('HTTP ' + res.status);
-    statusEl.textContent = 'Saved successfully. Reload in ~30s to see updated data.';
+    statusEl.textContent = 'Saved successfully. Reload in ~2 mins to see updated data make sure to hard refresh Ctrl+Shift+R, Be patient.';
     statusEl.style.color = '#4ade80';
     setTimeout(function() { window.location.reload(); }, 5000);
   } catch (e) {
