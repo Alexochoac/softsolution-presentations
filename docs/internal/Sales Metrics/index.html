@@ -630,6 +630,8 @@ let activeOwners  = ['all'];   // array; 'all' means aggregate all team
 let _ttHideTimer  = null;
 let activeMonths  = [0,1,2,3,4,5,6,7,8,9,10,11];  // selected month indices
 let aiInsightsActive = false;
+let chartMode        = 'monthly';
+let currentChartView = 'all';
 
 // ── Data Loading ──────────────────────────────────────────────────────
 async function loadData() {
@@ -1136,6 +1138,11 @@ function placeTooltip(el, context) {
   el.style.top  = y + 'px';
 }
 
+function toCumulative(arr) {
+  var sum = 0;
+  return arr.map(function(v) { return v != null ? (sum += (v || 0)) : null; });
+}
+
 // ── Charts ────────────────────────────────────────────────────────────
 function buildBarChart(products, ctx, owners, months) {
   var activeM    = months || [0,1,2,3,4,5,6,7,8,9,10,11];
@@ -1185,21 +1192,24 @@ function buildBarChart(products, ctx, owners, months) {
 }
 
 function buildLineChart(p, ctx, owners, months) {
-  var activeM    = months || [0,1,2,3,4,5,6,7,8,9,10,11];
-  var labels     = MONTH_NAMES.filter(function(_, i) { return activeM.includes(i); });
-  var budgetData = getSummedBudget(p, owners).filter(function(_, i) { return activeM.includes(i); });
-  var reachedData = normalizeReached(getSummedReached(p, owners), ctx.monthIdx).filter(function(_, i) { return activeM.includes(i); });
-  var projData   = computeProjection(getSummedReached(p, owners), ctx.monthIdx, ctx.dayOfYear).filter(function(_, i) { return activeM.includes(i); });
+  var activeM     = months || [0,1,2,3,4,5,6,7,8,9,10,11];
+  var labels      = MONTH_NAMES.filter(function(_, i) { return activeM.includes(i); });
+  var budgetRaw   = getSummedBudget(p, owners).filter(function(_, i) { return activeM.includes(i); });
+  var reachedRaw  = normalizeReached(getSummedReached(p, owners), ctx.monthIdx).filter(function(_, i) { return activeM.includes(i); });
+  var cumulative  = chartMode === 'cumulative';
+  var budgetData  = cumulative ? toCumulative(budgetRaw)  : budgetRaw;
+  var reachedData = cumulative ? toCumulative(reachedRaw) : reachedRaw;
+  var datasets = [
+    { label: cumulative ? 'Cumulative Budget' : 'Monthly Budget', data: budgetData,  borderColor: p.color,   borderWidth: 2,   borderDash: [6,4], pointBackgroundColor: p.color,   pointRadius: 3, tension: .3, fill: false },
+    { label: 'Reached',                                           data: reachedData, borderColor: '#4ade80', borderWidth: 2.5,                   pointBackgroundColor: '#4ade80', pointRadius: 4, tension: .3, fill: false, spanGaps: false }
+  ];
+  if (!cumulative) {
+    var projData = computeProjection(getSummedReached(p, owners), ctx.monthIdx, ctx.dayOfYear).filter(function(_, i) { return activeM.includes(i); });
+    datasets.push({ label: 'Projection (pace)', data: projData, borderColor: p.color + '88', borderWidth: 2, borderDash: [3,5], pointBackgroundColor: p.color + '88', pointRadius: 3, tension: .3, fill: false, spanGaps: false });
+  }
   return {
     type: 'line',
-    data: {
-      labels: labels,
-      datasets: [
-        { label: 'Monthly Budget',    data: budgetData,  borderColor: p.color,        borderWidth: 2,   borderDash: [6,4], pointBackgroundColor: p.color,        pointRadius: 3, tension: .3, fill: false },
-        { label: 'Reached',           data: reachedData, borderColor: '#4ade80',      borderWidth: 2.5,                   pointBackgroundColor: '#4ade80',      pointRadius: 4, tension: .3, fill: false, spanGaps: false },
-        { label: 'Projection (pace)', data: projData,    borderColor: p.color + '88', borderWidth: 2,   borderDash: [3,5], pointBackgroundColor: p.color + '88', pointRadius: 3, tension: .3, fill: false, spanGaps: false }
-      ]
-    },
+    data: { labels: labels, datasets: datasets },
     options: {
       responsive: true, maintainAspectRatio: false,
       plugins: {
@@ -1230,6 +1240,7 @@ function buildLineChart(p, ctx, owners, months) {
 }
 
 function renderChart(view, ctx, owners, months) {
+  currentChartView = view;
   var canvas = document.getElementById('mainChart');
   if (chartInstance) chartInstance.destroy();
   chartInstance = new Chart(canvas.getContext('2d'),
@@ -1237,7 +1248,9 @@ function renderChart(view, ctx, owners, months) {
   );
   document.getElementById('chartHint').textContent = view === 'all'
     ? 'Click a product tab to see monthly trend & projection'
-    : 'Dashed = budget target · Green = actual · Dotted = projection at current pace';
+    : chartMode === 'cumulative'
+      ? 'Dashed = cumulative budget · Green = cumulative reached'
+      : 'Dashed = budget target · Green = actual · Dotted = projection at current pace';
 }
 
 function renderChartTabs(products, ctx, owners, months) {
@@ -1252,8 +1265,9 @@ function renderChartTabs(products, ctx, owners, months) {
     tab.setAttribute('data-umami-event-tab', view);
     tab.textContent = label;
     tab.addEventListener('click', function() {
-      container.querySelectorAll('.chart-tab').forEach(function(t) { t.classList.remove('active'); });
+      container.querySelectorAll('.chart-tab:not(.mode-toggle)').forEach(function(t) { t.classList.remove('active'); });
       tab.classList.add('active');
+      toggleWrap.style.display = view === 'all' ? 'none' : 'flex';
       renderChart(view, ctx, owners, months);
     });
     container.appendChild(tab);
@@ -1261,6 +1275,24 @@ function renderChartTabs(products, ctx, owners, months) {
 
   makeTab('All Products', 'all', true);
   Object.entries(products).forEach(function(entry) { makeTab(entry[1].label, entry[0], false); });
+
+  var toggleWrap = document.createElement('div');
+  toggleWrap.style.cssText = 'margin-left:auto;display:none;gap:4px;';
+  ['Monthly', 'Cumulative'].forEach(function(label) {
+    var mode = label.toLowerCase();
+    var btn  = document.createElement('div');
+    btn.className = 'chart-tab mode-toggle' + (chartMode === mode ? ' active' : '');
+    btn.textContent = label;
+    btn.addEventListener('click', function() {
+      chartMode = mode;
+      toggleWrap.querySelectorAll('.chart-tab').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      renderChart(currentChartView, ctx, owners, months);
+    });
+    toggleWrap.appendChild(btn);
+  });
+  container.appendChild(toggleWrap);
+
   renderChart('all', ctx, owners, months);
 }
 
