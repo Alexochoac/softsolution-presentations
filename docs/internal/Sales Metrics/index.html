@@ -1624,6 +1624,12 @@ function applyAIInsights(insights, ts) {
 }
 
 async function fetchAIInsights() {
+  var ok = confirm('Each AI Insights request consumes OpenRouter credits (a few cents per request).\n\nProceed?');
+  if (!ok) return;
+  var pwd = prompt('Enter password:');
+  if (pwd === null) return;
+  if (pwd !== 'SOSO2026') { alert('Incorrect password.'); return; }
+
   var btn = document.getElementById('aiInsightsBtn');
   btn.classList.add('loading');
   btn.textContent = 'Analyzing…';
