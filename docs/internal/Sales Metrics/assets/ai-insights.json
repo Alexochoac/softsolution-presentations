@@ -1,35 +1,35 @@
 {
-  "generatedAt": "2026-08-10T11:28:38.982Z",
+  "generatedAt": "2026-08-10T11:29:43.973Z",
   "insights": [
     {
       "icon": "📉",
-      "headline": "Underperforming Products Need Urgent Attention",
-      "body": "The <strong>LineScanner</strong> and <strong>BowScanner</strong> are lagging significantly in sales. With only <strong>1</strong> of <strong>4</strong> LineScanner units sold, immediate action is crucial.",
-      "detail": "The <strong>LineScanner</strong> has reached only <strong>1</strong> unit sold against a target of <strong>4</strong>, while the <strong>BowScanner</strong> has matched its budget of <strong>2</strong> but is far from the expected sales curve. These products are at risk, and a strategic review might help unveil barriers to sales. Addressing the challenges here could reclaim lost ground."
+      "headline": "LineScanner Performance Falling Behind!",
+      "body": "Only <strong>44</strong> units sold vs <strong>79</strong> target.",
+      "detail": "The LineScanner is experiencing a significant shortfall, having closed only <strong>44</strong> out of an expected <strong>79</strong> units. With just <strong>4</strong> months left, this product needs urgent attention to recover its pace. Team member Jonas Pfannenstill is leading with <strong>10</strong> sales, but others like Daniel Obregon and Qinshu Cai have yet to make any significant contributions."
+    },
+    {
+      "icon": "⚠️",
+      "headline": "Osprey25 Needs Immediate Action!",
+      "body": "Achieved only <strong>7</strong> units of <strong>26</strong> target.",
+      "detail": "The Osprey25 is at risk, with only <strong>7</strong> out of <strong>26</strong> budgeted units closed. This underperformance is concerning given the impending deadlines, with minimal projections set for the next months. A boost in strategy to engage team members and OEMs may help turn around the sales for this product."
+    },
+    {
+      "icon": "📊",
+      "headline": "Year-End Projections Show Troubling Trend!",
+      "body": "Total reach at <strong>58</strong>, but <strong>117</strong> targeted.",
+      "detail": "Currently, the total reached of <strong>58</strong> against a target of <strong>117</strong> translates to an inadequate achievement rate of <strong>50%</strong>. If the current pace continues, the projected sales will fall short, emphasizing a need for strategic pivots in sales efforts across all product lines."
     },
     {
       "icon": "🚀",
-      "headline": "Boost Osprey25 for Quick Wins",
-      "body": "The <strong>Osprey25</strong> is close to achieving its budget with <strong>2</strong> units sold against <strong>4</strong>. Increasing effort could close this gap.",
-      "detail": "Currently, the <strong>Osprey25</strong> has reached <strong>50%</strong> of its target of <strong>4</strong> units. Focusing on this product in the coming months, especially through targeted marketing or sales campaigns, may quickly realize additional sales and help maintain momentum as we approach year-end."
+      "headline": "Quick Win: Boost BowScanner Sales!",
+      "body": "4 units sold; potential to hit <strong>12</strong> total.",
+      "detail": "The BowScanner is operating at <strong>33%</strong> of its projected target with <strong>4</strong> units sold. This product has a shortfall of only <strong>8</strong> units, making it a prime candidate for immediate promotions or sales incentives that could attract more clients and rapidly bolster sales before year-end."
     },
     {
       "icon": "📈",
-      "headline": "Year-End Projections Hint at Shortfall",
-      "body": "Current sales are at <strong>6</strong>, but needed <strong>10</strong> to meet targets. Adjustments are critical.",
-      "detail": "With a sales achievement rate of only <strong>60%</strong>, we're currently falling short of the <strong>10</strong> unit target. As we have only <strong>4</strong> months left, an aggressive strategy to ramp up sales is needed. Without decisive action, we risk ending the year under budget, which could affect future investments."
-    },
-    {
-      "icon": "🔧",
-      "headline": "Fixing Gaps in Team Performance is Key",
-      "body": "Team member contributions vary widely. Focus on improving <strong>Daniel Obregon</strong> and <strong>Alex Ochoa</strong> who have not met expectations.",
-      "detail": "Several team members are performing well, notably <strong>Jonas Pfannenstill</strong> with <strong>10</strong> out of <strong>13</strong> units sold, while <strong>Daniel Obregon</strong> and <strong>Alex Ochoa</strong> have yet to close any sales this period. Assessing their sales techniques and providing necessary support or training could turn around performance quickly and encourage better outcomes across the board."
-    },
-    {
-      "icon": "🛠️",
-      "headline": "Prioritize OEM Engagement for Better Sales",
-      "body": "OEMs like <strong>Lisec Austria</strong> and <strong>Erdman Automation</strong> show promise. Focus outreach here.",
-      "detail": "The <strong>Lisec Austria GmbH</strong> has seen strong performance with <strong>11</strong> units sold. Engaging with <strong>Erdman Automation</strong> could uncover additional opportunities — they've already reached <strong>4</strong> out of <strong>8</strong> units. Strengthening these OEM partnerships could unlock new avenues for growth and help achieve future sales goals."
+      "headline": "Focus on Team Member Contributions!",
+      "body": "Engage underperforming members for <strong>better results</strong>.",
+      "detail": "While some team members like Nate Huffman and Jonas Pfannenstill are performing well, others have zero sales. For example, Qinshu Cai and Daniel Obregon both have substantial budgets but have not closed any deals. Targeted training or mentorship for these members could enhance their productivity and improve overall sales performance."
     }
   ]
 }
