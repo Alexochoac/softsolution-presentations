@@ -1,35 +1,35 @@
 {
-  "generatedAt": "2026-06-16T11:30:41.200Z",
+  "generatedAt": "2026-08-10T11:28:38.982Z",
   "insights": [
     {
       "icon": "📉",
-      "headline": "Sales Trajectory Needs Immediate Attention!",
-      "body": "Actual units reached <strong>47</strong>, far below the expected <strong>62</strong>.",
-      "detail": "As of June 2026, the sales performance is <strong>24 units</strong> behind the expected pace. This alarming trend signifies a critical need for the team to recalibrate its strategies to reverse this trajectory before year's end. With only <strong>6 months</strong> left, immediate adjustments are vital to meet budget targets."
-    },
-    {
-      "icon": "⚠️",
-      "headline": "LineScanner Underperforming: Major Risks Ahead!",
-      "body": "LineScanner reached only <strong>34</strong> of <strong>79</strong> units budgeted.",
-      "detail": "With an actual of only <strong>34</strong> units sold against a target of <strong>79</strong>, the LineScanner product is significantly underperforming. Team members like Daniel Obregon and Alex Ochoa have yet to record any sales contributions, indicating potential developmental gaps. Urgent focus on this product could prevent greater losses."
-    },
-    {
-      "icon": "🔮",
-      "headline": "Year-End Projections Show Sales Decline!",
-      "body": "Projected units at current pace is only <strong>6</strong> per month.",
-      "detail": "Current projections suggest that, if the pace remains unchanged, we are set to close the year far below potential. We're looking at a staggering drop-off that could yield underwhelming results when reflecting on our ambitious goals; thus, re-evaluating our sales strategies is essential to meet our budgetary expectations."
+      "headline": "Underperforming Products Need Urgent Attention",
+      "body": "The <strong>LineScanner</strong> and <strong>BowScanner</strong> are lagging significantly in sales. With only <strong>1</strong> of <strong>4</strong> LineScanner units sold, immediate action is crucial.",
+      "detail": "The <strong>LineScanner</strong> has reached only <strong>1</strong> unit sold against a target of <strong>4</strong>, while the <strong>BowScanner</strong> has matched its budget of <strong>2</strong> but is far from the expected sales curve. These products are at risk, and a strategic review might help unveil barriers to sales. Addressing the challenges here could reclaim lost ground."
     },
     {
       "icon": "🚀",
-      "headline": "Quick Win: Focus on Top Performing Team Members!",
-      "body": "Jonas Pfannenstill closed <strong>11</strong> units—lead the pack!",
-      "detail": "Jonas Pfannenstill's notable performance with <strong>11</strong> units sold demonstrates a clear pathway for other team members. He can serve as a mentor or resource for others, showcasing successful techniques that led to his sales victories. Leveraging his strategies might provide an immediate boost to overall team performance, particularly in underperforming products."
+      "headline": "Boost Osprey25 for Quick Wins",
+      "body": "The <strong>Osprey25</strong> is close to achieving its budget with <strong>2</strong> units sold against <strong>4</strong>. Increasing effort could close this gap.",
+      "detail": "Currently, the <strong>Osprey25</strong> has reached <strong>50%</strong> of its target of <strong>4</strong> units. Focusing on this product in the coming months, especially through targeted marketing or sales campaigns, may quickly realize additional sales and help maintain momentum as we approach year-end."
+    },
+    {
+      "icon": "📈",
+      "headline": "Year-End Projections Hint at Shortfall",
+      "body": "Current sales are at <strong>6</strong>, but needed <strong>10</strong> to meet targets. Adjustments are critical.",
+      "detail": "With a sales achievement rate of only <strong>60%</strong>, we're currently falling short of the <strong>10</strong> unit target. As we have only <strong>4</strong> months left, an aggressive strategy to ramp up sales is needed. Without decisive action, we risk ending the year under budget, which could affect future investments."
+    },
+    {
+      "icon": "🔧",
+      "headline": "Fixing Gaps in Team Performance is Key",
+      "body": "Team member contributions vary widely. Focus on improving <strong>Daniel Obregon</strong> and <strong>Alex Ochoa</strong> who have not met expectations.",
+      "detail": "Several team members are performing well, notably <strong>Jonas Pfannenstill</strong> with <strong>10</strong> out of <strong>13</strong> units sold, while <strong>Daniel Obregon</strong> and <strong>Alex Ochoa</strong> have yet to close any sales this period. Assessing their sales techniques and providing necessary support or training could turn around performance quickly and encourage better outcomes across the board."
     },
     {
       "icon": "🛠️",
-      "headline": "Strategic Priority: Address Stagnant Products!",
-      "body": "CulletScanner and BowScanner have <strong>0</strong> and <strong>3</strong> units closed respectively.",
-      "detail": "Both CulletScanner and BowScanner show no substantial traction, with the CulletScanner failing to record any sales to date. Addressing these solutions through targeted marketing campaigns or training could revitalize interest and boost sales. Establishing strategic priorities around these products must be a focus to avoid further stagnation and loss of potential revenue."
+      "headline": "Prioritize OEM Engagement for Better Sales",
+      "body": "OEMs like <strong>Lisec Austria</strong> and <strong>Erdman Automation</strong> show promise. Focus outreach here.",
+      "detail": "The <strong>Lisec Austria GmbH</strong> has seen strong performance with <strong>11</strong> units sold. Engaging with <strong>Erdman Automation</strong> could uncover additional opportunities — they've already reached <strong>4</strong> out of <strong>8</strong> units. Strengthening these OEM partnerships could unlock new avenues for growth and help achieve future sales goals."
     }
   ]
 }
