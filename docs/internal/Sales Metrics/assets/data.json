@@ -1,6 +1,6 @@
 {
   "year": 2026,
-  "lastUpdated": "2026-10-07T06:00:01.724Z",
+  "lastUpdated": "2026-10-08T06:00:02.275Z",
   "hubspot": {
     "propertyName": "inspection_system__multiple_checkbox_",
     "productMap": {
@@ -981,7 +981,7 @@
           0,
           1,
           0,
-          0,
+          1,
           0,
           0
         ],
@@ -1037,7 +1037,7 @@
           0,
           3,
           3,
-          0,
+          1,
           0,
           0
         ],
