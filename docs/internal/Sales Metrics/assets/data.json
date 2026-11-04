@@ -1,6 +1,6 @@
 {
   "year": 2026,
-  "lastUpdated": "2026-11-03T07:00:01.599Z",
+  "lastUpdated": "2026-11-04T07:00:01.592Z",
   "hubspot": {
     "propertyName": "inspection_system__multiple_checkbox_",
     "productMap": {
@@ -470,7 +470,7 @@
           2,
           1,
           5,
-          0,
+          1,
           0
         ],
         "oem_partners": [
@@ -484,7 +484,7 @@
           0,
           0,
           1,
-          0,
+          1,
           0
         ],
         "aw_albat_wirsam": [
@@ -596,7 +596,7 @@
           0,
           0,
           0,
-          0,
+          1,
           0
         ],
         "stone_and_glass": [
